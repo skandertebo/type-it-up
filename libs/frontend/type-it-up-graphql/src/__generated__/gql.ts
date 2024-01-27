@@ -14,8 +14,9 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 const documents = {
-    "\n  mutation Authenticate($code: String!) {\n    authenticate(code: $code)\n  }\n": types.AuthenticateDocument,
-    "\n  query GetSSOUrl($organizationId: String!) {\n    getSSOUrl(organizationId: $organizationId)\n  }\n": types.GetSsoUrlDocument,
+    "\n  mutation AuthenticateWithAccessToken {\n    authenticateWithAccessToken {\n      id\n      name\n      email\n      profilePicture\n      createdAt\n      updatedAt\n    }\n  }\n": types.AuthenticateWithAccessTokenDocument,
+    "\n  mutation AuthenticateWithCode($code: String!) {\n    authenticateWithCode(code: $code) {\n      user {\n        id\n        name\n        email\n        profilePicture\n        createdAt\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n": types.AuthenticateWithCodeDocument,
+    "\n  mutation AuthenticateWithRefreshToken($refreshToken: String!) {\n    authenticateWithRefreshToken(refreshToken: $refreshToken) {\n      user {\n        id\n        name\n        email\n        profilePicture\n        createdAt\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n": types.AuthenticateWithRefreshTokenDocument,
 };
 
 /**
@@ -35,11 +36,15 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation Authenticate($code: String!) {\n    authenticate(code: $code)\n  }\n"): (typeof documents)["\n  mutation Authenticate($code: String!) {\n    authenticate(code: $code)\n  }\n"];
+export function gql(source: "\n  mutation AuthenticateWithAccessToken {\n    authenticateWithAccessToken {\n      id\n      name\n      email\n      profilePicture\n      createdAt\n      updatedAt\n    }\n  }\n"): (typeof documents)["\n  mutation AuthenticateWithAccessToken {\n    authenticateWithAccessToken {\n      id\n      name\n      email\n      profilePicture\n      createdAt\n      updatedAt\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query GetSSOUrl($organizationId: String!) {\n    getSSOUrl(organizationId: $organizationId)\n  }\n"): (typeof documents)["\n  query GetSSOUrl($organizationId: String!) {\n    getSSOUrl(organizationId: $organizationId)\n  }\n"];
+export function gql(source: "\n  mutation AuthenticateWithCode($code: String!) {\n    authenticateWithCode(code: $code) {\n      user {\n        id\n        name\n        email\n        profilePicture\n        createdAt\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n"): (typeof documents)["\n  mutation AuthenticateWithCode($code: String!) {\n    authenticateWithCode(code: $code) {\n      user {\n        id\n        name\n        email\n        profilePicture\n        createdAt\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation AuthenticateWithRefreshToken($refreshToken: String!) {\n    authenticateWithRefreshToken(refreshToken: $refreshToken) {\n      user {\n        id\n        name\n        email\n        profilePicture\n        createdAt\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n"): (typeof documents)["\n  mutation AuthenticateWithRefreshToken($refreshToken: String!) {\n    authenticateWithRefreshToken(refreshToken: $refreshToken) {\n      user {\n        id\n        name\n        email\n        profilePicture\n        createdAt\n        updatedAt\n      }\n      refreshToken\n      accessToken\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

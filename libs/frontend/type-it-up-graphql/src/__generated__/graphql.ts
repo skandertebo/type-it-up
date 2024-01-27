@@ -14,6 +14,18 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+  DateTime: { input: any; output: any; }
+};
+
+export type AuthResult = {
+  __typename?: 'AuthResult';
+  /** The authenticated user. */
+  accessToken: Scalars['String']['output'];
+  /** The authenticated user. */
+  refreshToken: Scalars['String']['output'];
+  /** The authenticated user. */
+  user: User;
 };
 
 export type HelloWorldSchema = {
@@ -23,39 +35,57 @@ export type HelloWorldSchema = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  authenticate: Scalars['String']['output'];
+  authenticateWithAccessToken: User;
+  authenticateWithCode: AuthResult;
+  authenticateWithRefreshToken: AuthResult;
 };
 
 
-export type MutationAuthenticateArgs = {
+export type MutationAuthenticateWithCodeArgs = {
   code: Scalars['String']['input'];
+};
+
+
+export type MutationAuthenticateWithRefreshTokenArgs = {
+  refreshToken: Scalars['String']['input'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  getSSOUrl: Scalars['String']['output'];
   sayHello: HelloWorldSchema;
 };
 
-
-export type QueryGetSsoUrlArgs = {
-  organizationId: Scalars['String']['input'];
+export type User = {
+  __typename?: 'User';
+  createdAt: Scalars['DateTime']['output'];
+  email: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  profilePicture?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+  workosId: Scalars['String']['output'];
 };
 
-export type AuthenticateMutationVariables = Exact<{
+export type AuthenticateWithAccessTokenMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AuthenticateWithAccessTokenMutation = { __typename?: 'Mutation', authenticateWithAccessToken: { __typename?: 'User', id: string, name: string, email: string, profilePicture?: string | null, createdAt: any, updatedAt: any } };
+
+export type AuthenticateWithCodeMutationVariables = Exact<{
   code: Scalars['String']['input'];
 }>;
 
 
-export type AuthenticateMutation = { __typename?: 'Mutation', authenticate: string };
+export type AuthenticateWithCodeMutation = { __typename?: 'Mutation', authenticateWithCode: { __typename?: 'AuthResult', refreshToken: string, accessToken: string, user: { __typename?: 'User', id: string, name: string, email: string, profilePicture?: string | null, createdAt: any, updatedAt: any } } };
 
-export type GetSsoUrlQueryVariables = Exact<{
-  organizationId: Scalars['String']['input'];
+export type AuthenticateWithRefreshTokenMutationVariables = Exact<{
+  refreshToken: Scalars['String']['input'];
 }>;
 
 
-export type GetSsoUrlQuery = { __typename?: 'Query', getSSOUrl: string };
+export type AuthenticateWithRefreshTokenMutation = { __typename?: 'Mutation', authenticateWithRefreshToken: { __typename?: 'AuthResult', refreshToken: string, accessToken: string, user: { __typename?: 'User', id: string, name: string, email: string, profilePicture?: string | null, createdAt: any, updatedAt: any } } };
 
 
-export const AuthenticateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Authenticate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"code"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"code"},"value":{"kind":"Variable","name":{"kind":"Name","value":"code"}}}]}]}}]} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
-export const GetSsoUrlDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSSOUrl"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getSSOUrl"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"organizationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}}}]}]}}]} as unknown as DocumentNode<GetSsoUrlQuery, GetSsoUrlQueryVariables>;
+export const AuthenticateWithAccessTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AuthenticateWithAccessToken"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticateWithAccessToken"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"profilePicture"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<AuthenticateWithAccessTokenMutation, AuthenticateWithAccessTokenMutationVariables>;
+export const AuthenticateWithCodeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AuthenticateWithCode"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"code"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticateWithCode"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"code"},"value":{"kind":"Variable","name":{"kind":"Name","value":"code"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"profilePicture"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}}]}}]}}]} as unknown as DocumentNode<AuthenticateWithCodeMutation, AuthenticateWithCodeMutationVariables>;
+export const AuthenticateWithRefreshTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AuthenticateWithRefreshToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"refreshToken"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticateWithRefreshToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"refreshToken"},"value":{"kind":"Variable","name":{"kind":"Name","value":"refreshToken"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"profilePicture"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}}]}}]}}]} as unknown as DocumentNode<AuthenticateWithRefreshTokenMutation, AuthenticateWithRefreshTokenMutationVariables>;

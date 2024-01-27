@@ -1,5 +1,5 @@
+import { CallbackComponent, LoginComponent } from '@/frontend/type-it-up-auth';
 import { Route } from '@angular/router';
-import { CallbackComponent, LoginComponent } from '@type-it-up/login';
 
 export const appRoutes: Route[] = [
   {

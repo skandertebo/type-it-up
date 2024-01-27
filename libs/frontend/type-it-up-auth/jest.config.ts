@@ -1,8 +1,8 @@
 export default {
-  displayName: 'login',
+  displayName: 'type-it-up-auth',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../coverage/libs/frontend/login',
+  coverageDirectory: '../../../coverage/libs/frontend/type-it-up-auth',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
