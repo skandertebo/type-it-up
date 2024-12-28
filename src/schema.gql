@@ -1,0 +1,15 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type HelloWorldSchema {
+  message: String!
+}
+
+type Query {
+  sayHello: HelloWorldSchema!
+}
+
+type Mutation {
+  authenticate(code: String!): String!
+}
