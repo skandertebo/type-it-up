@@ -3,8 +3,6 @@ import { HelloWorldSchema } from './schemas/hello-world.schema';
 
 @Resolver()
 export class HelloWorldResolver {
-  constructor() {}
-
   @Query(() => HelloWorldSchema)
   async sayHello() {
     return {
