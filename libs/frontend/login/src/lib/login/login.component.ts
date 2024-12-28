@@ -1,4 +1,3 @@
-import { GET_SSO_URL } from '@/frontend/type-it-up-graphql';
 import { Component, Inject } from '@angular/core';
 import { ORG_ID_TOKEN } from '@type-it-up/shared';
 import { Apollo } from 'apollo-angular';
@@ -19,14 +18,7 @@ export class LoginComponent {
   ) {}
 
   login() {
-    this.apollo
-      .query({
-        query: GET_SSO_URL,
-        variables: { organizationId: this.orgId },
-      })
-      .subscribe((result) => {
-        const ssoUrl = result.data.getSSOUrl;
-        window.location.href = ssoUrl; // Redirect to SSO URL
-      });
+    window.location.href =
+      'https://intimate-kaleidoscope-33-staging.authkit.app/';
   }
 }
