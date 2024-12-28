@@ -11,12 +11,12 @@ import HelloWorldModule from './hello-world/hello-world.module';
     HelloWorldModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost', // Replace with your database host
-      port: 5432, // Replace with your database port
+      host: 'localhost',
+      port: 5432,
       username: 'skandertebourbi',
       password: '',
       database: 'type-it-up',
-      synchronize: true, // Set to false in production
+      synchronize: true,
       entities: [User],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
