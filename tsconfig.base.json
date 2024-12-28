@@ -18,7 +18,9 @@
       "@/backend/auth": ["libs/backend/src/index.ts"],
       "@/frontend/type-it-up-graphql": [
         "libs/frontend/type-it-up-graphql/src/index.ts"
-      ]
+      ],
+      "@type-it-up/login": ["libs/frontend/login/src/index.ts"],
+      "@type-it-up/shared": ["libs/frontend/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
