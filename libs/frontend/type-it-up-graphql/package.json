@@ -1,0 +1,9 @@
+{
+  "name": "@/frontend/type-it-up-graphql",
+  "version": "0.0.1",
+  "dependencies": {},
+  "private": true,
+  "scripts": {
+    "codegen": "graphql-codegen"
+  }
+}

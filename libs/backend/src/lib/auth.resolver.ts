@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as jwt from 'jsonwebtoken';
 import { Repository } from 'typeorm';
@@ -17,6 +17,11 @@ export class AuthResolver {
       throw new Error('JWT_SECRET is not set');
     }
     this.secret = process.env['JWT_SECRET'];
+  }
+
+  @Query(() => String)
+  getSSOUrl(@Args('organizationId') organizationId: string): string {
+    return this.workosService.getSSOUrl(organizationId);
   }
 
   @Mutation(() => String)
