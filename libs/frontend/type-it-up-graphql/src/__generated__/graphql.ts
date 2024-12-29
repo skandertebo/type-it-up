@@ -42,6 +42,13 @@ export type QueryGetSsoUrlArgs = {
   organizationId: Scalars['String']['input'];
 };
 
+export type AuthenticateMutationVariables = Exact<{
+  code: Scalars['String']['input'];
+}>;
+
+
+export type AuthenticateMutation = { __typename?: 'Mutation', authenticate: string };
+
 export type GetSsoUrlQueryVariables = Exact<{
   organizationId: Scalars['String']['input'];
 }>;
@@ -50,4 +57,5 @@ export type GetSsoUrlQueryVariables = Exact<{
 export type GetSsoUrlQuery = { __typename?: 'Query', getSSOUrl: string };
 
 
+export const AuthenticateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Authenticate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"code"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"code"},"value":{"kind":"Variable","name":{"kind":"Name","value":"code"}}}]}]}}]} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
 export const GetSsoUrlDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSSOUrl"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getSSOUrl"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"organizationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"organizationId"}}}]}]}}]} as unknown as DocumentNode<GetSsoUrlQuery, GetSsoUrlQueryVariables>;

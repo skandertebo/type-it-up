@@ -5,11 +5,8 @@ import { Apollo } from 'apollo-angular';
 @Component({
   selector: 'lib-login',
   standalone: true,
-  template: `
-    <div>
-      <button (click)="login()">Login with SSO</button>
-    </div>
-  `,
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   constructor(

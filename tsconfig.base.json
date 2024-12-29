@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/backend/auth": ["libs/backend/src/index.ts"],
+      "@/backend/auth": ["libs/backend/auth/src/index.ts"],
       "@/frontend/type-it-up-graphql": [
         "libs/frontend/type-it-up-graphql/src/index.ts"
       ],
