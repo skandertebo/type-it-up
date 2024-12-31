@@ -19,7 +19,12 @@
           {
             "glob": "**/*",
             "input": "apps/type-it-up/public"
-          }
+          },
+  {
+    "glob": "**/*",
+    "input": "libs/frontend/shared/src/lib/shared/assets/",
+    "output": "/shared-assets/"
+  }
         ],
         "styles": ["apps/type-it-up/src/styles.css"],
         "scripts": [],
