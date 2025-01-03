@@ -1,0 +1,30 @@
+.cursor {
+    position: absolute;
+    bottom: 0;
+    left: -2px;
+    width: 2px;
+    height:1.4em;
+    animation: flicker 2s infinite;
+}
+
+@keyframes flicker {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+
+.overlay {
+    position: absolute;
+    top: 28px;
+    left: 28px;
+    right: 28px;
+    bottom: 28px;
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 1;
+  }

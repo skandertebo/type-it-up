@@ -28,6 +28,9 @@
       ],
       "@/frontend/type-it-up-landing": [
         "libs/frontend/type-it-up-landing/src/index.ts"
+      ],
+      "@type-it-up/type-it-up-gameplay": [
+        "libs/frontend/type-it-up-gameplay/src/index.ts"
       ]
     }
   },

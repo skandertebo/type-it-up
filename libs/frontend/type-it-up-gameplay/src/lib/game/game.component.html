@@ -1,0 +1,36 @@
+<div class="max-w-3xl mx-auto relative p-8 overflow-hidden user-select-none">
+<!--     <div class="overlay"></div>
+ -->    <!-- Corners for the box -->
+    <div class="absolute inset-0">
+      <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-white"></div>
+      <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-white"></div>
+      <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-white"></div>
+      <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-white"></div>
+    </div>
+    <!-- Contents of the box -->
+    <p class="text-lg font-sans text-gray-300 flex flex-wrap gap-x-1 relative">
+      @for (word of words; track word; let wordIndex = $index) {
+        <span class="flex gap-x-0.5">
+          @for (character of word; track character; let charIndex = $index) {
+            <span
+              class="relative" 
+              [class.text-red-500]="character.state === 'wrong'"
+              [class.text-gray-500]="character.state === 'deactivated'"
+              [class.text-green-500]="character.state === 'right'"
+            >
+                @if (wordIndex === cursor.wordIndex && charIndex === cursor.charIndex) {
+                    <span class="cursor bg-primaryForeground"></span>
+                }
+                {{ character.char }}
+            </span>
+          }
+
+          <span class="relative w-3">
+            @if (wordIndex === cursor.wordIndex && cursor.charIndex === word.length) {
+              <span class="cursor bg-primaryForeground"></span>
+            }
+            </span>
+        </span>
+      }
+    </p>
+  </div>
