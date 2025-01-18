@@ -15,9 +15,11 @@ module.exports = {
         secondaryText: '#35547B',
         primaryForeground: '#96104B',
         secondaryForeground: '#2B2627',
+        
       },
       fontFamily: {
-        sans: ['Iceland', 'sans-serif'],
+        iceland: ['Iceland'],
+        sans: ['sans-serif'],
       },
       fontSize: {
         xs: '0.75rem',
