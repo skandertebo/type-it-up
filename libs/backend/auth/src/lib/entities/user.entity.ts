@@ -3,9 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
+import { Game } from './game.entity';
+import { UserStats } from './user-stats.entity';
 
 @Entity()
 @ObjectType()
@@ -18,29 +22,37 @@ export class User {
   @Field(() => String)
   workosId!: string;
 
-  @Column({ type: 'string', unique: true })
+  @Column({ type: 'text', unique: true })
   @Field(() => String)
   email!: string;
 
-  @Column({type: 'string', nullable: true})
+  @Column({type: 'text', nullable: true})
   @Field(() => String, { nullable: true })
   firstName?: string;
 
-  @Column({type: 'string', nullable: true})
+  @Column({type: 'text', nullable: true})
   @Field(() => String, { nullable: true })
   lastName?: string;
 
-  @Column({ type: 'string', nullable: true })
+  @Column({ type: 'text', nullable: true })
   @Field(() => String, { nullable: true })
   profilePicture?: string;
+
+  @Column({ type: 'text', unique: true })
+  @Field(() => String)
+  username!: string;
+
+  @OneToOne(() => UserStats, stats => stats.user)
+  @Field(() => UserStats, { nullable: true })
+  stats?: UserStats;
+
+  @ManyToMany(() => Game, game => game.users)
+  @Field(() => [Game])
+  games!: Game[];
 
   @CreateDateColumn()
   @Field(() => Date)
   createdAt!: Date;
-
-  @Column({ type: 'string', unique: true })
-  @Field(() => String)
-  username!: string;
 
   @UpdateDateColumn()
   @Field(() => Date)
