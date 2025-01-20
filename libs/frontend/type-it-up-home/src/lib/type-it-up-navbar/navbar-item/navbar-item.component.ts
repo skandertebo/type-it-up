@@ -3,10 +3,10 @@ import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'lib-type-it-up-navbar-item',
+  selector: 'lib-navbar-item',
   standalone: true,
   imports: [RouterModule, CommonModule],
-  templateUrl: './type-it-up-navbar-item.component.html',
+  templateUrl: './navbar-item.component.html',
 })
 export class NavbarItemComponent {
   @Input() title!: string;
