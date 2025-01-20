@@ -1,0 +1,9 @@
+<div
+  (click)="onToggle()"
+  [ngClass]="[
+    'cursor-pointer relative py-2  px-4 w-full rounded-md overflow-hidden transition-all duration-200 ',
+    value ? 'bg-primaryForeground' : 'bg-secondaryForeground'
+  ]"
+>
+  <p class="text-primaryText text-md font-semibold ">{{ content }}</p>
+</div>
