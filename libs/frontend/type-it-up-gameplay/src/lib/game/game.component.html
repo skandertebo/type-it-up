@@ -1,36 +1,37 @@
-<div class="max-w-3xl mx-auto relative p-8 overflow-hidden user-select-none">
-<!--     <div class="overlay"></div>
- -->    <!-- Corners for the box -->
-    <div class="absolute inset-0">
-      <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-white"></div>
-      <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-white"></div>
-      <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-white"></div>
-      <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-white"></div>
-    </div>
+<div class="font-iceland mx-32 flex flex-col mb-28">
+  <!-- Counter -->
+  <div [class.invisible] = "!isactive" class="text-3xl font-bold text-gray-300 mb-4 ml-8">
+      {{this.timeLeft}}        
+  </div>
+  
+  <!-- Main container -->
+  <div class="relative px-8 overflow-hidden user-select-none w-full">
+
     <!-- Contents of the box -->
-    <p class="text-lg font-sans text-gray-300 flex flex-wrap gap-x-1 relative">
+    <p class="text-4xl text-gray-300 flex flex-wrap gap-x-1 relative justify-center items-center text-center">
       @for (word of words; track word; let wordIndex = $index) {
         <span class="flex gap-x-0.5">
           @for (character of word; track character; let charIndex = $index) {
             <span
-              class="relative" 
-              [class.text-red-500]="character.state === 'wrong'"
+              class="relative"
+              [class.text-thirdText]="character.state === 'wrong'"
               [class.text-gray-500]="character.state === 'deactivated'"
-              [class.text-green-500]="character.state === 'right'"
+              [class.text-primaryText]="character.state === 'right'"
             >
-                @if (wordIndex === cursor.wordIndex && charIndex === cursor.charIndex) {
-                    <span class="cursor bg-primaryForeground"></span>
-                }
-                {{ character.char }}
+              @if (wordIndex === cursor.wordIndex && charIndex === cursor.charIndex) {
+                <span class="cursor bg-primaryForeground"></span>
+              }
+              {{ character.char }}
             </span>
           }
-
           <span class="relative w-3">
             @if (wordIndex === cursor.wordIndex && cursor.charIndex === word.length) {
               <span class="cursor bg-primaryForeground"></span>
             }
-            </span>
+          </span>
         </span>
       }
     </p>
   </div>
+
+</div>

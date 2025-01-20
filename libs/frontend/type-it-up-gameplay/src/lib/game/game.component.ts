@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { CharState,  Word, Cursor } from './types';
+import { interval, map, Subscription, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'lib-game',
@@ -8,16 +9,45 @@ import { CharState,  Word, Cursor } from './types';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css'],
   imports: [CommonModule],
+
 })
-export class GameComponent {
-  @Input() text =
-    'why row wheel my nation miss remember position spring lie hot usual dress sister save next village gather line sand trip then their port work stop please spell out broke program song children question cause against five seat';
+export class GameComponent implements OnInit{
+  @Input() text =  "";
+  @Input() time = 30;
 
   words: Word[] = [];
   cursor: Cursor = { wordIndex: 0, charIndex: 0 };
+  timeLeft = 0;
+  timeSub : Subscription| null = null;
+  isactive = false;
+  isfinished = false;
 
-  constructor() {
+  ngOnInit(): void {
     this.initializeWords();
+  }
+  
+  startGame(){
+    this.isactive = true;
+    this.timeLeft = this.time;
+    this.timeSub = interval(1000).pipe(map((val)=>(this.time - val - 1)),takeWhile((val) => val>=0)).subscribe(
+      {
+        next: (val)=>{
+          this.timeLeft = val
+        },
+        complete: ()=>{
+          this.endGame()
+        }
+      }
+    )
+
+  }
+
+
+  endGame(){
+    this.isfinished = true
+    if(this.timeLeft){
+      this.timeSub?.unsubscribe()  
+    }
   }
 
   initializeWords() {
@@ -29,16 +59,22 @@ export class GameComponent {
     );
   }
 
+
+
+
   @HostListener('document:keydown', ['$event'])
   handleKeyPress(event: KeyboardEvent) {
-    const key = event.key;
+    if(!this.isactive) this.startGame()
+    if(!this.isfinished){
+      const key = event.key;
 
-    if (/^[a-zA-Z0-9,.!?]$/.test(key)) {
-      this.handleAlphanumeric(key);
-    } else if (key === ' ') {
-      this.handleSpacebar();
-    } else if (key === 'Backspace') {
-      this.handleBackspace();
+      if (/^[a-zA-Z0-9,.!?]$/.test(key)) {
+        this.handleAlphanumeric(key);
+      } else if (key === ' ') {
+        this.handleSpacebar();
+      } else if (key === 'Backspace') {
+        this.handleBackspace();
+      }
     }
   }
 

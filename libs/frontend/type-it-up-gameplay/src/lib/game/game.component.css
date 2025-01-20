@@ -17,14 +17,3 @@
 }
 
 
-.overlay {
-    position: absolute;
-    top: 28px;
-    left: 28px;
-    right: 28px;
-    bottom: 28px;
-    backdrop-filter: blur(5px);
-    background-color: rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-    z-index: 1;
-  }
