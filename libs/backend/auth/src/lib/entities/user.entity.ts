@@ -18,21 +18,29 @@ export class User {
   @Field(() => String)
   workosId!: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'string', unique: true })
   @Field(() => String)
   email!: string;
 
-  @Column()
-  @Field(() => String)
-  name!: string;
-
-  @Column({ nullable: true })
+  @Column({type: 'string', nullable: true})
   @Field(() => String, { nullable: true })
-  profilePicture!: string;
+  firstName?: string;
+
+  @Column({type: 'string', nullable: true})
+  @Field(() => String, { nullable: true })
+  lastName?: string;
+
+  @Column({ type: 'string', nullable: true })
+  @Field(() => String, { nullable: true })
+  profilePicture?: string;
 
   @CreateDateColumn()
   @Field(() => Date)
   createdAt!: Date;
+
+  @Column({ type: 'string', unique: true })
+  @Field(() => String)
+  username!: string;
 
   @UpdateDateColumn()
   @Field(() => Date)

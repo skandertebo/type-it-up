@@ -28,7 +28,8 @@
       ],
       "@/frontend/type-it-up-landing": [
         "libs/frontend/type-it-up-landing/src/index.ts"
-      ]
+      ],
+      "@/shared/utils": ["libs/shared/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
