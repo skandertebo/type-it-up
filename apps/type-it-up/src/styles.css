@@ -19,3 +19,10 @@ html::-webkit-scrollbar {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+@font-face {
+  font-family: 'Iceland';
+  src: url('/shared-assets/fonts/Iceland-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
