@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-6">
     <lib-game-menu [(options)] = "options" [isOngoing]="state === 'ongoing'"></lib-game-menu>
-    @if(state === 'menu'){
+    @if(state === 'menu' || state === 'loading'){
         <div class="relative mx-32 mt-8 flex flex-col items-center">
             <div class="relative p-8  w-full">
             <div class="absolute inset-0 bg-gray-900/5 backdrop-blur-md z-10"></div>
@@ -9,12 +9,12 @@
             </p>
             </div>
             <div class=" flex items-center justify-center ">
-                <lib-button content="Start" [disabled]="(!options.difficulty)||(!options.time)" (clickEvent)="onSubmit()"></lib-button>
+                <lib-button content="Start" [loading]="(state === 'loading')" [disabled]="(!options.difficulty)||(!options.time)" (clickEvent)="onSubmit()"></lib-button>
             </div>
         </div>
     }
     @else if(state === 'ongoing')
     {
-        <lib-game [time]="options.time" text = {{game?.text}}></lib-game>
+        <lib-game (endGameEvent)="onGameEnd($event)" [time]="options.time" text = {{game?.text}}></lib-game>
     }
 </div>

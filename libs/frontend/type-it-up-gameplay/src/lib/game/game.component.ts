@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { CharState,  Word, Cursor } from './types';
 import { interval, map, Subscription, takeWhile } from 'rxjs';
 
@@ -11,9 +11,11 @@ import { interval, map, Subscription, takeWhile } from 'rxjs';
   imports: [CommonModule],
 
 })
-export class GameComponent implements OnInit{
+export class GameComponent implements OnInit, OnDestroy{
   @Input() text =  "";
   @Input() time = 30;
+  @Output() endGameEvent = new EventEmitter<Word[]>()
+
 
   words: Word[] = [];
   cursor: Cursor = { wordIndex: 0, charIndex: 0 };
@@ -23,7 +25,7 @@ export class GameComponent implements OnInit{
   isfinished = false;
 
   ngOnInit(): void {
-    this.initializeWords();
+    this.initializeWords(); 
   }
   
   startGame(){
@@ -42,9 +44,9 @@ export class GameComponent implements OnInit{
 
   }
 
-
   endGame(){
     this.isfinished = true
+    this.endGameEvent.emit(this.words)
     if(this.timeLeft){
       this.timeSub?.unsubscribe()  
     }
@@ -118,6 +120,9 @@ export class GameComponent implements OnInit{
       this.cursor.wordIndex--;
       this.cursor.charIndex = this.words[wordIndex - 1].length;
     }
-     
   } 
+
+  ngOnDestroy() {
+    this.timeSub?.unsubscribe();
+  }
 }

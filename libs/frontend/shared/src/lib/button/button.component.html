@@ -2,19 +2,25 @@
     [ngClass]="[
     'relative overflow-hidden font-bold px-6 py-4 transition-all duration-200',
     'bg-primaryForeground hover:bg-opacity-90',
-    disabled ? 'opacity-50 cursor-not-allowed' : ''
+    disabled ? 'opacity-50 cursor-not-allowed' : '',
+    loading ? 'pointer-events-none' : ''
     ]"
     (click)="onClick()"
     [disabled]="disabled"
 >
-
-<div class="relative z-10">
-  <span class="text-primaryText text-lg">
-    <ng-content> {{content}}
-
-    </ng-content>
-  </span>
-</div>
+ @if(loading){
+  <div class="flex justify-center items-center min-w-16">
+    <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-secondaryForeground"></div>
+  </div>
+ }
+ @else{
+   <div class="relative z-10">
+     <span class="text-primaryText text-lg">
+       <ng-content> {{content}}
+       </ng-content>
+     </span>
+   </div>
+ }
 
 <img
   src="/shared-assets/images/pattern.svg"
