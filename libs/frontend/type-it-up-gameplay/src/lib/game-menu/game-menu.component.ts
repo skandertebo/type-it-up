@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ToggleFieldComponent} from "@/frontend/shared"
 import { GameOptions } from '../../types';
-import { ToggleListComponent } from "../../../../shared/src/lib/toggle-list/toggle-list.component";
+import { ToggleListComponent } from "@/frontend/shared";
 import { CommonModule } from '@angular/common';
 import { DefaultGameOptions } from '../constants';
 @Component({
