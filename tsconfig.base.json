@@ -30,6 +30,9 @@
       "@/frontend/type-it-up-landing": [
         "libs/frontend/type-it-up-landing/src/index.ts"
       ],
+      "@/frontend/type-it-up-profile": [
+        "libs/frontend/type-it-up-profile/src/index.ts"
+      ],
       "@/shared/utils": ["libs/shared/utils/src/index.ts"]
     }
   },
