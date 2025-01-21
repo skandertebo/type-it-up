@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { NavbarItemComponent } from '../type-it-up-navbar-item/type-it-up-navbar-item.component';
+import { NavbarItemComponent } from '../navbar-item/navbar-item.component';
 
 @Component({
-  selector: 'lib-type-it-up-navbar',
+  selector: 'lib-navbar',
   standalone: true,
-  templateUrl: './type-it-up-navbar.component.html',
+  templateUrl: './navbar.component.html',
   imports: [CommonModule, NavbarItemComponent],
 })
 export class NavbarComponent {
