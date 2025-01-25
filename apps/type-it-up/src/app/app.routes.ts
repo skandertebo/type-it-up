@@ -4,14 +4,15 @@ import {
   TypeItUpHomeLayoutComponent,
 } from '@/frontend/type-it-up-home';
 import { TypeItUpProfileComponent } from '@/frontend/type-it-up-profile';
-// import { TypeItUpLandingComponent } from '@/frontend/type-it-up-landing';
+import { TypeItUpLandingComponent } from '@/frontend/type-it-up-landing';
 import { Route } from '@angular/router';
+import { AuthGuard } from '@nestjs/passport';
 
 export const appRoutes: Route[] = [
-  // {
-  //   path: '',
-  //   component: TypeItUpLandingComponent,
-  // },
+  {
+    path: '',
+    component: TypeItUpLandingComponent,
+  },
   {
     path: '',
     component: TypeItUpHomeLayoutComponent,
@@ -25,7 +26,7 @@ export const appRoutes: Route[] = [
         component: TypeItUpProfileComponent,
       }
     ],
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'auth/callback',

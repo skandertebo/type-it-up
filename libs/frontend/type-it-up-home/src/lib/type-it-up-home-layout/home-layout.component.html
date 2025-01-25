@@ -13,11 +13,11 @@
   <div class="w-full h-[18%] fixed bottom-0 left-0">
     <lib-navbar></lib-navbar>
   </div> -->
-  <!-- <ng-container *ngIf="auth.loading$ | async; else content">
+  <ng-container *ngIf="auth.loading$ | async; else content">
     <p>Loading...</p>
   </ng-container>
   <ng-template #content>
-    <ng-container *ngIf="user$ | async as user; else login"> -->
+    <ng-container *ngIf="user$ | async as user; else login">
       <div class="no-scrollbar w-full h-[82%] pt-20 overflow-y-scroll">
         <router-outlet></router-outlet>
       </div>
@@ -25,9 +25,9 @@
       <div class="w-full h-[18%] fixed bottom-0 left-0">
         <lib-navbar></lib-navbar>
       </div>
-    <!-- </ng-container>
+    </ng-container>
     <ng-template #login>
       <p>You are not logged in. Redirecting...</p>
     </ng-template>
-  </ng-template> -->
+  </ng-template>
 </div>
