@@ -1,4 +1,5 @@
 import { AuthModule, Game, User, UserStats } from '@/backend/auth';
+import { GameModule } from '@/backend/game';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -25,6 +26,7 @@ import HelloWorldModule from './hello-world/hello-world.module';
       playground: true,
     }),
     AuthModule,
+    GameModule,
   ],
   providers: [AppService],
 })

@@ -5,7 +5,9 @@ export const AUTHENTICATE_WITH_REFRESH_TOKEN = gql(/* GraphQL */ `
     authenticateWithRefreshToken(refreshToken: $refreshToken) {
       user {
         id
-        name
+        username
+        firstName
+        lastName
         email
         profilePicture
         createdAt
