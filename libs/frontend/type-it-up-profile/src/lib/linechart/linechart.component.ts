@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 
 @Component({
@@ -12,10 +12,14 @@ export class LineChartComponent implements AfterViewInit {
   @ViewChild('lineChart') lineChart!: ElementRef<HTMLCanvasElement>;
   chart!: Chart;
 
-  ngAfterViewInit(): void {
-    this.createChart();
-  }
+  constructor(private ngZone: NgZone) {}
 
+  ngAfterViewInit(): void {
+    this.ngZone.runOutsideAngular(() => {
+      this.createChart();
+    });
+  }
+  
   createChart(): void {
     this.chart = new Chart(this.lineChart.nativeElement, {
       type: 'line',
