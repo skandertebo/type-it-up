@@ -1,4 +1,5 @@
 import { AuthGuard, CallbackComponent } from '@/frontend/type-it-up-auth';
+import { TypeItUpHistoryComponent } from '@/frontend/type-it-up-history';
 import {
   TypeItUpHomeComponent,
   TypeItUpHomeLayoutComponent,
@@ -16,6 +17,10 @@ export const appRoutes: Route[] = [
         path: 'home',
         component: TypeItUpHomeComponent,
       },
+      {
+        path: 'history',
+        component: TypeItUpHistoryComponent
+      }
     ]
     },
   {
