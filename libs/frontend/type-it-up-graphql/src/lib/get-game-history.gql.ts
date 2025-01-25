@@ -1,8 +1,18 @@
 import { gql } from '../__generated__/gql';
 
-export const CREATE_GAME = gql(/* GraphQL */ `
-  mutation CreateGame($createGameInput: CreateGameInput!) {
-    createGame(createGameInput: $createGameInput) {
+export const GET_GAME_HISTORY = gql(/* GraphQL */ `
+  query GetGameHistory(
+    $since: DateTime
+    $until: DateTime
+    $difficulty: String
+    $sortOrder: SortOrder
+  ) {
+    getGameHistory(
+      since: $since
+      until: $until
+      difficulty: $difficulty
+      sortOrder: $sortOrder
+    ) {
       id
       options {
         difficulty

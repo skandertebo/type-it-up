@@ -48,7 +48,7 @@ export class WorkosService {
       await this.workos.userManagement.authenticateWithPassword({
         email,
         password,
-        clientId: this.clientId,
+        clientId: this.clientId
       });
     return { accessToken, refreshToken, user };
   }
@@ -63,5 +63,12 @@ export class WorkosService {
       });
     return res;
   }
+
+  async verifyEmail(userId: string) {
+    await this.workos.userManagement.updateUser({
+     "userId": userId,
+     emailVerified: true,
+    });
+   }
 }
 
