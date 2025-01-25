@@ -5,7 +5,9 @@ export const AUTHENTICATE_WITH_CODE = gql(/* GraphQL */ `
     authenticateWithCode(code: $code) {
       user {
         id
-        name
+        username
+        firstName
+        lastName
         email
         profilePicture
         createdAt

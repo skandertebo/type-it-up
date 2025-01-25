@@ -1,0 +1,5 @@
+.profile{
+    scrollbar-width:auto;
+    scrollbar-color: rgb(150 16 75 / 0.25)   transparent;
+    overflow-y: auto;
+}

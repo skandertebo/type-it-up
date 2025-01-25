@@ -4,7 +4,9 @@ export const AUTHENTICATE_WITH_ACCESS_TOKEN = gql(/* GraphQL */ `
   mutation AuthenticateWithAccessToken {
     authenticateWithAccessToken {
       id
-      name
+      username
+      firstName
+      lastName
       email
       profilePicture
       createdAt
