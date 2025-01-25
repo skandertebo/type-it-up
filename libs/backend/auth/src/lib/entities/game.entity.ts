@@ -55,6 +55,10 @@ export class Game {
   @Field(() => Float)
   accuracy!: number;
 
+  @Column('float')
+  @Field(() => Float)
+  score!: number;
+
   @ManyToMany(() => User, user => user.games)
   @Field(() => [User])
   users!: User[];
