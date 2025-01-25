@@ -1,3 +1,4 @@
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameGenerationService } from './game-generation.service';
 
@@ -6,6 +7,9 @@ describe('GameGenerationService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule.forRoot({
+        isGlobal: true,
+      })],
       providers: [GameGenerationService],
     }).compile();
 
