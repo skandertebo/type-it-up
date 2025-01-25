@@ -41,7 +41,7 @@ export class SignUpComponent implements OnDestroy {
   constructor(private fb: FormBuilder, ) {
     this.signupForm = this.fb.group(
       {
-        name: [
+        firstName: [
           '',
           [
             Validators.required,
@@ -50,7 +50,15 @@ export class SignUpComponent implements OnDestroy {
             Validators.pattern(this.NAME_PATTERN),
           ],
         ],
-
+        lastName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(50),
+            Validators.pattern(this.NAME_PATTERN),
+          ],
+        ],
         username: [
           '',
           [
@@ -83,7 +91,6 @@ export class SignUpComponent implements OnDestroy {
         updateOn: 'blur',
       }
     );
-
     this.signupForm
       .get('password')
       ?.valueChanges.pipe(takeUntil(this.destroy$))

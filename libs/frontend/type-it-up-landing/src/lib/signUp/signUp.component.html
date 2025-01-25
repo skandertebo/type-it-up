@@ -4,20 +4,34 @@
             <div class="font-iceland text-white text-4xl md:text-6xl mb-8">
                 Sign Up </div>
 
-            <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class=" font-iceland flex flex-col gap-8 w-full lg:w-[800px]">
+            <form [formGroup]="signupForm" (ngSubmit)="onSubmit()"
+                class=" font-iceland flex flex-col gap-8 w-full lg:w-[800px]">
                 <div class="flex flex-col lg:flex-row gap-8">
 
                     <div class="flex flex-col gap-4 flex-1">
-                        <input formControlName="name" type="text" placeholder="NAME"
-                            class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl " />
-                        @if (signupForm.get('name')?.errors?.['required'] && signupForm.get('name')?.touched) {
-                        <div class="text-red-500 text-sm sm:text-base"> name is required</div>
+                        <input formControlName="firstName" type="text" placeholder="FIRST NAME"
+                            class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl" />
+                        @if (signupForm.get('firstName')?.errors?.['required'] && signupForm.get('firstName')?.touched)
+                        {
+                        <div class="text-red-500 text-sm sm:text-base">First name is required</div>
                         }
-                        @if (signupForm.get('name')?.errors?.['pattern']) {
-                        <div class="text-red-500 text-sm sm:text-base">Please enter a valid name</div>
+                        @if (signupForm.get('firstName')?.errors?.['pattern']) {
+                        <div class="text-red-500 text-sm sm:text-base">Please enter a valid first name</div>
                         }
-                        @if (signupForm.get('name')?.errors?.['minlength']) {
-                        <div class="text-red-500 text-sm sm:text-base"> name must be at least 2 characters</div>
+                        @if (signupForm.get('firstName')?.errors?.['minlength']) {
+                        <div class="text-red-500 text-sm sm:text-base">First name must be at least 2 characters</div>
+                        }
+
+                        <input formControlName="lastName" type="text" placeholder="LAST NAME"
+                            class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl" />
+                        @if (signupForm.get('lastName')?.errors?.['required'] && signupForm.get('lastName')?.touched) {
+                        <div class="text-red-500 text-sm sm:text-base">Last name is required</div>
+                        }
+                        @if (signupForm.get('lastName')?.errors?.['pattern']) {
+                        <div class="text-red-500 text-sm sm:text-base">Please enter a valid last name</div>
+                        }
+                        @if (signupForm.get('lastName')?.errors?.['minlength']) {
+                        <div class="text-red-500 text-sm sm:text-base">Last name must be at least 2 characters</div>
                         }
 
                         <input formControlName="username" type="text" placeholder="USERNAME"
@@ -49,6 +63,10 @@
                         <div class="text-yellow-500 text-sm sm:text-base">Checking username availability...</div>
                         }
 
+
+                    </div>
+
+                    <div class="flex flex-col gap-4 flex-1">
                         <input formControlName="email" type="email" placeholder="EMAIL"
                             class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl " />
                         @if (signupForm.get('email')?.errors?.['required'] && signupForm.get('email')?.touched) {
@@ -60,10 +78,8 @@
                         @if (signupForm.get('email')?.errors?.['maxlength']) {
                         <div class="text-red-500 text-sm sm:text-base">Email is too long</div>
                         }
-                    </div>
-
-                    <div class="flex flex-col gap-4 flex-1">
                         <div class="relative">
+
                             <input formControlName="password" [type]="showPassword ? 'text' : 'password'"
                                 placeholder="PASSWORD"
                                 class="p-2 border-none md:w-[330px] rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl " />
