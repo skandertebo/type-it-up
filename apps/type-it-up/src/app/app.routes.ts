@@ -4,10 +4,10 @@ import {
   TypeItUpHomeLayoutComponent,
 } from '@/frontend/type-it-up-home';
 import { TypeItUpLandingComponent } from '@/frontend/type-it-up-landing';
+import { TypeItUpLeaderboardComponent } from '@/frontend/type-it-up-leaderboard';
 import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
-
   {
     path: '',
     component: TypeItUpHomeLayoutComponent,
@@ -16,8 +16,12 @@ export const appRoutes: Route[] = [
         path: 'home',
         component: TypeItUpHomeComponent,
       },
-    ]
-    },
+      {
+        path: 'leaderboard',
+        component: TypeItUpLeaderboardComponent,
+      },
+    ],
+  },
   {
     path: 'auth/callback',
     component: CallbackComponent,
