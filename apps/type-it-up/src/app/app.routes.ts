@@ -4,37 +4,26 @@ import {
   TypeItUpHomeLayoutComponent,
 } from '@/frontend/type-it-up-home';
 import { TypeItUpProfileComponent } from '@/frontend/type-it-up-profile';
-import {
-  LoginComponent,
-  SignUpComponent,
-  TypeItUpLandingComponent,
-} from '@/frontend/type-it-up-landing';
+import { TypeItUpLandingComponent } from '@/frontend/type-it-up-landing';
 import { Route } from '@angular/router';
 import {} from '@nestjs/passport';
 
 export const appRoutes: Route[] = [
+
   {
     path: '',
     component: TypeItUpHomeLayoutComponent,
     children: [
       {
-        path: 'sign-up',
-        component: SignUpComponent,
-      },
-      {
-        path: 'login',
-        component: LoginComponent,
-      },
-      {
         path: 'home',
-        component: TypeItUpLandingComponent,
+        component: TypeItUpHomeComponent,
       },
       {
         path: 'profile',
         component: TypeItUpProfileComponent,
       },
-    ],
-  },
+    ]
+    },
   {
     path: 'auth/callback',
     component: CallbackComponent,
