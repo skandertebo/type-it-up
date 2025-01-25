@@ -1,5 +1,5 @@
 import { Game, User, UserStats } from '@/backend/auth';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, FindOptionsWhere, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateGameInput } from './dto/create-game.input';
@@ -34,10 +34,15 @@ export class GameService {
   }
 
   async createGame(user: User, createGameInput: CreateGameInput): Promise<Game> {
+
+    Logger.log(`Creating game for user: ${user.id}`);
+
     const game = this.gameRepository.create({
       ...createGameInput,
       users: [user],
     });
+
+    Logger.log(`Creating game with input: ${JSON.stringify(createGameInput)}`);
     
     const savedGame = await this.gameRepository.save(game);
 

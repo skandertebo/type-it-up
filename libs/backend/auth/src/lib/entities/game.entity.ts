@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn
 } from 'typeorm';
@@ -60,6 +61,7 @@ export class Game {
   score!: number;
 
   @ManyToMany(() => User, user => user.games)
+  @JoinTable({name: 'game_users'})
   @Field(() => [User])
   users!: User[];
 } 
