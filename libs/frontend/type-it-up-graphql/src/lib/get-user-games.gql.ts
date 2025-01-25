@@ -14,6 +14,7 @@ export const GET_USER_GAMES = gql(/* GraphQL */ `
       duration
       wpm
       accuracy
+      score
       createdAt
       users {
         id
