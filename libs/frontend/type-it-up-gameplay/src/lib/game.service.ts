@@ -5,6 +5,7 @@ import { difficultyMultiplier, optionMultiplier } from './constants';
 import { Apollo } from 'apollo-angular';
 import { AuthService } from '@/frontend/type-it-up-auth';
 import { CREATE_GAME } from '@/frontend/type-it-up-graphql';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable(
   {
@@ -14,6 +15,7 @@ import { CREATE_GAME } from '@/frontend/type-it-up-graphql';
 export class GameService{
   apolloClient = inject(Apollo)
   authenticationService = inject(AuthService)
+  toaster = inject(ToastrService)
 
 
   saveGame(game: Game, userContent:string, gameOptions: GameOptions, gameResults: GameResults){
@@ -69,7 +71,15 @@ export class GameService{
 
   handleGameEnd(game: Game | null, words: Word[], gameOptions: GameOptions): GameResults{
     const gameResults = this.calculateGameResults(words, gameOptions);
-    if(this.authenticationService.isAuthenticated()) this.saveGame(game!, this.getUserContent(words), gameOptions, gameResults).subscribe();
+    if(this.authenticationService.isAuthenticated())
+      this.saveGame(game!, this.getUserContent(words), gameOptions, gameResults).subscribe({
+        next: (response) => {
+          this.toaster.success("Game Saved")
+        },
+        error: (error) => {
+          this.toaster.error('Error saving game');
+        },
+      });
     return gameResults
   }  
 
