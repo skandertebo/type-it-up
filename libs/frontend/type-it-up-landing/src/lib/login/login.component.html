@@ -1,37 +1,8 @@
-<div class=" max-h-full h-screen overflow-hidden">
-  <div class="absolute bottom-[2px] left-[-33px] h-screen overflow-hidden">
-    <lib-svg [height]="'876px'" [width]="'965px'"></lib-svg>
-  </div>
-  <div class="absolute right-0 top-0 min-h-screen w-full justify-center">
-    <div class="flex flex-col items-end px-4 sm:px-10 md:px-20 lg:px-40 pt-28">
-      <div class="font-iceland mr-[26px] text-white text-4xl md:text-6xl mb-8">
-        Welcome Back
-      </div>
-
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 w-full sm:w-80 md:w-96">
-        <input formControlName="email" type="email" placeholder="EMAIL"
-          class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl font-iceland" />
-        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-        <div class="text-red-500 text-sm sm:text-base">Please enter a valid email.</div>
-        }
-
-        <input formControlName="password" type="password" placeholder="PASSWORD"
-          class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl font-iceland" />
-        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-        <div class="text-red-500 text-sm sm:text-base">Password is required (min 6 characters).</div>
-        }
-
-        <button type="submit"
-          class="font-iceland p-3 border-none rounded-2xl bg-pink-600 text-white text-xl sm:text-2xl font-bold cursor-pointer transition-transform transform hover:scale-105 disabled:opacity-80"
-          [disabled]="loginForm.invalid">
-          LOGIN
-        </button>
-      </form>
-
-      <div class="font-iceland text-sm sm:text-base md:text-lg mt-4 mr-[122px]">
-        <span class="text-pink-600">NEW HERE? &nbsp;</span>
-        <span class="text-white">JOIN US</span>
-      </div>
-    </div>
-  </div>
+<div>
+  <button
+    (click)="login()"
+    class="px-4 py-2 rounded-full bg-primaryBackground border-2 border-primaryForeground text-primaryForeground font-bold"
+  >
+    Login
+  </button>
 </div>
