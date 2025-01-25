@@ -35,4 +35,7 @@ export class CreateGameInput {
 
   @Field(() => Float)
   accuracy!: number;
+
+  @Field(() => Float)
+  score!: number;
 } 

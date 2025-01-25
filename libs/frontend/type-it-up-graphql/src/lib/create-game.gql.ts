@@ -14,6 +14,7 @@ export const CREATE_GAME = gql(/* GraphQL */ `
       duration
       wpm
       accuracy
+      score
       createdAt
       users {
         id
