@@ -9,3 +9,11 @@ export type GameOptions = {
 export type Game = {
     text : string;
 }
+
+export type GameResults = {
+    wpm: number;
+    accuracy: number;
+    score: number;
+}
+
+

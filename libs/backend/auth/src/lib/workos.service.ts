@@ -42,4 +42,33 @@ export class WorkosService {
     });
     return { accessToken, refreshToken: newRefreshToken, user };
   }
+
+  async authenticateWithUserPassword(email: string, password: string) {
+    const { accessToken, refreshToken, user } =
+      await this.workos.userManagement.authenticateWithPassword({
+        email,
+        password,
+        clientId: this.clientId
+      });
+    return { accessToken, refreshToken, user };
+  }
+
+  async registerUser(email: string, password: string, firstName: string, lastName: string) {
+    const res =
+      await this.workos.userManagement.createUser({
+        email,
+        password,
+        firstName,
+        lastName,
+      });
+    return res;
+  }
+
+  async verifyEmail(userId: string) {
+    await this.workos.userManagement.updateUser({
+     "userId": userId,
+     emailVerified: true,
+    });
+   }
 }
+

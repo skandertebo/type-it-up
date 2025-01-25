@@ -1,8 +1,10 @@
-import { AuthModule, User } from '@/backend/auth';
+import { AuthModule, Game, User, UserStats } from '@/backend/auth';
+import { GameModule } from '@/backend/game';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import HelloWorldModule from './hello-world/hello-world.module';
 
@@ -17,7 +19,7 @@ import HelloWorldModule from './hello-world/hello-world.module';
       password: '',
       database: 'type-it-up',
       synchronize: true,
-      entities: [User],
+      entities: [User, Game, UserStats],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -25,7 +27,9 @@ import HelloWorldModule from './hello-world/hello-world.module';
       playground: true,
     }),
     AuthModule,
+    GameModule,
   ],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

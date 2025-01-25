@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "game": {
+      "type": "library",
+      "root": "libs/backend/game/@/backend/game/game",
+      "entryFile": "index",
+      "sourceRoot": "libs/backend/game/@/backend/game/game/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/backend/game/@/backend/game/game/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
+}

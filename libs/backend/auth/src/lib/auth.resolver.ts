@@ -1,3 +1,4 @@
+import { generateRandomString } from '@/shared/utils';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -51,9 +52,11 @@ export class AuthResolver {
     if (!user) {
       user = this.userRepository.create({
         email: profile.email,
-        name: profile.firstName + ' ' + profile.lastName,
+        firstName: profile.firstName ?? '',
+        lastName: profile.lastName ?? '',
         profilePicture: profile.profilePictureUrl ?? undefined,
         workosId: profile.id,
+        username: generateRandomString(10),
       });
       user = await this.userRepository.save(user);
     }
@@ -62,6 +65,54 @@ export class AuthResolver {
       user,
       accessToken,
       refreshToken,
+    };
+  }
+
+  @Mutation(() => AuthResult)
+  async authenticateWithUserPassword(
+    @Args('email') email: string,
+    @Args('password') password: string
+  ) {
+    const authResult = await this.workosService.authenticateWithUserPassword(email, password);
+    const user = await this.userRepository.findOne({ where: { workosId: authResult.user.id } });
+    return {
+      user: user,
+      accessToken: authResult.accessToken,
+      refreshToken: authResult.refreshToken,
+    };
+  }
+
+  @Mutation(() => AuthResult)
+  async registerUser(
+    @Args('email') email: string,
+    @Args('password') password: string,
+    @Args('firstName') firstName: string,
+    @Args('lastName') lastName: string,
+    @Args('username') username: string
+  ) {
+    let existingUser = await this.userRepository.findOne({ where: { email } });
+    if (existingUser) {
+      throw new Error('Email already exists');
+    }
+    existingUser = await this.userRepository.findOne({ where: { username } });
+    if (existingUser) {
+      throw new Error('Username already exists');
+    }
+    const res = await this.workosService.registerUser(email, password, firstName, lastName);
+    await this.workosService.verifyEmail(res.id);
+    const addedUser = this.userRepository.create({
+      firstName: res.firstName ?? firstName,
+      lastName: res.lastName ?? lastName,
+      username,
+      email: res.email,
+      workosId: res.id,
+    });
+    await this.userRepository.save(addedUser);
+    const authResult = await this.workosService.authenticateWithUserPassword(email, password);
+    return {
+      user: addedUser,
+      accessToken: authResult.accessToken,
+      refreshToken: authResult.refreshToken,
     };
   }
 

@@ -1,7 +1,6 @@
 import { ORG_ID_TOKEN } from '@/frontend/shared';
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideClientHydration } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { from, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
@@ -12,7 +11,6 @@ import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideClientHydration(),
     provideHttpClient(),
     provideApollo(() => {
       const authLink = setContext(() => {
