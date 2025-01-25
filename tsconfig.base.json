@@ -33,6 +33,9 @@
       "@/frontend/type-it-up-gameplay": [
         "libs/frontend/type-it-up-gameplay/src/index.ts"
       ],
+      "@/frontend/type-it-up-profile": [
+        "libs/frontend/type-it-up-profile/src/index.ts"
+      ],
       "@/shared/utils": ["libs/shared/utils/src/index.ts"]
     }
   },
