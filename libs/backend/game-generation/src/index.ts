@@ -1,2 +1,3 @@
-export * from './game-generation.module';
-export * from './game-generation.service';
+export * from './lib/game-generation.module';
+export * from './lib/types/generated-text.type';
+

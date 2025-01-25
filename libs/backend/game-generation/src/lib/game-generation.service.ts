@@ -1,7 +1,6 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import axios, { AxiosError } from 'axios';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import  {ConfigService} from '@nestjs/config';
 
 @Injectable()
 export class GameGenerationService {
@@ -83,6 +82,8 @@ export class GameGenerationService {
             length: cleanedText.length,
           },
         };
+      } else {
+        throw new InternalServerErrorException('Error generating text');
       }
 
     } catch (error) {

@@ -1,7 +1,9 @@
 import { AuthModule, Game, User, UserStats } from '@/backend/auth';
 import { GameModule } from '@/backend/game';
+import { GameGenerationModule } from '@/backend/game-generation';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
@@ -27,6 +29,10 @@ import HelloWorldModule from './hello-world/hello-world.module';
     }),
     AuthModule,
     GameModule,
+    GameGenerationModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
   ],
   providers: [AppService],
 })
