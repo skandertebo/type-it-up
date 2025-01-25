@@ -6,7 +6,7 @@ import { Chart } from 'chart.js/auto';
   standalone: true,
   imports: [],
   templateUrl: './linechart.component.html',
-  styleUrl: './linechart.component.css'
+  styleUrls: ['./linechart.component.css'],
 })
 export class LineChartComponent implements AfterViewInit {
   @ViewChild('lineChart') lineChart!: ElementRef<HTMLCanvasElement>;
@@ -20,7 +20,14 @@ export class LineChartComponent implements AfterViewInit {
     this.chart = new Chart(this.lineChart.nativeElement, {
       type: 'line',
       data: {
-        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        labels: [
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+        ],
         datasets: [
           {
             label: 'Accuracy',
@@ -28,13 +35,15 @@ export class LineChartComponent implements AfterViewInit {
             borderColor: '#35547B',
             borderWidth: 2,
             pointBackgroundColor: 'rgb(102, 139, 252)',
+            yAxisID: 'y1',
           },
           {
             label: 'WPM',
-            data: [15, 25, 20, 30, 25, 40],
+            data: [50, 25, 20, 30, 25, 40],
             borderColor: '#96104B',
             borderWidth: 2,
             pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+            yAxisID: 'y2',
           },
         ],
       },
@@ -83,7 +92,9 @@ export class LineChartComponent implements AfterViewInit {
               color: '#ffffff',
             },
           },
-          y: {
+          y1: {
+            type: 'linear',
+            position: 'left',
             ticks: {
               color: '#ffffff',
               font: {
@@ -92,6 +103,35 @@ export class LineChartComponent implements AfterViewInit {
             },
             grid: {
               color: '#ffffff',
+            },
+            title: {
+              display: true,
+              text: 'Accuracy (%)',
+              color: '#ffffff',
+              font: {
+                size: 14,
+              },
+            },
+          },
+          y2: {
+            type: 'linear',
+            position: 'right',
+            ticks: {
+              color: '#ffffff',
+              font: {
+                size: 15,
+              },
+            },
+            grid: {
+              drawOnChartArea: false,
+            },
+            title: {
+              display: true,
+              text: 'WPM',
+              color: '#ffffff',
+              font: {
+                size: 14,
+              },
             },
           },
         },
