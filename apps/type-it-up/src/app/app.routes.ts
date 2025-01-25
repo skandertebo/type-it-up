@@ -1,4 +1,5 @@
 import { CallbackComponent, ProtectedGuard, PublicGuard } from '@/frontend/type-it-up-auth';
+import { TypeItUpHistoryComponent } from '@/frontend/type-it-up-history';
 import {
   TypeItUpHomeComponent,
   TypeItUpHomeLayoutComponent,
@@ -20,6 +21,10 @@ export const appRoutes: Route[] = [
         component: TypeItUpProfileComponent,
         canActivate: [ProtectedGuard]
       },
+      {
+        path: 'history',
+        component: TypeItUpHistoryComponent
+      }
     ],
   },
   {

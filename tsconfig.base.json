@@ -30,6 +30,9 @@
       "@/frontend/type-it-up-graphql": [
         "libs/frontend/type-it-up-graphql/src/index.ts"
       ],
+      "@/frontend/type-it-up-history": [
+        "libs/frontend/type-it-up-history/src/index.ts"
+      ],
       "@/frontend/type-it-up-home": [
         "libs/frontend/type-it-up-home/src/index.ts"
       ],
