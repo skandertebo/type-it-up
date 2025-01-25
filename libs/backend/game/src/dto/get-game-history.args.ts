@@ -1,10 +1,15 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { ArgsType, Field, registerEnumType } from '@nestjs/graphql';
 import { IsDate, IsEnum, IsOptional } from 'class-validator';
 
 export enum SortOrder {
   ASC = 'ASC',
   DESC = 'DESC'
 }
+
+registerEnumType(SortOrder, {
+  name: 'SortOrder',
+  description: 'Sort order for query results',
+});
 
 @ArgsType()
 export class GetGameHistoryArgs {

@@ -3,6 +3,8 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateGameInput } from './dto/create-game.input';
 import { GetGameHistoryArgs } from './dto/get-game-history.args';
+import { GetLeaderboardArgs } from './dto/get-leaderboard.args';
+import { LeaderboardEntry } from './dto/leaderboard-entry.model';
 import { GameService } from './game.service';
 
 @Resolver(() => Game)
@@ -43,5 +45,10 @@ export class GameResolver {
     @Args() args: GetGameHistoryArgs
   ) {
     return this.gameService.getGameHistory(user, args);
+  }
+
+  @Query(() => [LeaderboardEntry])
+  async getLeaderboard(@Args() args: GetLeaderboardArgs) {
+    return this.gameService.getLeaderboard(args);
   }
 } 
