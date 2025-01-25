@@ -16,6 +16,7 @@ module.exports = {
         thirdText: '#96104B',
         primaryForeground: '#96104B',
         secondaryForeground: '#2B2627',
+        
       },
       fontFamily: {
         iceland: ['Iceland'],
