@@ -9,10 +9,7 @@ import { Route } from '@angular/router';
 import {} from '@nestjs/passport';
 
 export const appRoutes: Route[] = [
-  {
-    path: '',
-    component: TypeItUpLandingComponent,
-  },
+
   {
     path: '',
     component: TypeItUpHomeLayoutComponent,
@@ -25,9 +22,8 @@ export const appRoutes: Route[] = [
         path: 'profile',
         component: TypeItUpProfileComponent,
       },
-    ],
-    canActivate: [AuthGuard],
-  },
+    ]
+    },
   {
     path: 'auth/callback',
     component: CallbackComponent,

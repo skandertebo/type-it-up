@@ -11,8 +11,8 @@ import { AuthService } from '@/frontend/type-it-up-auth';
   templateUrl: './home-layout.component.html',
 })
 export class TypeItUpHomeLayoutComponent {
-  user$: typeof AuthService.prototype.user$;
+/*   user$: typeof AuthService.prototype.user$;
   constructor(public auth: AuthService) {
     this.user$ = auth.user$;
-  }
+  } */
 }
