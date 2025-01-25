@@ -13,6 +13,7 @@ module.exports = {
         primaryBackground: '#000000',
         primaryText: '#ffffff',
         secondaryText: '#35547B',
+        thirdText: '#96104B',
         primaryForeground: '#96104B',
         secondaryForeground: '#2B2627',
         
