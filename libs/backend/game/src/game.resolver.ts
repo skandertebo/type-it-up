@@ -2,6 +2,7 @@ import { CurrentUser, Game, GqlAuthGuard, User } from '@/backend/auth';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateGameInput } from './dto/create-game.input';
+import { GetGameHistoryArgs } from './dto/get-game-history.args';
 import { GameService } from './game.service';
 
 @Resolver(() => Game)
@@ -33,5 +34,14 @@ export class GameResolver {
   @Mutation(() => Boolean)
   async deleteGame(@Args('id') id: string, @CurrentUser() user: User) {
     return this.gameService.deleteGame(id, user);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Query(() => [Game])
+  async getGameHistory(
+    @CurrentUser() user: User,
+    @Args() args: GetGameHistoryArgs
+  ) {
+    return this.gameService.getGameHistory(user, args);
   }
 } 

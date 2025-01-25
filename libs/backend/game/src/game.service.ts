@@ -1,8 +1,9 @@
 import { Game, User, UserStats } from '@/backend/auth';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, FindOptionsWhere, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateGameInput } from './dto/create-game.input';
+import { GetGameHistoryArgs, SortOrder } from './dto/get-game-history.args';
 
 @Injectable()
 export class GameService {
@@ -96,5 +97,41 @@ export class GameService {
 
     await this.gameRepository.remove(game);
     return true;
+  }
+
+  async getGameHistory(user: User, args: GetGameHistoryArgs): Promise<Game[]> {
+    const { since, until, difficulty, sortOrder = SortOrder.DESC } = args;
+
+    // Build the where clause with proper typing
+    const where: FindOptionsWhere<Game> = {
+      users: { id: user.id }
+    };
+
+    // Add date filters if provided
+    if (since || until) {
+      if (since && until) {
+        where.createdAt = Between(since, until);
+      } else if (since) {
+        where.createdAt = MoreThanOrEqual(since);
+      } else if (until) {
+        where.createdAt = LessThanOrEqual(until);
+      }
+    }
+
+    // Add difficulty filter if provided
+    if (difficulty) {
+      where.options = {
+        difficulty
+      };
+    }
+
+    return this.gameRepository.find({
+      where,
+      relations: ['users'],
+      order: {
+        score: sortOrder,
+        createdAt: 'DESC', // Secondary sort by date
+      },
+    });
   }
 }
