@@ -13,14 +13,7 @@ import {
   AsyncValidatorFn,
 } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
-import {
-  catchError,
-  debounceTime,
-  map,
-  of,
-  Subject,
-  takeUntil,
-} from 'rxjs';
+import { catchError, debounceTime, map, of, Subject, takeUntil } from 'rxjs';
 import { Observable } from '@apollo/client/utilities';
 
 @Component({
@@ -131,23 +124,26 @@ export class SignUpComponent implements OnDestroy {
   }
 
   usernameExistsValidator(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    return (control: AbstractControl) => {
       const username = control.value.trim();
 
-      if (!username) return of(null as ValidationErrors | null);
+      if (!username) return of(null);
 
-      return this.apollo.query<{ checkUsernameExists: boolean }>({
-        query: CHECK_USERNAME_EXISTS,
-        variables: { username },
-        fetchPolicy: 'no-cache'
-      }).pipe(
-        debounceTime(300),
-        map(response => response.data.checkUsernameExists ? { usernameTaken: true } : null),
-        catchError(() => of(null as ValidationErrors | null))
-      );
+      return this.apollo
+        .query<{ checkUsernameExists: boolean }>({
+          query: CHECK_USERNAME_EXISTS,
+          variables: { username },
+          fetchPolicy: 'no-cache',
+        })
+        .pipe(
+          debounceTime(300),
+          map((response) =>
+            response.data.checkUsernameExists ? { usernameTaken: true } : null
+          ),
+          catchError(() => of(null))
+        );
     };
   }
-  
 
   private passwordMatchValidator(
     control: AbstractControl
