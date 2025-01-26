@@ -60,7 +60,8 @@ export class LineChartComponent implements AfterViewInit {
             labels: {
               color: '#ffffff',
               font: {
-                size: 14,
+                size: 20,
+                family: 'Iceland',
               },
             },
           },
@@ -69,7 +70,8 @@ export class LineChartComponent implements AfterViewInit {
             text: 'Accuracy & WPM Over Time',
             color: '#ffffff',
             font: {
-              size: 30,
+              size: 40,
+              family: 'Iceland',
             },
           },
           tooltip: {
@@ -78,9 +80,11 @@ export class LineChartComponent implements AfterViewInit {
             bodyColor: '#ffffff',
             titleFont: {
               size: 17,
+              family: 'Iceland',
             },
             bodyFont: {
-              size: 15,
+              size: 17,
+              family: 'Iceland',
             },
           },
         },
@@ -89,7 +93,8 @@ export class LineChartComponent implements AfterViewInit {
             ticks: {
               color: '#ffffff',
               font: {
-                size: 15,
+                size: 17,
+                family: 'Iceland',
               },
             },
             grid: {
@@ -102,7 +107,8 @@ export class LineChartComponent implements AfterViewInit {
             ticks: {
               color: '#ffffff',
               font: {
-                size: 15,
+                size: 17,
+                family: 'Iceland',
               },
             },
             grid: {
@@ -113,7 +119,8 @@ export class LineChartComponent implements AfterViewInit {
               text: 'Accuracy (%)',
               color: '#ffffff',
               font: {
-                size: 14,
+                size: 20,
+                family: 'Iceland',
               },
             },
           },
@@ -123,7 +130,8 @@ export class LineChartComponent implements AfterViewInit {
             ticks: {
               color: '#ffffff',
               font: {
-                size: 15,
+                size: 17,
+                family: 'Iceland',
               },
             },
             grid: {
@@ -134,7 +142,8 @@ export class LineChartComponent implements AfterViewInit {
               text: 'WPM',
               color: '#ffffff',
               font: {
-                size: 14,
+                size: 20,
+                family: 'Iceland',
               },
             },
           },
