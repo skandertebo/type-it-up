@@ -17,9 +17,15 @@
     "paths": {
       "@/backend/auth": ["libs/backend/auth/src/index.ts"],
       "@/backend/game": ["libs/backend/game/src/index.ts"],
+      "@/backend/game-generation": [
+        "libs/backend/game-generation/src/index.ts"
+      ],
       "@/frontend/shared": ["libs/frontend/shared/src/index.ts"],
       "@/frontend/type-it-up-auth": [
         "libs/frontend/type-it-up-auth/src/index.ts"
+      ],
+      "@/frontend/type-it-up-gameplay": [
+        "libs/frontend/type-it-up-gameplay/src/index.ts"
       ],
       "@/frontend/type-it-up-graphql": [
         "libs/frontend/type-it-up-graphql/src/index.ts"
@@ -29,9 +35,6 @@
       ],
       "@/frontend/type-it-up-landing": [
         "libs/frontend/type-it-up-landing/src/index.ts"
-      ],
-      "@/frontend/type-it-up-gameplay": [
-        "libs/frontend/type-it-up-gameplay/src/index.ts"
       ],
       "@/frontend/type-it-up-profile": [
         "libs/frontend/type-it-up-profile/src/index.ts"

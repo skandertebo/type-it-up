@@ -200,15 +200,13 @@ export class SignUpComponent implements OnDestroy {
         .subscribe({
           next: () => {
             this.errorMessage = null;
-            this.router.navigate(['/login']);
+            this.router.navigate(['/']);
           },
           error: (error) => {
             this.errorMessage = error.message;
-            console.error('Error signing up:', error);
           },
         });
     } else {
-      console.log('Form is invalid');
       this.errorMessage = 'Please fix validation erros first';
 
       // to display validation errors for untouched fields when a user submits a form.

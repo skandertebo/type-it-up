@@ -2,10 +2,11 @@ import {
   AUTHENTICATE_WITH_CODE,
   AUTHENTICATE_WITH_REFRESH_TOKEN,
   AuthenticateWithRefreshTokenMutation,
+  SIGNUP,
 } from '@/frontend/type-it-up-graphql';
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 type User =
   AuthenticateWithRefreshTokenMutation['authenticateWithRefreshToken']['user'];
@@ -101,6 +102,37 @@ export class AuthService {
           this.loadingSubject.next(false);
         },
       });
+  }
+
+  handleSignup(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    username: string
+  ) {
+    return this.apollo
+      .mutate({
+        mutation: SIGNUP,
+        variables: { email, password, firstName, lastName, username },
+      })
+      .pipe(
+        map((result) => {
+          if (result.data?.registerUser) {
+            localStorage.setItem(
+              'refreshToken',
+              result.data.registerUser.refreshToken
+            );
+            localStorage.setItem(
+              'accessToken',
+              result.data.registerUser.accessToken
+            );
+            this.userSubject.next(result.data.registerUser.user);
+            return result.data.registerUser;
+          }
+          return null;
+        })
+      );
   }
 
   logout() {
