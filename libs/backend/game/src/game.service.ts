@@ -1,10 +1,21 @@
 import { Game, User, UserStats } from '@/backend/auth';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, FindOptionsWhere, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
+import { subDays } from 'date-fns';
+import {
+  Between,
+  FindOptionsWhere,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { CreateGameInput } from './dto/create-game.input';
 import { GetGameHistoryArgs, SortOrder } from './dto/get-game-history.args';
-import { GetLeaderboardArgs, LeaderboardSortType } from './dto/get-leaderboard.args';
+import {
+  GetLeaderboardArgs,
+  LeaderboardSortType,
+} from './dto/get-leaderboard.args';
+import { UserGameStats } from './dto/user-stats.model';
 
 @Injectable()
 export class GameService {
@@ -33,8 +44,10 @@ export class GameService {
     return game;
   }
 
-  async createGame(user: User, createGameInput: CreateGameInput): Promise<Game> {
-
+  async createGame(
+    user: User,
+    createGameInput: CreateGameInput
+  ): Promise<Game> {
     Logger.log(`Creating game for user: ${user.id}`);
 
     const game = this.gameRepository.create({
@@ -43,7 +56,7 @@ export class GameService {
     });
 
     Logger.log(`Creating game with input: ${JSON.stringify(createGameInput)}`);
-    
+
     const savedGame = await this.gameRepository.save(game);
 
     // Update user stats
@@ -60,11 +73,12 @@ export class GameService {
     } else {
       const userGames = await this.getUserGames(user);
       const totalGames = userGames.length + 1;
-      
-      userStats.averageWpm = 
+
+      userStats.averageWpm =
         (userStats.averageWpm * (totalGames - 1) + game.wpm) / totalGames;
-      userStats.averageAccuracy = 
-        (userStats.averageAccuracy * (totalGames - 1) + game.accuracy) / totalGames;
+      userStats.averageAccuracy =
+        (userStats.averageAccuracy * (totalGames - 1) + game.accuracy) /
+        totalGames;
     }
 
     await this.userStatsRepository.save(userStats);
@@ -74,8 +88,8 @@ export class GameService {
 
   async deleteGame(id: string, user: User): Promise<boolean> {
     const game = await this.getGame(id);
-    
-    if (!game.users.some(u => u.id === user.id)) {
+
+    if (!game.users.some((u) => u.id === user.id)) {
       throw new NotFoundException('Game not found or user not authorized');
     }
 
@@ -89,10 +103,11 @@ export class GameService {
       const totalGames = userGames.length - 1;
 
       if (totalGames > 0) {
-        userStats.averageWpm = 
+        userStats.averageWpm =
           (userStats.averageWpm * (totalGames + 1) - game.wpm) / totalGames;
-        userStats.averageAccuracy = 
-          (userStats.averageAccuracy * (totalGames + 1) - game.accuracy) / totalGames;
+        userStats.averageAccuracy =
+          (userStats.averageAccuracy * (totalGames + 1) - game.accuracy) /
+          totalGames;
       } else {
         userStats.averageWpm = 0;
         userStats.averageAccuracy = 0;
@@ -110,7 +125,7 @@ export class GameService {
 
     // Build the where clause with proper typing
     const where: FindOptionsWhere<Game> = {
-      users: { id: user.id }
+      users: { id: user.id },
     };
 
     // Add date filters if provided
@@ -127,7 +142,7 @@ export class GameService {
     // Add difficulty filter if provided
     if (difficulty) {
       where.options = {
-        difficulty
+        difficulty,
       };
     }
 
@@ -158,7 +173,7 @@ export class GameService {
         .orderBy('MAX(game.score)', 'DESC')
         .getRawMany();
 
-      return result.map(row => ({
+      return result.map((row) => ({
         user: {
           id: row.userId,
           username: row.username,
@@ -181,7 +196,7 @@ export class GameService {
         .orderBy('AVG(game.score)', 'DESC')
         .getRawMany();
 
-      return result.map(row => ({
+      return result.map((row) => ({
         user: {
           id: row.userId,
           username: row.username,
@@ -191,5 +206,56 @@ export class GameService {
         score: parseFloat(row.score),
       }));
     }
+  }
+
+  async getUserStats(user: User): Promise<UserGameStats> {
+    // Get overall stats using query builder
+    const overallStats = await this.gameRepository
+      .createQueryBuilder('game')
+      .innerJoin('game.users', 'user')
+      .where('user.id = :userId', { userId: user.id })
+      .select([
+        'AVG(game.wpm)',
+        'averageWpm',
+        'AVG(game.accuracy)',
+        'averageAccuracy',
+        'MAX(game.score)',
+        'highestScore',
+      ])
+      .getRawOne();
+
+    // Get daily stats for past 7 days
+    const today = new Date();
+    const sevenDaysAgo = subDays(today, 7);
+
+    const dailyStatsQuery = await this.gameRepository
+      .createQueryBuilder('game')
+      .innerJoin('game.users', 'user')
+      .where('user.id = :userId', { userId: user.id })
+      .andWhere('game.createdAt >= :sevenDaysAgo', { sevenDaysAgo })
+      .select([
+        'DATE(game.createdAt)',
+        'date',
+        'AVG(game.wpm)',
+        'averageWpm',
+        'AVG(game.accuracy)',
+        'averageAccuracy',
+      ])
+      .groupBy('DATE(game.createdAt)')
+      .orderBy('DATE(game.createdAt)', 'DESC')
+      .getRawMany();
+
+    const dailyStats = dailyStatsQuery.map((stat) => ({
+      date: new Date(stat.date),
+      averageWpm: parseFloat(stat.averageWpm),
+      averageAccuracy: parseFloat(stat.averageAccuracy),
+    }));
+
+    return {
+      averageWpm: parseFloat(overallStats.averageWpm) || 0,
+      averageAccuracy: parseFloat(overallStats.averageAccuracy) || 0,
+      highestScore: parseFloat(overallStats.highestScore) || 0,
+      dailyStats,
+    };
   }
 }
