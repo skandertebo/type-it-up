@@ -1,14 +1,14 @@
 <div
-  class="text-primaryText rounded-lg p-4 justify-center items-center flex flex-col text-center w-full"
+  class="text-primaryText rounded-lg p-4 justify-center items-center flex flex-col text-center w-full font-iceland"
 >
   <div class="flex justify-between items-center mb-4">
     <div class="flex space-x-4 items-center">
       <div>
-        <label for="sortBy" class="text-sm text-gray-400 block">Sort By</label>
+        <label for="sortBy" class="text-xl text-gray-400 block">Sort By</label>
         <select
           id="sortBy"
           [(ngModel)]="filters.sortBy"
-          class="px-3 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a]"
+          class="px-8 py-2 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         >
           <option value="score">Score</option>
           <option value="date">Date</option>
@@ -16,11 +16,11 @@
       </div>
 
       <div>
-        <label for="order" class="text-sm text-gray-400 block">Order</label>
+        <label for="order" class="text-xl text-gray-400 block">Order</label>
         <select
           id="order"
           [(ngModel)]="filters.order"
-          class="px-3 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a]"
+          class="px-4 py-2 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         >
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
@@ -28,32 +28,32 @@
       </div>
 
       <div>
-        <label for="fromDate" class="text-sm text-gray-400 block">From</label>
+        <label for="fromDate" class="text-xl text-gray-400 block">From</label>
         <input
           id="fromDate"
           type="date"
           [(ngModel)]="filters.fromDate"
-          class="px-3 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a]"
+          class="px-2 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         />
       </div>
       <div>
-        <label for="untilDate" class="text-sm text-gray-400 block">Until</label>
+        <label for="untilDate" class="text-xl text-gray-400 block">Until</label>
         <input
           id="untilDate"
           type="date"
           [(ngModel)]="filters.untilDate"
-          class="px-3 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a]"
+          class="px-2 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         />
       </div>
 
       <button
-        class="px-4 py-2 mt-5 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white"
+        class="px-4 py-2 mt-7 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white hover:bg-[#45122a]"
         (click)="applyFilters()"
       >
         Apply
     </button>
     <button
-      class="px-4 py-2 mt-5 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white"
+      class="px-4 py-2 mt-7 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white hover:bg-[#45122a]"
       (click)="clearFilters()"
     >
       Clear
@@ -61,9 +61,9 @@
     </div>
   </div>
 
-  <table class="w-3/4">
+  <table class="text-xl w-3/4">
     <thead>
-      <tr class="text-sm uppercase">
+      <tr class="uppercase">
         <th class="py-2 px-4 text-center">Score</th>
         <th class="py-2 px-4 text-center">Accuracy</th>
         <th class="py-2 px-4 text-center">Test Time</th>
@@ -91,7 +91,7 @@
     >
       Previous
     </button>
-    <span class="text-sm text-gray-400">
+    <span class="text-xl text-gray-400">
       Page {{ currentPage }} of {{ totalPages }}
     </span>
     <button
