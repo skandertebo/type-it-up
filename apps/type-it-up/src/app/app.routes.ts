@@ -1,4 +1,4 @@
-import { CallbackComponent, PublicGuard } from '@/frontend/type-it-up-auth';
+import { CallbackComponent, ProtectedGuard, PublicGuard } from '@/frontend/type-it-up-auth';
 import {
   TypeItUpHomeComponent,
   TypeItUpHomeLayoutComponent,
@@ -18,6 +18,7 @@ export const appRoutes: Route[] = [
       {
         path: 'profile',
         component: TypeItUpProfileComponent,
+        canActivate: [ProtectedGuard]
       },
     ],
   },
