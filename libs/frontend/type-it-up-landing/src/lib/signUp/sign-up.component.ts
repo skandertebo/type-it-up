@@ -1,4 +1,5 @@
-import { CHECK_USERNAME_EXISTS, SIGNUP } from '@/frontend/type-it-up-graphql';
+import { AuthService } from '@/frontend/type-it-up-auth';
+import { CHECK_USERNAME_EXISTS } from '@/frontend/type-it-up-graphql';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import {
@@ -31,7 +32,8 @@ export class SignUpComponent implements OnDestroy {
   constructor(
     private fb: FormBuilder,
     private apollo: Apollo,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.signupForm = this.fb.group(
       {
@@ -192,11 +194,8 @@ export class SignUpComponent implements OnDestroy {
       const formData = this.signupForm.value;
       const { email, password, firstName, lastName, username } = formData;
 
-      this.apollo
-        .mutate({
-          mutation: SIGNUP,
-          variables: { email, password, firstName, lastName, username },
-        })
+      this.authService
+        .handleSignup(email, password, firstName, lastName, username)
         .subscribe({
           next: () => {
             this.errorMessage = null;
