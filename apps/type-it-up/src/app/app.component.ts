@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import {ToastrModule} from 'ngx-toastr'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   standalone: true,
@@ -15,6 +14,6 @@ export class AppComponent {
   router = inject(Router)
 
   navigateToHome(){
-    this.router.navigate(['\home'])
+    this.router.navigate(['/home'])
   }
 }
