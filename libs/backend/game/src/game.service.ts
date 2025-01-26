@@ -10,7 +10,11 @@ import {
   Repository,
 } from 'typeorm';
 import { CreateGameInput } from './dto/create-game.input';
-import { GetGameHistoryArgs, SortOrder } from './dto/get-game-history.args';
+import {
+  GameSortField,
+  GetGameHistoryArgs,
+  SortOrder,
+} from './dto/get-game-history.args';
 import {
   GetLeaderboardArgs,
   LeaderboardSortType,
@@ -121,7 +125,15 @@ export class GameService {
   }
 
   async getGameHistory(user: User, args: GetGameHistoryArgs): Promise<Game[]> {
-    const { since, until, difficulty, sortOrder = SortOrder.DESC } = args;
+    const {
+      since,
+      until,
+      difficulty,
+      sortBy = GameSortField.DATE,
+      sortOrder = SortOrder.DESC,
+      skip = 0,
+      take = 10,
+    } = args;
 
     // Build the where clause with proper typing
     const where: FindOptionsWhere<Game> = {
@@ -146,13 +158,22 @@ export class GameService {
       };
     }
 
+    // Build the order object based on sortBy field
+    const order: Record<string, SortOrder> = {
+      [sortBy]: sortOrder,
+    };
+
+    // Add secondary sort by date if not already sorting by date
+    if (sortBy !== GameSortField.DATE) {
+      order['createdAt'] = SortOrder.DESC;
+    }
+
     return this.gameRepository.find({
       where,
       relations: ['users'],
-      order: {
-        score: sortOrder,
-        createdAt: 'DESC', // Secondary sort by date
-      },
+      order,
+      skip,
+      take,
     });
   }
 
