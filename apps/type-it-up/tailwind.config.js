@@ -11,6 +11,7 @@ module.exports = {
     extend: {
       colors: {
         primaryBackground: '#000000',
+        secondaryBackground: 'rgba(35,3,17,1)',
         primaryText: '#ffffff',
         secondaryText: '#35547B',
         thirdText: '#96104B',
@@ -34,5 +35,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar')],
 };

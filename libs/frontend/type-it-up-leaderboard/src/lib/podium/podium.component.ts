@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './podium.component.html',
-  styleUrl: './podium.component.css'
+  styleUrl: './podium.component.css',
 })
-export class PodiumComponent {
-
-}
+export class PodiumComponent {}

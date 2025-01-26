@@ -5,8 +5,5 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './leaderboard-table.component.html',
-  styleUrl: './leaderboard-table.component.css'
 })
-export class LeaderboardTableComponent {
-
-}
+export class LeaderboardTableComponent {}
