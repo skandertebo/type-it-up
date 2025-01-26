@@ -1,6 +1,6 @@
 import { CHECK_USERNAME_EXISTS, SIGNUP } from '@/frontend/type-it-up-graphql';
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   FormBuilder,
@@ -22,15 +22,15 @@ import { Observable } from '@apollo/client/utilities';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './signup.component.html',
 })
-export class SignUpComponent implements OnDestroy {
+export class SignUpComponent implements OnDestroy, AfterViewInit {
   signupForm: FormGroup;
   private destroy$ = new Subject<void>();
   showPassword = false;
   showConfirmPassword = false;
 
   private readonly USERNAME_PATTERN = /^[a-zA-Z0-9_-]*$/;
-  private readonly PASSWORD_PATTERN =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
+  // private readonly PASSWORD_PATTERN =
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
   private readonly NAME_PATTERN = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
 
   constructor(
@@ -79,7 +79,7 @@ export class SignUpComponent implements OnDestroy {
             Validators.required,
             Validators.minLength(8),
             Validators.maxLength(32),
-            Validators.pattern(this.PASSWORD_PATTERN),
+            // Validators.pattern(this.PASSWORD_PATTERN),
             this.createPasswordStrengthValidator(),
           ],
         ],
@@ -96,6 +96,15 @@ export class SignUpComponent implements OnDestroy {
       .subscribe(() => {
         this.signupForm?.get('confirmPassword')?.updateValueAndValidity();
       });
+  }
+
+  ngAfterViewInit() {
+    this.signupForm.statusChanges.subscribe((status) => {
+      console.log('Form status:', status);
+      console.log('Form errors:', this.signupForm.errors);
+      console.log('Username errors:', this.signupForm.get('username')?.errors);
+      console.log('Password errors:', this.signupForm.get('password')?.errors);
+    });
   }
 
   // Custom validators
