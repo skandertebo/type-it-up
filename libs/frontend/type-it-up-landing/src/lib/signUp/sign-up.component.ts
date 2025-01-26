@@ -1,7 +1,7 @@
 import { AuthService } from '@/frontend/type-it-up-auth';
 import { CHECK_USERNAME_EXISTS } from '@/frontend/type-it-up-graphql';
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -22,7 +22,7 @@ import { catchError, debounceTime, map, of, Subject, takeUntil } from 'rxjs';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './sign-up.component.html',
 })
-export class SignUpComponent implements OnDestroy {
+export class SignUpComponent implements OnDestroy, OnInit {
   signupForm: FormGroup;
   errorMessage: string | null = null;
   private destroy$ = new Subject<void>();
@@ -89,6 +89,14 @@ export class SignUpComponent implements OnDestroy {
       .subscribe(() => {
         this.signupForm?.get('confirmPassword')?.updateValueAndValidity();
       });
+  }
+
+  ngOnInit(): void {
+    this.authService.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      if (user) {
+        this.router.navigate(['/']);
+      }
+    });
   }
 
   // Custom validators
