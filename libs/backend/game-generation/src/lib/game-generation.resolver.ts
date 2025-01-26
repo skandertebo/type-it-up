@@ -9,7 +9,9 @@ export class GameGenerationResolver {
   @Query(() => GeneratedTextResponse)
   async generateText(
     @Args('difficulty', { type: () => Difficulty, defaultValue: Difficulty.MEDIUM }) difficulty: Difficulty,
+    @Args('punctuation', { type: () => Boolean, defaultValue: false }) punctuation: boolean,
+    @Args('numbers', { type: () => Boolean, defaultValue: false }) numbers: boolean,
   ) {
-    return this.gameGenerationService.generateText(difficulty);
+    return this.gameGenerationService.generateText(difficulty, punctuation, numbers);
   }
-} 
+}
