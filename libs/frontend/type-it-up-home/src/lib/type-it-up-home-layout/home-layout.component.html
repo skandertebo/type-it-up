@@ -1,11 +1,4 @@
-<div
-  class="w-screen h-screen bg-[url('/shared-assets/images/background.jpg')] bg-cover bg-center relative"
->
-  <img
-    src="/shared-assets/images/logo.png"
-    class="absolute top-8 left-4 w-64"
-    alt="logo"
-  />
+<div>
   <div class="no-scrollbar w-full h-[82%] pt-20 overflow-y-scroll">
     <router-outlet></router-outlet>
   </div>
@@ -13,7 +6,7 @@
   <div class="w-full h-[18%] fixed bottom-0 left-0">
     <lib-navbar></lib-navbar>
   </div>
-<!--   <ng-container *ngIf="auth.loading$ | async; else content">
+  <!--   <ng-container *ngIf="auth.loading$ | async; else content">
     <p>Loading...</p>
   </ng-container>
   <ng-template #content>
@@ -30,4 +23,5 @@
       <p>You are not logged in. Redirecting...</p>
     </ng-template>
   </ng-template>
- --></div>
+ -->
+</div>

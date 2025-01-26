@@ -19,8 +19,6 @@ export const appRoutes: Route[] = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: TypeItUpHomeComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'sign-up', component: SignUpComponent },
       {
         path: 'profile',
         component: TypeItUpProfileComponent,
@@ -31,5 +29,7 @@ export const appRoutes: Route[] = [
     path: 'auth/callback',
     component: CallbackComponent,
   },
+  { path: 'login', component: LoginComponent },
+  { path: 'sign-up', component: SignUpComponent },
   { path: '**', redirectTo: 'home' },
 ];
