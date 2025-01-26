@@ -45,7 +45,6 @@ export class GameGenerationService {
           additionalInstructions += "Do not add any number. ";  
       }
 
-      console.log(additionalInstructions)
 
       const userPrompt = `${difficultyPrompts[difficulty] || difficultyPrompts.medium}${additionalInstructions}`;
 
