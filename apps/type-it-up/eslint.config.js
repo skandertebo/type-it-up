@@ -30,7 +30,7 @@ module.exports = [
     files: ['**/*.html'],
     // Override or add rules here
     rules: {
-      "@angular-eslint/template/interactive-supports-focus"
+      "@angular-eslint/template/interactive-supports-focus":"error"
     },
   },
 ];
