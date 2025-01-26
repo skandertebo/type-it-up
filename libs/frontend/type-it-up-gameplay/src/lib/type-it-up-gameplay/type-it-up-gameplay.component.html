@@ -1,10 +1,10 @@
-<div class="flex flex-col">
+<div class="flex flex-col gap-6">
   <lib-game-menu
     [(options)]="options"
     [isOngoing]="state === 'ongoing'"
   ></lib-game-menu>
   @if(state === 'menu' || state === 'loading'){
-  <div class="relative mx-32 flex flex-col items-center">
+  <div class="relative mx-32 mt-8 flex flex-col items-center">
     <div class="relative p-8 w-full">
       <div class="absolute inset-0 bg-gray-900/5 backdrop-blur-md z-10"></div>
       <p
@@ -36,3 +36,7 @@
   ></lib-game>
   }
 </div>
+
+@if(state === 'finished' && gameResults) {
+<lib-game-over-modal [results]="gameResults"></lib-game-over-modal>
+}
