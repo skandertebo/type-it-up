@@ -18,13 +18,20 @@ export const appRoutes: Route[] = [
       { path: 'home', component: TypeItUpHomeComponent },
       {
         path: 'profile',
-        component: TypeItUpProfileComponent,
-        canActivate: [ProtectedGuard]
+        loadComponent: () =>
+          import('@/frontend/type-it-up-profile').then(
+            (m) => m.TypeItUpProfileComponent
+          ),
+        data: { preload: true }, 
       },
       {
         path: 'history',
-        component: TypeItUpHistoryComponent
-      }
+        loadComponent: () =>
+          import('@/frontend/type-it-up-history').then(
+            (m) => m.TypeItUpHistoryComponent
+          ),
+        data: { preload: true }, 
+      },
     ],
   },
   {
