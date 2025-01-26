@@ -3,6 +3,41 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { Apollo } from 'apollo-angular';
+import { GET_GAME_HISTORY, SortOrder } from '@/frontend/type-it-up-graphql';
+
+type Filter = {
+  sortBy: string;
+  sortOrder: SortOrder;
+  since: Date | undefined;
+  until: Date | undefined;
+};
+
+type Game = {
+  __typename?: 'Game';
+  id: string;
+  gameContent: string;
+  userContent: string;
+  duration: number;
+  wpm: number;
+  accuracy: number;
+  score: number;
+  createdAt: Date;
+  options: {
+    __typename?: 'GameOptions';
+    difficulty: string;
+    punctuation: boolean;
+    numbers: boolean;
+  };
+  users: Array<{
+    __typename?: 'User';
+    id: string;
+    username: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    workosId: string;
+  }>;
+};
 
 @Component({
   selector: 'lib-type-it-up-history',
@@ -12,98 +47,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './type-it-up-history.component.css',
 })
 export class TypeItUpHistoryComponent implements OnInit {
-  gameHistory = [
-    {
-      score: 4,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 5,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 6,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 MAY 2024',
-    },
-    {
-      score: 7,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2021',
-    },
-    {
-      score: 8,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 9,
-      accuracy: '91%',
-      wpm: '52',
-      date: '15 SEP 2024',
-    },
-    {
-      score: 10,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 4,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 5,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 6,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 7,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 8,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 9,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-    {
-      score: 10,
-      accuracy: '91%',
-      wpm: '52',
-      date: '31 SEP 2024',
-    },
-  ];
+  gameHistory: Game[] = [];
 
-   filters = {
+  filters: Filter = {
     sortBy: 'score',
-    order: 'asc',
-    fromDate: '',
-    untilDate: '',
+    sortOrder: SortOrder.Desc,
+    since: undefined,
+    until: undefined,
   };
 
   appliedFilters = { ...this.filters };
@@ -111,78 +61,78 @@ export class TypeItUpHistoryComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 10;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private apollo: Apollo
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.appliedFilters.sortBy = params['sortBy'] || 'score';
-      this.appliedFilters.order = params['order'] || 'asc';
-      this.appliedFilters.fromDate = params['fromDate'] || '';
-      this.appliedFilters.untilDate = params['untilDate'] || '';
+      this.appliedFilters.sortOrder = params['order'] || SortOrder.Desc;
+      this.appliedFilters.since = params['since'] || undefined;
+      this.appliedFilters.until = params['until'] || undefined;
       this.currentPage = params['page'] ? +params['page'] : 1;
     });
+
+    this.applyFilters();
+  }
+
+  getGameData(appliedFilters: Filter) {
+    this.apollo.query({
+      query: GET_GAME_HISTORY,
+      variables: {
+        since: appliedFilters.since,
+        until: appliedFilters.until,
+        sortOrder: appliedFilters.sortOrder,
+      },
+    }).subscribe(({ data }) => {
+      this.gameHistory = data.getGameHistory;
+    });
+    
   }
 
   get totalPages(): number {
-    return Math.ceil(this.filteredData.length / this.itemsPerPage);
+    return Math.ceil(this.gameHistory.length / this.itemsPerPage);
   }
 
   get paginatedData() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredData.slice(startIndex, startIndex + this.itemsPerPage);
-  }
-
-  get filteredData() {
-    let data = [...this.gameHistory];
-
-    if (this.appliedFilters.fromDate) {
-      data = data.filter(
-        (item) => new Date(item.date) >= new Date(this.appliedFilters.fromDate)
-      );
-    }
-    if (this.appliedFilters.untilDate) {
-      data = data.filter(
-        (item) => new Date(item.date) <= new Date(this.appliedFilters.untilDate)
-      );
-    }
-
-    if (this.appliedFilters.sortBy === 'score') {
-      data.sort((a, b) =>
-        this.appliedFilters.order === 'asc' ? a.score - b.score : b.score - a.score
-      );
-    } else if (this.appliedFilters.sortBy === 'date') {
-      data.sort((a, b) =>
-        this.appliedFilters.order === 'asc'
-          ? new Date(a.date).getTime() - new Date(b.date).getTime()
-          : new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
-    }
-
-    return data;
+    return this.gameHistory.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   applyFilters() {
-    this.appliedFilters = { ...this.filters }; // Apply the current filter settings
-    this.currentPage = 1; // Reset to the first page
+    const sinceDate = this.filters.since ? new Date(this.filters.since) : undefined;
+    const untilDate = this.filters.until ? new Date(this.filters.until) : undefined;
+    const order = this.filters.sortOrder==="ASC" ? SortOrder.Asc : SortOrder.Desc;
+    this.appliedFilters = {
+      ...this.filters,
+      sortOrder: order,
+      since: sinceDate,
+      until: untilDate,
+    };
+    this.currentPage = 1; 
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         sortBy: this.appliedFilters.sortBy,
-        order: this.appliedFilters.order,
-        fromDate: this.appliedFilters.fromDate,
-        untilDate: this.appliedFilters.untilDate,
+        order: this.appliedFilters.sortOrder,
+        since: this.appliedFilters.since,
+        until: this.appliedFilters.until,
         page: this.currentPage,
       },
       queryParamsHandling: 'merge',
     });
+    this.getGameData(this.appliedFilters);
   }
 
   clearFilters() {
     this.filters = {
       sortBy: 'score',
-      order: 'asc',
-      fromDate: '',
-      untilDate: '',
+      sortOrder: SortOrder.Desc,
+      since: undefined,
+      until: undefined,
     };
     this.applyFilters();
   }

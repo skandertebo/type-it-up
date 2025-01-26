@@ -16,32 +16,32 @@
       </div>
 
       <div>
-        <label for="order" class="text-xl text-gray-400 block">Order</label>
+        <label for="sortOrder" class="text-xl text-gray-400 block">Order</label>
         <select
-          id="order"
-          [(ngModel)]="filters.order"
+          id="sortOrder"
+          [(ngModel)]="filters.sortOrder"
           class="px-4 py-2 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         >
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
+          <option value="ASC">Ascending</option>
+          <option value="DESC">Descending</option>
         </select>
       </div>
 
       <div>
-        <label for="fromDate" class="text-xl text-gray-400 block">From</label>
+        <label for="since" class="text-xl text-gray-400 block">From</label>
         <input
-          id="fromDate"
+          id="since"
           type="date"
-          [(ngModel)]="filters.fromDate"
+          [(ngModel)]="filters.since"
           class="px-2 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         />
       </div>
       <div>
-        <label for="untilDate" class="text-xl text-gray-400 block">Until</label>
+        <label for="until" class="text-xl text-gray-400 block">Until</label>
         <input
-          id="untilDate"
+          id="until"
           type="date"
-          [(ngModel)]="filters.untilDate"
+          [(ngModel)]="filters.until"
           class="px-2 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         />
       </div>
@@ -72,13 +72,13 @@
     </thead>
     <tbody class="bg-primaryForeground/20">
       <tr
-        *ngFor="let data of paginatedData"
+        *ngFor="let data of gameHistory"
         class="transition-colors hover:bg-[#45122a] border-b border-b-primaryText odd:bg-primaryForeground/10 even:bg-primaryForeground/20"
       >
         <td class="py-2 px-4">{{ data.score }}</td>
         <td class="py-2 px-4">{{ data.accuracy }}</td>
         <td class="py-2 px-4">{{ data.wpm }}</td>
-        <td class="py-2 px-4">{{ data.date }}</td>
+        <td class="py-2 px-4">{{ data.createdAt }}</td>
       </tr>
     </tbody>
   </table>
