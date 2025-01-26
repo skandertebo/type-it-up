@@ -1,7 +1,11 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div class="w-full relative">
   <div class="w-24 absolute flex justify-end items-center -top-6 right-0">
     <div
+      role="button"
+      tabindex="0"
       class="flex justify-center items-center rounded-full cursor-pointer active:scale-90"
+      (click)="previousPage()"
     >
       <img
         src="/shared-assets/images/arrow.svg"
@@ -10,7 +14,10 @@
       />
     </div>
     <div
+      role="button"
+      tabindex="0"
       class="flex justify-center items-center rounded-full cursor-pointer active:scale-90"
+      (click)="nextPage()"
     >
       <img
         src="/shared-assets/images/arrow.svg"
@@ -25,23 +32,33 @@
         <th scope="col" class="px-6 py-3">Rank</th>
         <th scope="col" class="px-6 py-3">Nickname</th>
         <th scope="col" class="px-6 py-3">
-          <div class="flex justify-center items-center">
+          <div
+            role="button"
+            tabindex="0"
+            class="flex justify-center items-center"
+            (click)="onBestScoreClick()"
+          >
             <span>Best Score</span>
-            <img
-              src="/shared-assets/images/arrow.svg"
-              alt="arrow"
-              class="cursor-pointer scale-90"
-            />
+            <div class="flex flex-col justify-end items-center">
+              <img
+                [src]="bestScoreArrow"
+                alt="arrow"
+                class="cursor-pointer -scale-90"
+              />
+            </div>
           </div>
         </th>
         <th scope="col" class="px-6 py-3">
-          <div class="flex justify-center items-center">
+          <div
+            role="button"
+            tabindex="0"
+            class="flex justify-center items-center"
+            (click)="onAvgScoreClick()"
+          >
             <span>Avg Score</span>
-            <img
-              src="/shared-assets/images/arrow.svg"
-              alt="arrow"
-              class="cursor-pointer scale-90"
-            />
+            <div class="flex flex-col justify-end items-center">
+              <img [src]="avgScoreArrow" alt="arrow" class="cursor-pointer" />
+            </div>
           </div>
         </th>
         <th scope="col" class="px-6 py-3">Avg Speed</th>
@@ -49,9 +66,7 @@
       </tr>
     </thead>
   </table>
-  <div
-    class="overflow-y-scroll h-52 scrollbar-thin scrollbar-thumb-primaryText scrollbar-hidden scrollbar-track-secondaryBackground"
-  >
+  <div class="overflow-y-scroll h-52 scroll-bar-custom">
     <table class="table-auto w-full text-center text-primaryText font-iceland">
       <tbody class="bg-secondaryBackground text-md w-full">
         @for(player of players; track player.rank ) {
@@ -60,7 +75,7 @@
           <td class="px-4 py-2 w-auto">{{ player.name }}</td>
           <td class="px-4 py-2 w-auto">{{ player.bestScore }}</td>
           <td class="px-4 py-2 w-auto">{{ player.avgScore }}</td>
-          <td class="px-4 py-2 w-auto">{{ player.speed }}</td>
+          <td class="px-4 py-2 w-auto">{{ player.wpm }}</td>
           <td class="px-4 py-2 w-auto">{{ player.accuracy }}</td>
         </tr>
         }
