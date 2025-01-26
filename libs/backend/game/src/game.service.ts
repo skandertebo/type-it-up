@@ -215,12 +215,9 @@ export class GameService {
       .innerJoin('game.users', 'user')
       .where('user.id = :userId', { userId: user.id })
       .select([
-        'AVG(game.wpm)',
-        'averageWpm',
-        'AVG(game.accuracy)',
-        'averageAccuracy',
-        'MAX(game.score)',
-        'highestScore',
+        'AVG(game.wpm) as averageWpm',
+        'AVG(game.accuracy) as averageAccuracy',
+        'MAX(game.score) as highestScore',
       ])
       .getRawOne();
 
@@ -234,28 +231,35 @@ export class GameService {
       .where('user.id = :userId', { userId: user.id })
       .andWhere('game.createdAt >= :sevenDaysAgo', { sevenDaysAgo })
       .select([
-        'DATE(game.createdAt)',
-        'date',
-        'AVG(game.wpm)',
-        'averageWpm',
-        'AVG(game.accuracy)',
-        'averageAccuracy',
+        'DATE(game.createdAt) as date',
+        'AVG(game.wpm) as averageWpm',
+        'AVG(game.accuracy) as averageAccuracy',
+        'MAX(game.score) as highestScore',
       ])
       .groupBy('DATE(game.createdAt)')
       .orderBy('DATE(game.createdAt)', 'DESC')
       .getRawMany();
 
-    const dailyStats = dailyStatsQuery.map((stat) => ({
-      date: new Date(stat.date),
-      averageWpm: parseFloat(stat.averageWpm),
-      averageAccuracy: parseFloat(stat.averageAccuracy),
-    }));
+    const dailyStats = dailyStatsQuery.map((stat) => {
+      const averageWpm = stat.averagewpm ?? 0;
+      const averageAccuracy = stat.averagewccuracy ?? 0;
+      return {
+        date: new Date(stat.date),
+        averageWpm: averageWpm,
+        averageAccuracy: averageAccuracy,
+      };
+    });
 
-    return {
-      averageWpm: parseFloat(overallStats.averageWpm) || 0,
-      averageAccuracy: parseFloat(overallStats.averageAccuracy) || 0,
-      highestScore: parseFloat(overallStats.highestScore) || 0,
+    const averageWpm = overallStats.averagewpm ?? 0;
+    const averageAccuracy = overallStats.averageaccuracy ?? 0;
+    const highestScore = overallStats.highestscore ?? 0;
+
+    const result = {
+      averageWpm: averageWpm,
+      averageAccuracy: averageAccuracy,
+      highestScore: highestScore,
       dailyStats,
     };
+    return result;
   }
 }
