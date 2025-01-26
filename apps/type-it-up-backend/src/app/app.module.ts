@@ -16,7 +16,7 @@ import HelloWorldModule from './hello-world/hello-world.module';
       host: 'localhost',
       port: 5432,
       username: 'skandertebourbi',
-      password: '',
+      password: 'test',
       database: 'type-it-up',
       synchronize: true,
       entities: [User, Game, UserStats],

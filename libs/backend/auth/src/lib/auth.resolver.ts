@@ -1,6 +1,6 @@
 import { generateRandomString } from '@/shared/utils';
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthResult } from './auth.models';
@@ -120,5 +120,13 @@ export class AuthResolver {
   @Mutation(() => User)
   async authenticateWithAccessToken(@CurrentUser() user: User) {
     return user;
+  }
+
+  @Query(() => Boolean)
+  async checkUsernameExists(@Args('username') username: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({
+      where: { username },
+    });
+    return !!user;
   }
 }

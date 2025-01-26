@@ -1,5 +1,7 @@
+import { CHECK_USERNAME_EXISTS, SIGNUP } from '@/frontend/type-it-up-graphql';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -8,17 +10,18 @@ import {
   AbstractControl,
   ValidationErrors,
   ValidatorFn,
+  AsyncValidatorFn,
 } from '@angular/forms';
+import { Apollo } from 'apollo-angular';
 import {
-  Observable,
-  map,
+  catchError,
   debounceTime,
-  switchMap,
-  first,
+  map,
+  of,
   Subject,
   takeUntil,
 } from 'rxjs';
-// import { SignupService } from './signup.service';
+import { Observable } from '@apollo/client/utilities';
 
 @Component({
   selector: 'lib-sign-up',
@@ -37,8 +40,11 @@ export class SignUpComponent implements OnDestroy {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
   private readonly NAME_PATTERN = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
 
-  // private signupService: SignupService
-  constructor(private fb: FormBuilder, ) {
+  constructor(
+    private fb: FormBuilder,
+    private apollo: Apollo,
+    private router: Router
+  ) {
     this.signupForm = this.fb.group(
       {
         firstName: [
@@ -68,7 +74,7 @@ export class SignUpComponent implements OnDestroy {
             Validators.pattern(this.USERNAME_PATTERN),
             this.noWhitespaceValidator(),
           ],
-          // [this.usernameExistsValidator()],
+          [this.usernameExistsValidator()],
         ],
         email: [
           '',
@@ -117,8 +123,6 @@ export class SignUpComponent implements OnDestroy {
     };
   }
 
-
-
   private noWhitespaceValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const hasWhitespace = /\s/.test(control.value);
@@ -126,19 +130,24 @@ export class SignUpComponent implements OnDestroy {
     };
   }
 
-  // private usernameExistsValidator() {
-  //   return (control: AbstractControl): Observable<ValidationErrors | null> => {
-  //     return control.valueChanges.pipe(
-  //       debounceTime(500),
-  //       switchMap((username) =>
-  //         this.signupService.checkUsernameExists(username).pipe(
-  //           map((exists) => (exists ? { usernameExists: true } : null)),
-  //           first()
-  //         )
-  //       )
-  //     );
-  //   };
-  // }
+  usernameExistsValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      const username = control.value.trim();
+
+      if (!username) return of(null as ValidationErrors | null);
+
+      return this.apollo.query<{ checkUsernameExists: boolean }>({
+        query: CHECK_USERNAME_EXISTS,
+        variables: { username },
+        fetchPolicy: 'no-cache'
+      }).pipe(
+        debounceTime(300),
+        map(response => response.data.checkUsernameExists ? { usernameTaken: true } : null),
+        catchError(() => of(null as ValidationErrors | null))
+      );
+    };
+  }
+  
 
   private passwordMatchValidator(
     control: AbstractControl
@@ -194,11 +203,26 @@ export class SignUpComponent implements OnDestroy {
   onSubmit(): void {
     if (this.signupForm.valid) {
       const formData = this.signupForm.value;
+      const { email, password, firstName, lastName, username } = formData;
+
       console.log('Signup Data:', formData);
-      alert('Signup Successful!');
+      this.apollo
+        .mutate({
+          mutation: SIGNUP,
+          variables: { email, password, firstName, lastName, username },
+        })
+        .subscribe({
+          next: (result) => {
+            console.log('sign up Successful:', result);
+            this.router.navigate(['/login']);
+          },
+          error: (error) => {
+            console.error('Error signing up:', error);
+          },
+        });
     } else {
       console.log('Form is invalid');
-        // to display validation errors for untouched fields when a user submits a form.
+      // to display validation errors for untouched fields when a user submits a form.
       this.markFormGroupTouched(this.signupForm);
     }
   }
