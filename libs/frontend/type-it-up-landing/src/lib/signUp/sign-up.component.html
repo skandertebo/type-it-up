@@ -1,0 +1,150 @@
+<div class=" max-h-full h-screen ">
+    <div class=" min-h-screen w-full justify-center">
+        <div class="flex flex-col items-center px-4 sm:px-10 md:px-20 lg:px-40 pt-28">
+            <div class="font-iceland text-white text-4xl md:text-6xl mb-8">
+                Sign Up </div>
+            @if (errorMessage){
+            <div class="font-iceland  text-red-500 text-sm sm:text-base mb-4">
+                {{errorMessage}}
+            </div>
+            }
+            <form [formGroup]="signupForm" (ngSubmit)="onSubmit()"
+                class=" font-iceland flex flex-col gap-8 w-full lg:w-[800px]">
+                <div class="flex flex-col lg:flex-row gap-8">
+
+                    <div class="flex flex-col gap-4 flex-1">
+                        <input formControlName="firstName" type="text" placeholder="FIRST NAME"
+                            class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl" />
+                        @if (signupForm.get('firstName')?.errors?.['required'] && signupForm.get('firstName')?.touched && signupForm.get('firstName')?.dirty)
+                        {
+                        <div class="text-red-500 text-sm sm:text-base">First name is required</div>
+                        }
+                        @if (signupForm.get('firstName')?.errors?.['pattern']) {
+                        <div class="text-red-500 text-sm sm:text-base">Please enter a valid first name</div>
+                        }
+                        @if (signupForm.get('firstName')?.errors?.['minlength']) {
+                        <div class="text-red-500 text-sm sm:text-base">First name must be at least 2 characters</div>
+                        }
+
+                        <input formControlName="lastName" type="text" placeholder="LAST NAME"
+                            class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl" />
+                        @if (signupForm.get('lastName')?.errors?.['required'] && signupForm.get('lastName')?.touched && signupForm.get('lastName')?.dirty) {
+                        <div class="text-red-500 text-sm sm:text-base">Last name is required</div>
+                        }
+                        @if (signupForm.get('lastName')?.errors?.['pattern']) {
+                        <div class="text-red-500 text-sm sm:text-base">Please enter a valid last name</div>
+                        }
+                        @if (signupForm.get('lastName')?.errors?.['minlength']) {
+                        <div class="text-red-500 text-sm sm:text-base">Last name must be at least 2 characters</div>
+                        }
+
+                        <input formControlName="username" type="text" placeholder="USERNAME"
+                            class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl " />
+                        @if (signupForm.get('username')?.errors?.['required'] && signupForm.get('username')?.touched && signupForm.get('username')?.dirty) {
+                        <div class="text-red-500 text-sm sm:text-base">Username is required</div>
+                        }
+                        @if (signupForm.get('username')?.errors?.['minlength']) {
+                        <div class="text-red-500 text-sm sm:text-base">Username must be at least 3 characters</div>
+                        }
+                        @if (signupForm.get('username')?.errors?.['maxlength']) {
+                        <div class="text-red-500 text-sm sm:text-base">Username cannot exceed 20 characters</div>
+                        }
+                        @if (signupForm.get('username')?.errors?.['pattern']) {
+                        <div class="text-red-500 text-sm sm:text-base">
+                            Username can only contain letters, numbers, underscores and hyphens
+                        </div>
+                        }
+                        @if (signupForm.get('username')?.errors?.['whitespace']) {
+                        <div class="text-red-500 text-sm sm:text-base">Username cannot contain spaces</div>
+                        }
+                        @if (signupForm.get('username')?.errors?.['usernameTaken']) {
+                        <div class="text-red-500 text-sm sm:text-base">Username already exists</div>
+                        }
+                        @if (signupForm.errors?.['usernameTooSimilar']) {
+                        <div class="text-red-500 text-sm sm:text-base">Username is too similar to your full name</div>
+                        }
+                        @if (signupForm.get('username')?.pending) {
+                        <div class="text-yellow-500 text-sm sm:text-base">Checking username availability...</div>
+                        }
+
+
+                    </div>
+
+                    <div class="flex flex-col gap-4 flex-1">
+                        <input formControlName="email" type="email" placeholder="EMAIL"
+                            class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl " />
+                        @if (signupForm.get('email')?.errors?.['required'] && signupForm.get('email')?.touched && signupForm.get('email')?.dirty) {
+                        <div class="text-red-500 text-sm sm:text-base">Email is required</div>
+                        }
+                        @if (signupForm.get('email')?.errors?.['email']) {
+                        <div class="text-red-500 text-sm sm:text-base">Please enter a valid email</div>
+                        }
+                        @if (signupForm.get('email')?.errors?.['maxlength']) {
+                        <div class="text-red-500 text-sm sm:text-base">Email is too long</div>
+                        }
+                        <div class="relative">
+
+                            <input formControlName="password" [type]="showPassword ? 'text' : 'password'"
+                                placeholder="PASSWORD"
+                                class="p-2 border-none md:w-[330px] rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl " />
+                            <button type="button" class="absolute  inset-y-0 right-4 text-white focus:outline-none"
+                                (click)="togglePasswordVisibility('password')">
+                                {{ showPassword ? 'Hide' : 'Show' }}
+                            </button>
+                        </div>
+                        @if (signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched  && signupForm.get('password')?.dirty) {
+                        <div class="text-red-500 text-sm sm:text-base">Password is required</div>
+                        }
+                        @if (signupForm.get('password')?.errors?.['minlength']) {
+                        <div class="text-red-500 text-sm sm:text-base">Password must be at least 8 characters</div>
+                        }
+                        @if (signupForm.get('password')?.errors?.['passwordStrength']) {
+                        <div class="text-red-500 text-sm sm:text-base">
+                            Password must contain uppercase, lowercase, number, and special character
+                        </div>
+                        }
+
+                        @if (signupForm.get('password')?.touched && signupForm.get('password')?.value !== '') {
+                        <div class="mt-2">
+                            <div class="h-2 rounded-full transition-all"
+                                [style.width]="getPasswordStrength().strength * 20 + '%'" [ngClass]="{
+                              'bg-red-500': getPasswordStrength().strength <= 1,
+                              'bg-yellow-500': getPasswordStrength().strength === 2,
+                              'bg-green-500': getPasswordStrength().strength >= 3
+                            }"></div>
+                            <div class="text-sm text-white mt-1">Password Strength: {{ getPasswordStrength().text }}
+                            </div>
+                        </div>
+                        }
+
+                        <div class="relative">
+                            <input formControlName="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'"
+                                placeholder="CONFIRM PASSWORD"
+                                class="p-3 md:w-[330px] border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl " />
+                            <button type="button" class="absolute inset-y-0   right-4 text-white focus:outline-none"
+                                (click)="togglePasswordVisibility('confirmPassword')">
+                                {{ showConfirmPassword ? 'Hide' : 'Show' }}
+                            </button>
+                        </div>
+                        @if (signupForm.get('confirmPassword')?.errors?.['required'] &&
+                        signupForm.get('confirmPassword')?.touched &&
+                        signupForm.get('confirmPassword')?.dirty) {
+                        <div class="text-red-500 text-sm sm:text-base">Please confirm your password</div>
+                        }
+                        @if (signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched) {
+                        <div class="text-red-500 text-sm sm:text-base">Passwords do not match</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="w-full flex justify-center mt-4">
+                    <button type="submit"
+                        class=" p-3 border-none rounded-2xl bg-pink-600 w-56 text-white text-xl sm:text-2xl font-bold cursor-pointer transition-transform transform hover:scale-105 disabled:opacity-80"
+                        [disabled]=" signupForm.pending">
+                        SIGN UP
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>

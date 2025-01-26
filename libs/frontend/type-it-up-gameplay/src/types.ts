@@ -1,5 +1,5 @@
 export type GameOptions = {
-    difficulty: string;
+    difficulty: 'easy' | 'medium' | 'hard';
     time: number;
     numbers: boolean;
     punctuation: boolean;

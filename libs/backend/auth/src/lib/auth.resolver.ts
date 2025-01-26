@@ -1,6 +1,6 @@
 import { generateRandomString } from '@/shared/utils';
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthResult } from './auth.models';
@@ -73,7 +73,18 @@ export class AuthResolver {
     @Args('email') email: string,
     @Args('password') password: string
   ) {
-    return this.workosService.authenticateWithUserPassword(email, password);
+    const authResult = await this.workosService.authenticateWithUserPassword(
+      email,
+      password
+    );
+    const user = await this.userRepository.findOne({
+      where: { workosId: authResult.user.id },
+    });
+    return {
+      user: user,
+      accessToken: authResult.accessToken,
+      refreshToken: authResult.refreshToken,
+    };
   }
 
   @Mutation(() => AuthResult)
@@ -88,11 +99,21 @@ export class AuthResolver {
     if (existingUser) {
       throw new Error('Email already exists');
     }
+
     existingUser = await this.userRepository.findOne({ where: { username } });
     if (existingUser) {
       throw new Error('Username already exists');
     }
-    const res = await this.workosService.registerUser(email, password, firstName, lastName);
+
+    const res = await this.workosService.registerUser(
+      email,
+      password,
+      firstName,
+      lastName
+    );
+
+    await this.workosService.verifyEmail(res.id);
+
     const addedUser = this.userRepository.create({
       firstName: res.firstName ?? firstName,
       lastName: res.lastName ?? lastName,
@@ -101,12 +122,32 @@ export class AuthResolver {
       workosId: res.id,
     });
     await this.userRepository.save(addedUser);
-    return this.workosService.authenticateWithUserPassword(email, password);
+
+    const authResult = await this.workosService.authenticateWithUserPassword(
+      email,
+      password
+    );
+
+    return {
+      user: addedUser,
+      accessToken: authResult.accessToken,
+      refreshToken: authResult.refreshToken,
+    };
   }
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
   async authenticateWithAccessToken(@CurrentUser() user: User) {
     return user;
+  }
+
+  @Query(() => Boolean)
+  async checkUsernameExists(
+    @Args('username') username: string
+  ): Promise<boolean> {
+    const user = await this.userRepository.findOne({
+      where: { username },
+    });
+    return !!user;
   }
 }

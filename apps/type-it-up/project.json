@@ -26,13 +26,8 @@
     "output": "/shared-assets/"
   }
         ],
-        "styles": ["apps/type-it-up/src/styles.css"],
-        "scripts": [],
-        "server": "apps/type-it-up/src/main.server.ts",
-        "prerender": true,
-        "ssr": {
-          "entry": "apps/type-it-up/server.ts"
-        }
+        "styles": ["apps/type-it-up/src/styles.css", "node_modules/ngx-toastr/toastr.css"],
+        "scripts": []
       },
       "configurations": {
         "production": {

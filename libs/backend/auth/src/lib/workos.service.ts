@@ -63,5 +63,12 @@ export class WorkosService {
       });
     return res;
   }
+
+  async verifyEmail(userId: string) {
+    await this.workos.userManagement.updateUser({
+     "userId": userId,
+     emailVerified: true,
+    });
+   }
 }
 
