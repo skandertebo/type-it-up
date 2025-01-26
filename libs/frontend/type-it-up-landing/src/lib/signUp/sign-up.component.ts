@@ -1,17 +1,17 @@
 import { CHECK_USERNAME_EXISTS, SIGNUP } from '@/frontend/type-it-up-graphql';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import {
+  AbstractControl,
+  AsyncValidatorFn,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
-  AbstractControl,
   ValidationErrors,
   ValidatorFn,
-  AsyncValidatorFn,
+  Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { catchError, debounceTime, map, of, Subject, takeUntil } from 'rxjs';
 
@@ -19,7 +19,7 @@ import { catchError, debounceTime, map, of, Subject, takeUntil } from 'rxjs';
   selector: 'lib-sign-up',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './signup.component.html',
+  templateUrl: './sign-up.component.html',
 })
 export class SignUpComponent implements OnDestroy {
   signupForm: FormGroup;
@@ -199,7 +199,7 @@ export class SignUpComponent implements OnDestroy {
         })
         .subscribe({
           next: () => {
-            this.errorMessage=  null;
+            this.errorMessage = null;
             this.router.navigate(['/login']);
           },
           error: (error) => {

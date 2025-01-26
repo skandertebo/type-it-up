@@ -73,8 +73,13 @@ export class AuthResolver {
     @Args('email') email: string,
     @Args('password') password: string
   ) {
-    const authResult = await this.workosService.authenticateWithUserPassword(email, password);
-    const user = await this.userRepository.findOne({ where: { workosId: authResult.user.id } });
+    const authResult = await this.workosService.authenticateWithUserPassword(
+      email,
+      password
+    );
+    const user = await this.userRepository.findOne({
+      where: { workosId: authResult.user.id },
+    });
     return {
       user: user,
       accessToken: authResult.accessToken,
@@ -83,45 +88,52 @@ export class AuthResolver {
   }
 
   @Mutation(() => AuthResult)
-async registerUser(
-  @Args('email') email: string,
-  @Args('password') password: string,
-  @Args('firstName') firstName: string,
-  @Args('lastName') lastName: string,
-  @Args('username') username: string
-) {
+  async registerUser(
+    @Args('email') email: string,
+    @Args('password') password: string,
+    @Args('firstName') firstName: string,
+    @Args('lastName') lastName: string,
+    @Args('username') username: string
+  ) {
+    let existingUser = await this.userRepository.findOne({ where: { email } });
+    if (existingUser) {
+      throw new Error('Email already exists');
+    }
 
-  let existingUser = await this.userRepository.findOne({ where: { email } });
-  if (existingUser) {
-    throw new Error('Email already exists');
+    existingUser = await this.userRepository.findOne({ where: { username } });
+    if (existingUser) {
+      throw new Error('Username already exists');
+    }
+
+    const res = await this.workosService.registerUser(
+      email,
+      password,
+      firstName,
+      lastName
+    );
+
+    await this.workosService.verifyEmail(res.id);
+
+    const addedUser = this.userRepository.create({
+      firstName: res.firstName ?? firstName,
+      lastName: res.lastName ?? lastName,
+      username,
+      email: res.email,
+      workosId: res.id,
+    });
+    await this.userRepository.save(addedUser);
+
+    const authResult = await this.workosService.authenticateWithUserPassword(
+      email,
+      password
+    );
+
+    return {
+      user: addedUser,
+      accessToken: authResult.accessToken,
+      refreshToken: authResult.refreshToken,
+    };
   }
-
-  existingUser = await this.userRepository.findOne({ where: { username } });
-  if (existingUser) {
-    throw new Error('Username already exists');
-  }
-
-  const res = await this.workosService.registerUser(email, password, firstName, lastName);
-
-  await this.workosService.verifyEmail(res.id);
-
-  const addedUser = this.userRepository.create({
-    firstName: res.firstName ?? firstName,
-    lastName: res.lastName ?? lastName,
-    username,
-    email: res.email,
-    workosId: res.id,
-  });
-  await this.userRepository.save(addedUser);
-
-  const authResult = await this.workosService.authenticateWithUserPassword(email, password);
-
-  return {
-    user: addedUser,
-    accessToken: authResult.accessToken,
-    refreshToken: authResult.refreshToken,
-  };
-}
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
@@ -130,7 +142,9 @@ async registerUser(
   }
 
   @Query(() => Boolean)
-  async checkUsernameExists(@Args('username') username: string): Promise<boolean> {
+  async checkUsernameExists(
+    @Args('username') username: string
+  ): Promise<boolean> {
     const user = await this.userRepository.findOne({
       where: { username },
     });
