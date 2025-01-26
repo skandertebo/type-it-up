@@ -90,27 +90,20 @@ async registerUser(
   @Args('lastName') lastName: string,
   @Args('username') username: string
 ) {
-  console.log('Starting registration for:', email);
 
   let existingUser = await this.userRepository.findOne({ where: { email } });
   if (existingUser) {
-    console.log('Email already exists:', email);
     throw new Error('Email already exists');
   }
 
   existingUser = await this.userRepository.findOne({ where: { username } });
   if (existingUser) {
-    console.log('Username already exists:', username);
     throw new Error('Username already exists');
   }
 
-  console.log('Calling workosService.registerUser');
   const res = await this.workosService.registerUser(email, password, firstName, lastName);
-  console.log('User registered in WorkOS:', res);
 
-  console.log('Calling workosService.verifyEmail');
   await this.workosService.verifyEmail(res.id);
-  console.log('Email verified in WorkOS');
 
   const addedUser = this.userRepository.create({
     firstName: res.firstName ?? firstName,
@@ -120,11 +113,8 @@ async registerUser(
     workosId: res.id,
   });
   await this.userRepository.save(addedUser);
-  console.log('User saved in local database:', addedUser);
 
-  console.log('Calling workosService.authenticateWithUserPassword');
   const authResult = await this.workosService.authenticateWithUserPassword(email, password);
-  console.log('Authentication result:', authResult);
 
   return {
     user: addedUser,

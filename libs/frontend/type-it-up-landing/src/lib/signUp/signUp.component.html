@@ -3,7 +3,11 @@
         <div class="flex flex-col items-center px-4 sm:px-10 md:px-20 lg:px-40 pt-28">
             <div class="font-iceland text-white text-4xl md:text-6xl mb-8">
                 Sign Up </div>
-
+            @if (errorMessage){
+            <div class="font-iceland  text-red-500 text-sm sm:text-base mb-4">
+                {{errorMessage}}
+            </div>
+            }
             <form [formGroup]="signupForm" (ngSubmit)="onSubmit()"
                 class=" font-iceland flex flex-col gap-8 w-full lg:w-[800px]">
                 <div class="flex flex-col lg:flex-row gap-8">
@@ -135,7 +139,7 @@
                 <div class="w-full flex justify-center mt-4">
                     <button type="submit"
                         class=" p-3 border-none rounded-2xl bg-pink-600 w-56 text-white text-xl sm:text-2xl font-bold cursor-pointer transition-transform transform hover:scale-105 disabled:opacity-80"
-                        [disabled]="signupForm.invalid || signupForm.pending">
+                        [disabled]=" signupForm.pending">
                         SIGN UP
                     </button>
                 </div>

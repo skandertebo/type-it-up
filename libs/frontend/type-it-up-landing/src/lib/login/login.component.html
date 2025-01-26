@@ -7,6 +7,11 @@
       <div class="font-iceland mr-[26px] text-white text-4xl md:text-6xl mb-8">
         Welcome Back
       </div>
+      @if (errorMessage){
+      <div class="font-iceland mr-[26px] text-red-500 text-sm sm:text-base mb-4">
+        {{errorMessage}}
+      </div>
+      }
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 w-full sm:w-80 md:w-96">
         <input formControlName="email" type="email" placeholder="EMAIL"
@@ -23,7 +28,7 @@
 
         <button type="submit"
           class="font-iceland p-3 border-none rounded-2xl bg-pink-600 text-white text-xl sm:text-2xl font-bold cursor-pointer transition-transform transform hover:scale-105 disabled:opacity-80"
-          [disabled]="loginForm.invalid">
+          [disabled]="loginForm.pending">
           LOGIN
         </button>
       </form>

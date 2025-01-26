@@ -1,6 +1,6 @@
 import { CHECK_USERNAME_EXISTS, SIGNUP } from '@/frontend/type-it-up-graphql';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   FormBuilder,
@@ -14,7 +14,6 @@ import {
 } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { catchError, debounceTime, map, of, Subject, takeUntil } from 'rxjs';
-import { Observable } from '@apollo/client/utilities';
 
 @Component({
   selector: 'lib-sign-up',
@@ -22,16 +21,12 @@ import { Observable } from '@apollo/client/utilities';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './signup.component.html',
 })
-export class SignUpComponent implements OnDestroy, AfterViewInit {
+export class SignUpComponent implements OnDestroy {
   signupForm: FormGroup;
+  errorMessage: string | null = null;
   private destroy$ = new Subject<void>();
   showPassword = false;
   showConfirmPassword = false;
-
-  private readonly USERNAME_PATTERN = /^[a-zA-Z0-9_-]*$/;
-  // private readonly PASSWORD_PATTERN =
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
-  private readonly NAME_PATTERN = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
 
   constructor(
     private fb: FormBuilder,
@@ -46,7 +41,6 @@ export class SignUpComponent implements OnDestroy, AfterViewInit {
             Validators.required,
             Validators.minLength(2),
             Validators.maxLength(50),
-            Validators.pattern(this.NAME_PATTERN),
           ],
         ],
         lastName: [
@@ -55,7 +49,6 @@ export class SignUpComponent implements OnDestroy, AfterViewInit {
             Validators.required,
             Validators.minLength(2),
             Validators.maxLength(50),
-            Validators.pattern(this.NAME_PATTERN),
           ],
         ],
         username: [
@@ -64,7 +57,6 @@ export class SignUpComponent implements OnDestroy, AfterViewInit {
             Validators.required,
             Validators.minLength(3),
             Validators.maxLength(20),
-            Validators.pattern(this.USERNAME_PATTERN),
             this.noWhitespaceValidator(),
           ],
           [this.usernameExistsValidator()],
@@ -79,7 +71,6 @@ export class SignUpComponent implements OnDestroy, AfterViewInit {
             Validators.required,
             Validators.minLength(8),
             Validators.maxLength(32),
-            // Validators.pattern(this.PASSWORD_PATTERN),
             this.createPasswordStrengthValidator(),
           ],
         ],
@@ -96,15 +87,6 @@ export class SignUpComponent implements OnDestroy, AfterViewInit {
       .subscribe(() => {
         this.signupForm?.get('confirmPassword')?.updateValueAndValidity();
       });
-  }
-
-  ngAfterViewInit() {
-    this.signupForm.statusChanges.subscribe((status) => {
-      console.log('Form status:', status);
-      console.log('Form errors:', this.signupForm.errors);
-      console.log('Username errors:', this.signupForm.get('username')?.errors);
-      console.log('Password errors:', this.signupForm.get('password')?.errors);
-    });
   }
 
   // Custom validators
@@ -210,23 +192,25 @@ export class SignUpComponent implements OnDestroy, AfterViewInit {
       const formData = this.signupForm.value;
       const { email, password, firstName, lastName, username } = formData;
 
-      console.log('Signup Data:', formData);
       this.apollo
         .mutate({
           mutation: SIGNUP,
           variables: { email, password, firstName, lastName, username },
         })
         .subscribe({
-          next: (result) => {
-            console.log('sign up Successful:', result);
+          next: () => {
+            this.errorMessage=  null;
             this.router.navigate(['/login']);
           },
           error: (error) => {
+            this.errorMessage = error.message;
             console.error('Error signing up:', error);
           },
         });
     } else {
       console.log('Form is invalid');
+      this.errorMessage = 'Please fix validation erros first';
+
       // to display validation errors for untouched fields when a user submits a form.
       this.markFormGroupTouched(this.signupForm);
     }

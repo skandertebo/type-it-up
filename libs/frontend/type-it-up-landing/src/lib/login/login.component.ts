@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  errorMessage: string | null = null;
 
   constructor(private fb: FormBuilder, private apollo: Apollo, private router: Router) {
     this.loginForm = this.fb.group({
@@ -31,7 +32,6 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      console.log('Login Data:', { email, password });
 
       this.apollo
         .mutate({
@@ -39,15 +39,17 @@ export class LoginComponent {
           variables: { email, password },
         })
         .subscribe({
-          next: (result) => {
-            console.log('Login Successful:', result);
+          next: () => {
+            this.errorMessage = null;
             this.router.navigate(['/home']);
           },
           error: (error) => {
             console.error('Error logging in:', error);
+            this.errorMessage = 'Invalid email or password. Please try again.'; 
           },
         });
     } else {
+      this.errorMessage = 'Please fill in all required fields correctly.';
       console.log('Form is invalid');
     }
   }
