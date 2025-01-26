@@ -16,13 +16,13 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 w-full sm:w-80 md:w-96">
         <input formControlName="email" type="email" placeholder="EMAIL"
           class="p-3 border-none rounded-2xl bg-[#96104B4F]  text-white text-xl sm:text-2xl font-iceland" />
-        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched&& loginForm.get('email')?.dirty) {
         <div class="text-red-500 text-sm sm:text-base">Please enter a valid email.</div>
         }
 
         <input formControlName="password" type="password" placeholder="PASSWORD"
           class="p-3 border-none rounded-2xl bg-[#96104B4F]  text-white text-xl sm:text-2xl font-iceland" />
-        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched && loginForm.get('password')?.dirty) {
         <div class="text-red-500 text-sm sm:text-base">Password is required (min 6 characters).</div>
         }
 

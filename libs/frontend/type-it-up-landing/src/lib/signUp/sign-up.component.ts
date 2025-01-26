@@ -206,19 +206,17 @@ export class SignUpComponent implements OnDestroy {
           },
         });
     } else {
-      this.errorMessage = 'Please fix validation erros first';
+      this.errorMessage = 'Please fix validation erros first and try again';
 
       // to display validation errors for untouched fields when a user submits a form.
-      this.markFormGroupTouched(this.signupForm);
+      this.markFormGroupTouchedAndDirty(this.signupForm);
     }
   }
 
-  private markFormGroupTouched(formGroup: FormGroup) {
+  private markFormGroupTouchedAndDirty(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach((control) => {
       control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
+      control.markAsDirty();
     });
   }
 
