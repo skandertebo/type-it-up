@@ -123,7 +123,7 @@ export class SignUpComponent implements OnDestroy {
       if (!username) return of(null);
 
       return this.apollo
-        .query<{ checkUsernameExists: boolean }>({
+        .query({
           query: CHECK_USERNAME_EXISTS,
           variables: { username },
           fetchPolicy: 'no-cache',
