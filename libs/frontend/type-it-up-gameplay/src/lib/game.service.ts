@@ -94,7 +94,7 @@ export class GameService {
         (gameOptions.punctuation ? optionMultiplier : 0));
     const score = wpm * accuracy * multiplier;
 
-    return { wpm, accuracy, score, correctWords: 0, wrongWords: 0 };
+    return { wpm, accuracy, score };
   }
 
   handleGameEnd(

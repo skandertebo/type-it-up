@@ -12,7 +12,5 @@ export type Game = {
 export interface GameResults {
   wpm: number;
   accuracy: number;
-  correctWords: number;
-  wrongWords: number;
   score: number;
 }
