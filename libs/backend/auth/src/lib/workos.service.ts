@@ -44,12 +44,14 @@ export class WorkosService {
   }
 
   async authenticateWithUserPassword(email: string, password: string) {
+    console.log('Authenticating user:', email);
     const { accessToken, refreshToken, user } =
       await this.workos.userManagement.authenticateWithPassword({
         email,
         password,
-        clientId: this.clientId
+        clientId: this.clientId,
       });
+    console.log('Authentication successful:', { accessToken, refreshToken, user });
     return { accessToken, refreshToken, user };
   }
 
