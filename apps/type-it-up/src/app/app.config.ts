@@ -8,9 +8,12 @@ import { HttpLink } from '@apollo/client/link/http';
 import { provideApollo } from 'apollo-angular';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
+import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimations(), provideToastr(),
     provideHttpClient(),
     provideApollo(() => {
       const authLink = setContext(() => {

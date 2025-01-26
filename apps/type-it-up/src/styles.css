@@ -26,3 +26,14 @@ html::-webkit-scrollbar {
   font-weight: normal;
   font-style: normal;
 }
+
+.toast-success {
+  background-color: #96104B !important;
+  font-size: 18px;
+}
+
+
+.toast-error {
+  background-color: #96104B !important;
+  font-size: 18px;
+}

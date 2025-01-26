@@ -5,6 +5,7 @@ import { CreateGameInput } from './dto/create-game.input';
 import { GetGameHistoryArgs } from './dto/get-game-history.args';
 import { GetLeaderboardArgs } from './dto/get-leaderboard.args';
 import { LeaderboardEntry } from './dto/leaderboard-entry.model';
+import { UserGameStats } from './dto/user-stats.model';
 import { GameService } from './game.service';
 
 @Resolver(() => Game)
@@ -51,4 +52,10 @@ export class GameResolver {
   async getLeaderboard(@Args() args: GetLeaderboardArgs) {
     return this.gameService.getLeaderboard(args);
   }
-} 
+
+  @UseGuards(GqlAuthGuard)
+  @Query(() => UserGameStats)
+  async getUserStats(@CurrentUser() user: User) {
+    return this.gameService.getUserStats(user);
+  }
+}
