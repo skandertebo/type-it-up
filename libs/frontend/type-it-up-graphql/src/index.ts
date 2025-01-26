@@ -10,4 +10,4 @@ export * from './lib/get-user-games.gql';
 export * from './lib/get-user-stats.gql';
 export * from './lib/login.gql';
 export * from './lib/signup.gql';
-
+export * from './lib/validate-unique-username.gql';

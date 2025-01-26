@@ -47,6 +47,7 @@
     "graphql-tools": "^9.0.9",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0",
+    "ngx-toastr": "^19.0.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.1.13",

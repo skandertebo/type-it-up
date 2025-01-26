@@ -48,7 +48,7 @@ export class WorkosService {
       await this.workos.userManagement.authenticateWithPassword({
         email,
         password,
-        clientId: this.clientId
+        clientId: this.clientId,
       });
     return { accessToken, refreshToken, user };
   }

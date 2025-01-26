@@ -2,10 +2,12 @@ import {
   AUTHENTICATE_WITH_CODE,
   AUTHENTICATE_WITH_REFRESH_TOKEN,
   AuthenticateWithRefreshTokenMutation,
+  LOGIN,
+  SIGNUP,
 } from '@/frontend/type-it-up-graphql';
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 
 type User =
   AuthenticateWithRefreshTokenMutation['authenticateWithRefreshToken']['user'];
@@ -23,6 +25,13 @@ export class AuthService {
   constructor(private apollo: Apollo) {
     this.checkAuthentication();
   }
+
+
+  isAuthenticated(): boolean{
+    const token = localStorage.getItem('accessToken');
+    return !!token 
+  }
+
 
   private checkAuthentication() {
     this.loadingSubject.next(true);
@@ -101,6 +110,55 @@ export class AuthService {
           this.loadingSubject.next(false);
         },
       });
+  }
+
+  handleLogin(email: string, password: string) {
+    return this.apollo
+      .mutate({
+        mutation: LOGIN,
+        variables: { email, password },
+      })
+      .pipe(
+        map((result) => result.data?.authenticateWithUserPassword),
+        tap((data) => {
+          if (data) {
+            this.userSubject.next(data.user);
+            localStorage.setItem('refreshToken', data.refreshToken);
+            localStorage.setItem('accessToken', data.accessToken);
+          }
+        })
+      );
+  }
+
+  handleSignup(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    username: string
+  ) {
+    return this.apollo
+      .mutate({
+        mutation: SIGNUP,
+        variables: { email, password, firstName, lastName, username },
+      })
+      .pipe(
+        map((result) => {
+          if (result.data?.registerUser) {
+            localStorage.setItem(
+              'refreshToken',
+              result.data.registerUser.refreshToken
+            );
+            localStorage.setItem(
+              'accessToken',
+              result.data.registerUser.accessToken
+            );
+            this.userSubject.next(result.data.registerUser.user);
+            return result.data.registerUser;
+          }
+          return null;
+        })
+      );
   }
 
   logout() {

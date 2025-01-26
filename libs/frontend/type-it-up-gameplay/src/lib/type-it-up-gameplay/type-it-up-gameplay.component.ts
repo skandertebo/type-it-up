@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameComponent } from "../game/game.component";
 import { GameMenuComponent } from "../game-menu/game-menu.component";
@@ -8,6 +8,8 @@ import { ButtonComponent } from '@/frontend/shared';
 import { DefaultGameOptions } from '../constants';
 import { GameService } from '../game.service';
 import { Word } from '../game/types';
+import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -18,24 +20,36 @@ import { Word } from '../game/types';
   imports: [CommonModule, GameComponent, GameMenuComponent, ButtonComponent],
   templateUrl: './type-it-up-gameplay.component.html',
 })
-export class TypeItUpGameplayComponent {
+export class TypeItUpGameplayComponent implements OnDestroy{
   state: GameplayStatus = GameplayStatus.MENU;
   game : Game | null = null;
   options:GameOptions = DefaultGameOptions;
+  gameGenSubscription: Subscription|null = null;
   
   gameService: GameService = inject(GameService)
+  toastr = inject(ToastrService)
 
   onGameEnd(words: Word[]){
     const gameResults = this.gameService.handleGameEnd(this.game, words, this.options)
-    console.log(gameResults)
-    //TODO: implement the view for finished game
-    //this.state = GameplayStatus.FINISHED
+    this.state = GameplayStatus.FINISHED
   }
 
   onSubmit(){
-    //TODO: put loading state
-    this.game = this.gameService.getNewGame()
-    this.state = GameplayStatus.ONGOING;
+    this.state = GameplayStatus.LOADING;
+    this.gameService.getNewGame(this.options).subscribe({
+      next: (value)=>{
+        this.game = value;
+        this.state = GameplayStatus.ONGOING;
+      },
+      error: (err) =>{
+        console.error(err)
+        this.toastr.error("Something went Wrong!")
+        this.state = GameplayStatus.MENU
+      }
+    })
   }
 
+  ngOnDestroy(): void {
+      this.gameGenSubscription?.unsubscribe()
+  }
 }

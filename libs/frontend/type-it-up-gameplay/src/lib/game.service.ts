@@ -1,12 +1,58 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CharState, Word } from './game/types';
 import { Game, GameOptions, GameResults } from '../types';
 import { difficultyMultiplier, optionMultiplier } from './constants';
+import { Apollo } from 'apollo-angular';
+import { AuthService } from '@/frontend/type-it-up-auth';
+import { CREATE_GAME, Difficulty, GENERATE_TEXT } from '@/frontend/type-it-up-graphql';
+import { ToastrService } from 'ngx-toastr';
+import { map, Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class GameService {
+@Injectable(
+  {
+    providedIn:'root'
+  }
+)
+export class GameService{
+  apolloClient = inject(Apollo)
+  authenticationService = inject(AuthService)
+  toaster = inject(ToastrService)
+
+  getNewGame(gameOptions: GameOptions): Observable<Game> {
+    return this.apolloClient.query<{ generateText: { data: { text: string } } }>({
+      query: GENERATE_TEXT,
+      variables: {
+        difficulty: gameOptions.difficulty.toUpperCase() as Difficulty,
+        punctuation: gameOptions.punctuation,
+        numbers: gameOptions.numbers
+      }
+    }).pipe(
+      map(result => ({ text: result.data.generateText.data.text }))
+    );
+  }
+
+
+
+  saveGame(game: Game, userContent:string, gameOptions: GameOptions, gameResults: GameResults){
+    return this.apolloClient.mutate({
+      mutation: CREATE_GAME,
+      variables:{
+        createGameInput:{
+          options:{
+            punctuation: gameOptions.punctuation,
+            numbers: gameOptions.numbers,
+            difficulty: gameOptions.difficulty
+          },
+          gameContent: game?.text,
+          userContent,
+          duration: gameOptions.time,
+          ...gameResults
+        }
+      }
+   })
+  }
+
+
   calculateMetrics(words: Word[], time: number){
       let totalRightChars = 0;
       let totalWrittenChars = 0;
@@ -39,14 +85,29 @@ export class GameService {
   }
 
   handleGameEnd(game: Game | null, words: Word[], gameOptions: GameOptions): GameResults{
-    // TODO: persist game
     const gameResults = this.calculateGameResults(words, gameOptions);
+    if(this.authenticationService.isAuthenticated())
+      this.saveGame(game!, this.getUserContent(words), gameOptions, gameResults).subscribe({
+        next: () => {
+          this.toaster.success("Game Saved")
+        },
+        error: () => {
+          this.toaster.error('Error saving game');
+        },
+      });
     return gameResults
   }  
 
-  getNewGame(): Game{
-    // TODO: use the gameGenerator
-    return {text : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'}
+
+  getUserContent(words:Word[]){
+    return words
+    .map(word => 
+      word
+        .filter(char => char.state !== CharState.Deactivated)
+        .map(char => char.char)
+        .join('')
+    )
+    .join(' ');
   }
 
 }
