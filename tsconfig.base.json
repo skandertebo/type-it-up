@@ -21,9 +21,6 @@
       "@/frontend/type-it-up-auth": [
         "libs/frontend/type-it-up-auth/src/index.ts"
       ],
-      "@/frontend/type-it-up-gameplay": [
-        "libs/frontend/type-it-up-gameplay/src/index.ts"
-      ],
       "@/frontend/type-it-up-graphql": [
         "libs/frontend/type-it-up-graphql/src/index.ts"
       ],
