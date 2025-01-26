@@ -60,6 +60,9 @@ export class TypeItUpGameplayComponent implements OnDestroy {
     });
   }
 
+  onRestart(){
+    this.state = GameplayStatus.MENU
+  }
   ngOnDestroy(): void {
     this.gameGenSubscription?.unsubscribe();
   }

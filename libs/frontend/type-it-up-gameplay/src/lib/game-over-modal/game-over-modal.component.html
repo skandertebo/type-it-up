@@ -7,11 +7,11 @@
     <div class="space-y-4 text-gray-200">
       <div class="flex justify-between">
         <span>Score</span>
-        <span class="font-bold">{{ results.score }}</span>
+        <span class="font-bold">{{ results.score.toFixed(2) }}</span>
       </div>
       <div class="flex justify-between">
         <span>Words Per Minute:</span>
-        <span class="font-bold">{{ results.wpm }}</span>
+        <span class="font-bold">{{ results.wpm.toFixed(2) }}</span>
       </div>
       <div class="flex justify-between">
         <span>Accuracy:</span>
@@ -24,7 +24,7 @@
     <div class="mt-6 flex justify-center">
       <lib-button
         content="Back to Home"
-        (clickEvent)="navigateHome()"
+        (clickEvent)="onClick()"
       ></lib-button>
     </div>
   </div>

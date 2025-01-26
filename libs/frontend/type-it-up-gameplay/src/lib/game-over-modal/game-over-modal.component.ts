@@ -1,6 +1,6 @@
 import { ButtonComponent } from '@/frontend/shared';
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameResults } from '../../types';
 
@@ -12,10 +12,12 @@ import { GameResults } from '../../types';
 })
 export class GameOverModalComponent {
   @Input({ required: true }) results!: GameResults;
+  @Output() restartEvent = new EventEmitter();
 
   constructor(private router: Router) {}
+  
 
-  navigateHome() {
-    this.router.navigate(['/home']);
+  onClick() {
+    this.restartEvent.emit()
   }
 }
