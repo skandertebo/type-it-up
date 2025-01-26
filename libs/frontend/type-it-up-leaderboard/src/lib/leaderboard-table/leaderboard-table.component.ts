@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { LeaderboardTableRowComponent } from '../leaderboard-table-row/leaderboard-table-row.component';
 
 @Component({
   selector: 'lib-leaderboard-table',
   standalone: true,
-  imports: [LeaderboardTableRowComponent],
+  imports: [],
   templateUrl: './leaderboard-table.component.html',
 })
 export class LeaderboardTableComponent {

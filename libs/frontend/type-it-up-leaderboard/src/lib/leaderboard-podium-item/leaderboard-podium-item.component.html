@@ -1,1 +1,25 @@
-<p>leaderboard-podium-item works!</p>
+<div class="flex flex-col items-center relative group">
+  <img [src]="icon" alt="Second Place Icon" class="w-16 h-16" />
+  <div
+    [style.height]="height"
+    class="w-40 bg-secondaryBackground flex items-center justify-center rounded-lg"
+  >
+    <span class="text-white font-bold text-lg cursor-default">{{
+      player.name
+    }}</span>
+  </div>
+  <div
+    class="bg-secondaryBackground w-60 border-2 p-2 border-primaryText rounded-lg text-primaryText absolute top-8 left-1/2 hidden group-hover:block z-50"
+  >
+    <div>
+      <img [src]="icon" alt="Place Icon" class="w-8 h-8 inline-block mr-2" />
+      <span class="font-iceland text-xl font-semibold">{{ player.name }} </span>
+      <div>
+        <div>Best Score : {{ player.bestScore }}</div>
+        <div>Avg Score : {{ player.avgScore }}</div>
+        <div>Avg Speed : {{ player.speed }} wpm</div>
+        <div>Avg Accuarcy : {{ player.accuracy }} %</div>
+      </div>
+    </div>
+  </div>
+</div>
