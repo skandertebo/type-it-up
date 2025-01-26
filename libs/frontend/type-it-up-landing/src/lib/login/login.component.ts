@@ -25,7 +25,9 @@ export class LoginComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
-
+  navigateToSignUp() {
+    this.router.navigate(['/sign-up']);
+  }
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
