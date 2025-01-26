@@ -26,6 +26,13 @@ export class AuthService {
     this.checkAuthentication();
   }
 
+
+  isAuthenticated(): boolean{
+    const token = localStorage.getItem('accessToken');
+    return !!token 
+  }
+
+
   private checkAuthentication() {
     this.loadingSubject.next(true);
 

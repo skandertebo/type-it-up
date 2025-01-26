@@ -27,9 +27,7 @@ export class TypeItUpGameplayComponent {
 
   onGameEnd(words: Word[]){
     const gameResults = this.gameService.handleGameEnd(this.game, words, this.options)
-    console.log(gameResults)
-    //TODO: implement the view for finished game
-    //this.state = GameplayStatus.FINISHED
+    this.state = GameplayStatus.FINISHED
   }
 
   onSubmit(){
