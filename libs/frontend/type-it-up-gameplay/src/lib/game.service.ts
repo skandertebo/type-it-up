@@ -98,6 +98,7 @@ export class GameService{
     return gameResults
   }  
 
+
   getUserContent(words:Word[]){
     return words
     .map(word => 
