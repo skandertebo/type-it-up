@@ -15,7 +15,7 @@
                     <div class="flex flex-col gap-4 flex-1">
                         <input formControlName="firstName" type="text" placeholder="FIRST NAME"
                             class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl" />
-                        @if (signupForm.get('firstName')?.errors?.['required'] && signupForm.get('firstName')?.touched)
+                        @if (signupForm.get('firstName')?.errors?.['required'] && signupForm.get('firstName')?.touched && signupForm.get('firstName')?.dirty)
                         {
                         <div class="text-red-500 text-sm sm:text-base">First name is required</div>
                         }
@@ -28,7 +28,7 @@
 
                         <input formControlName="lastName" type="text" placeholder="LAST NAME"
                             class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl" />
-                        @if (signupForm.get('lastName')?.errors?.['required'] && signupForm.get('lastName')?.touched) {
+                        @if (signupForm.get('lastName')?.errors?.['required'] && signupForm.get('lastName')?.touched && signupForm.get('lastName')?.dirty) {
                         <div class="text-red-500 text-sm sm:text-base">Last name is required</div>
                         }
                         @if (signupForm.get('lastName')?.errors?.['pattern']) {
@@ -40,7 +40,7 @@
 
                         <input formControlName="username" type="text" placeholder="USERNAME"
                             class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl " />
-                        @if (signupForm.get('username')?.errors?.['required'] && signupForm.get('username')?.touched) {
+                        @if (signupForm.get('username')?.errors?.['required'] && signupForm.get('username')?.touched && signupForm.get('username')?.dirty) {
                         <div class="text-red-500 text-sm sm:text-base">Username is required</div>
                         }
                         @if (signupForm.get('username')?.errors?.['minlength']) {
@@ -57,7 +57,7 @@
                         @if (signupForm.get('username')?.errors?.['whitespace']) {
                         <div class="text-red-500 text-sm sm:text-base">Username cannot contain spaces</div>
                         }
-                        @if (signupForm.get('username')?.errors?.['usernameExists']) {
+                        @if (signupForm.get('username')?.errors?.['usernameTaken']) {
                         <div class="text-red-500 text-sm sm:text-base">Username already exists</div>
                         }
                         @if (signupForm.errors?.['usernameTooSimilar']) {
@@ -73,7 +73,7 @@
                     <div class="flex flex-col gap-4 flex-1">
                         <input formControlName="email" type="email" placeholder="EMAIL"
                             class="p-3 border-none rounded-2xl bg-[#96104B4F] opacity-80 text-white text-xl sm:text-2xl " />
-                        @if (signupForm.get('email')?.errors?.['required'] && signupForm.get('email')?.touched) {
+                        @if (signupForm.get('email')?.errors?.['required'] && signupForm.get('email')?.touched && signupForm.get('email')?.dirty) {
                         <div class="text-red-500 text-sm sm:text-base">Email is required</div>
                         }
                         @if (signupForm.get('email')?.errors?.['email']) {
@@ -92,7 +92,7 @@
                                 {{ showPassword ? 'Hide' : 'Show' }}
                             </button>
                         </div>
-                        @if (signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched) {
+                        @if (signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched  && signupForm.get('password')?.dirty) {
                         <div class="text-red-500 text-sm sm:text-base">Password is required</div>
                         }
                         @if (signupForm.get('password')?.errors?.['minlength']) {
@@ -127,7 +127,8 @@
                             </button>
                         </div>
                         @if (signupForm.get('confirmPassword')?.errors?.['required'] &&
-                        signupForm.get('confirmPassword')?.touched) {
+                        signupForm.get('confirmPassword')?.touched &&
+                        signupForm.get('confirmPassword')?.dirty) {
                         <div class="text-red-500 text-sm sm:text-base">Please confirm your password</div>
                         }
                         @if (signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched) {
