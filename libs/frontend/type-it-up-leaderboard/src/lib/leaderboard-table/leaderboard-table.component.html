@@ -53,79 +53,12 @@
     class="overflow-y-scroll h-52 scrollbar-thin scrollbar-thumb-primaryText scrollbar-hidden scrollbar-track-secondaryBackground"
   >
     <table class="table-auto w-full text-center text-primaryText font-iceland">
-      <tbody class="bg-secondaryBackground text-md">
-        <tr class="border-b-[1px] border-b-primaryText text-2xl">
-          <td class="px-4 py-2 font-medium">1</td>
-          <td class="px-4 py-2">troupi</td>
-          <td class="px-4 py-2">150</td>
-          <td class="px-4 py-2">135</td>
-          <td class="px-4 py-2">50 wpm</td>
-          <td class="px-4 py-2">90%</td>
-        </tr>
-        <tr class="border-b-[1px] border-b-primaryText text-2xl">
-          <td class="px-4 py-2 font-medium">1</td>
-          <td class="px-4 py-2">troupi</td>
-          <td class="px-4 py-2">150</td>
-          <td class="px-4 py-2">135</td>
-          <td class="px-4 py-2">50 wpm</td>
-          <td class="px-4 py-2">90%</td>
-        </tr>
-        <tr class="border-b-[1px] border-b-primaryText text-2xl">
-          <td class="px-4 py-2 font-medium">1</td>
-          <td class="px-4 py-2">troupi</td>
-          <td class="px-4 py-2">150</td>
-          <td class="px-4 py-2">135</td>
-          <td class="px-4 py-2">50 wpm</td>
-          <td class="px-4 py-2">90%</td>
-        </tr>
-        <tr class="border-b-[1px] border-b-primaryText text-2xl">
-          <td class="px-4 py-2 font-medium">1</td>
-          <td class="px-4 py-2">troupi</td>
-          <td class="px-4 py-2">150</td>
-          <td class="px-4 py-2">135</td>
-          <td class="px-4 py-2">50 wpm</td>
-          <td class="px-4 py-2">90%</td>
-        </tr>
-        <tr class="border-b-[1px] border-b-primaryText text-2xl">
-          <td class="px-4 py-2 font-medium">1</td>
-          <td class="px-4 py-2">troupi</td>
-          <td class="px-4 py-2">150</td>
-          <td class="px-4 py-2">135</td>
-          <td class="px-4 py-2">50 wpm</td>
-          <td class="px-4 py-2">90%</td>
-        </tr>
-        <tr class="border-b-[1px] border-b-primaryText text-2xl">
-          <td class="px-4 py-2 font-medium">1</td>
-          <td class="px-4 py-2">troupi</td>
-          <td class="px-4 py-2">150</td>
-          <td class="px-4 py-2">135</td>
-          <td class="px-4 py-2">50 wpm</td>
-          <td class="px-4 py-2">90%</td>
-        </tr>
-        <tr class="border-b-[1px] border-b-primaryText text-2xl">
-          <td class="px-4 py-2 font-medium">1</td>
-          <td class="px-4 py-2">troupi</td>
-          <td class="px-4 py-2">150</td>
-          <td class="px-4 py-2">135</td>
-          <td class="px-4 py-2">50 wpm</td>
-          <td class="px-4 py-2">90%</td>
-        </tr>
-        <tr class="border-b-[1px] border-b-primaryText text-2xl">
-          <td class="px-4 py-2 font-medium">1</td>
-          <td class="px-4 py-2">troupi</td>
-          <td class="px-4 py-2">150</td>
-          <td class="px-4 py-2">135</td>
-          <td class="px-4 py-2">50 wpm</td>
-          <td class="px-4 py-2">90%</td>
-        </tr>
-        <tr class="border-b-[1px] border-b-primaryText text-2xl">
-          <td class="px-4 py-2 font-medium">10</td>
-          <td class="px-4 py-2">troupi</td>
-          <td class="px-4 py-2">150</td>
-          <td class="px-4 py-2">135</td>
-          <td class="px-4 py-2">50 wpm</td>
-          <td class="px-4 py-2">90%</td>
-        </tr>
+      <tbody class="bg-secondaryBackground text-md w-full">
+        @for(player of players; track player.rank ) {
+        <lib-leaderboard-table-row
+          [rowData]="player"
+        ></lib-leaderboard-table-row>
+        }
       </tbody>
     </table>
   </div>
