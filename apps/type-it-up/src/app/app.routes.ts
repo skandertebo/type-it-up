@@ -1,14 +1,10 @@
-import { AuthGuard, CallbackComponent } from '@/frontend/type-it-up-auth';
+import { CallbackComponent } from '@/frontend/type-it-up-auth';
 import {
   TypeItUpHomeComponent,
   TypeItUpHomeLayoutComponent,
 } from '@/frontend/type-it-up-home';
+import { LoginComponent, SignUpComponent } from '@/frontend/type-it-up-landing';
 import { TypeItUpProfileComponent } from '@/frontend/type-it-up-profile';
-import {
-  LoginComponent,
-  SignUpComponent,
-  TypeItUpLandingComponent,
-} from '@/frontend/type-it-up-landing';
 import { Route } from '@angular/router';
 import {} from '@nestjs/passport';
 
