@@ -1,4 +1,8 @@
-import { CallbackComponent, ProtectedGuard, PublicGuard } from '@/frontend/type-it-up-auth';
+import {
+  CallbackComponent,
+  ProtectedGuard,
+  PublicGuard,
+} from '@/frontend/type-it-up-auth';
 import {
   TypeItUpHomeComponent,
   TypeItUpHomeLayoutComponent,
@@ -6,6 +10,8 @@ import {
 import { LoginComponent, SignUpComponent } from '@/frontend/type-it-up-landing';
 import { Route } from '@angular/router';
 import {} from '@nestjs/passport';
+const Profile = import('@/frontend/type-it-up-profile');
+const History = import('@/frontend/type-it-up-history');
 
 export const appRoutes: Route[] = [
   {
@@ -16,19 +22,13 @@ export const appRoutes: Route[] = [
       { path: 'home', component: TypeItUpHomeComponent },
       {
         path: 'profile',
-        loadComponent: () =>
-          import('@/frontend/type-it-up-profile').then(
-            (m) => m.TypeItUpProfileComponent
-          ),
+        loadComponent: () => Profile.then((m) => m.TypeItUpProfileComponent),
         data: { preload: true },
         canActivate: [ProtectedGuard],
       },
       {
         path: 'history',
-        loadComponent: () =>
-          import('@/frontend/type-it-up-history').then(
-            (m) => m.TypeItUpHistoryComponent
-          ),
+        loadComponent: () => History.then((m) => m.TypeItUpHistoryComponent),
         data: { preload: true },
         canActivate: [ProtectedGuard],
       },
