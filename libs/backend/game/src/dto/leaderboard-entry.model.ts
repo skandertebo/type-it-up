@@ -7,5 +7,14 @@ export class LeaderboardEntry {
   user!: User;
 
   @Field(() => Float)
-  score!: number;
-} 
+  bestScore!: number;
+
+  @Field(() => Float)
+  averageScore!: number;
+
+  @Field(() => Float)
+  averageWpm!: number;
+
+  @Field(() => Float)
+  averageAccuracy!: number;
+}

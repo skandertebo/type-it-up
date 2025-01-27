@@ -157,55 +157,42 @@ export class GameService {
   }
 
   async getLeaderboard(args: GetLeaderboardArgs) {
-    const { sortType } = args;
+    const { sortType, sortOrder, limit, offset } = args;
 
-    if (sortType === LeaderboardSortType.BEST_SCORE) {
-      // Get users with their best scores
-      const result = await this.gameRepository
-        .createQueryBuilder('game')
-        .leftJoin('game.users', 'user')
-        .select('user.id', 'userId')
-        .addSelect('user.username', 'username')
-        .addSelect('user.firstName', 'firstName')
-        .addSelect('user.lastName', 'lastName')
-        .addSelect('MAX(game.score)', 'score')
-        .groupBy('user.id')
-        .orderBy('MAX(game.score)', 'DESC')
-        .getRawMany();
+    const orderBy =
+      sortType === LeaderboardSortType.BEST_SCORE
+        ? 'MAX(game.score)'
+        : 'AVG(game.score)';
 
-      return result.map((row) => ({
-        user: {
-          id: row.userId,
-          username: row.username,
-          firstName: row.firstName,
-          lastName: row.lastName,
-        },
-        score: parseFloat(row.score),
-      }));
-    } else {
-      // Get users with their average scores
-      const result = await this.gameRepository
-        .createQueryBuilder('game')
-        .leftJoin('game.users', 'user')
-        .select('user.id', 'userId')
-        .addSelect('user.username', 'username')
-        .addSelect('user.firstName', 'firstName')
-        .addSelect('user.lastName', 'lastName')
-        .addSelect('AVG(game.score)', 'score')
-        .groupBy('user.id')
-        .orderBy('AVG(game.score)', 'DESC')
-        .getRawMany();
+    const result = await this.gameRepository
+      .createQueryBuilder('game')
+      .leftJoin('game.users', 'user')
+      .select('user.id', 'userId')
+      .addSelect('user.username', 'username')
+      .addSelect('user.firstName', 'firstName')
+      .addSelect('user.lastName', 'lastName')
+      .addSelect('MAX(game.score)', 'best_score')
+      .addSelect('AVG(game.score)', 'average_score')
+      .addSelect('AVG(game.wpm)', 'average_wpm')
+      .addSelect('AVG(game.accuracy)', 'average_accuracy')
+      .groupBy('user.id')
+      .orderBy(orderBy, sortOrder)
+      .skip(offset)
+      .take(limit)
+      .getRawMany();
 
-      return result.map((row) => ({
-        user: {
-          id: row.userId,
-          username: row.username,
-          firstName: row.firstName,
-          lastName: row.lastName,
-        },
-        score: parseFloat(row.score),
-      }));
-    }
+    return result.map((row) => ({
+      user: {
+        id: row.userId,
+        username: row.username,
+        firstName: row.firstName,
+        lastName: row.lastName,
+      },
+      bestScore: Number(row.best_score || 0),
+      averageScore: Number(row.average_score || 0),
+      averageWpm: Number(row.average_wpm || 0),
+      averageAccuracy: Number(row.average_accuracy || 0),
+    }));
   }
 
   async getUserStats(user: User): Promise<UserGameStats> {
