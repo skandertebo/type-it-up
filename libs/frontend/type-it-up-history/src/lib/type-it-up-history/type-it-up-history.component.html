@@ -1,5 +1,5 @@
 <div
-  class="text-primaryText rounded-lg p-4 justify-center items-center flex flex-col text-center w-full font-iceland"
+  class="text-primaryText rounded-lg p-4 pt-1 justify-center items-center flex flex-col text-center w-full font-iceland"
 >
   <div class="flex justify-between items-center mb-4">
     <div class="flex space-x-4 items-center">
@@ -10,8 +10,8 @@
           [(ngModel)]="filters.sortBy"
           class="px-8 py-2 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         >
-          <option value="score">Score</option>
-          <option value="date">Date</option>
+          <option value="SCORE">Score</option>
+          <option value="DATE">Date</option>
         </select>
       </div>
 
@@ -78,7 +78,7 @@
         <td class="py-2 px-4">{{ data.score }}</td>
         <td class="py-2 px-4">{{ data.accuracy }}</td>
         <td class="py-2 px-4">{{ data.wpm }}</td>
-        <td class="py-2 px-4">{{ data.createdAt }}</td>
+        <td class="py-2 px-4">{{ data.createdAt | date: 'dd MMM yyyy' }}</td>
       </tr>
     </tbody>
   </table>
@@ -91,12 +91,10 @@
     >
       Previous
     </button>
-    <span class="text-xl text-gray-400">
-      Page {{ currentPage }} of {{ totalPages }}
-    </span>
+    <span class="text-xl text-gray-400">Page {{ currentPage }}</span>
     <button
       class="px-3 py-1 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white disabled:opacity-50"
-      [disabled]="currentPage === totalPages"
+      [disabled]="!hasNextPage"
       (click)="nextPage()"
     >
       Next
