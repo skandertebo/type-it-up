@@ -26,9 +26,9 @@ export class NavbarComponent {
       description: 'View your profile and stats for Type It Up',
     },
     {
-      title: 'Competitions',
-      link: '/competitions',
-      description: 'Join a competition or view the leaderboard',
+      title: 'History',
+      link: '/history',
+      description: 'View your past games and scores',
     },
   ];
 }
