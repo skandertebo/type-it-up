@@ -5,7 +5,6 @@ import {
   TypeItUpHomeLayoutComponent,
 } from '@/frontend/type-it-up-home';
 import { LoginComponent, SignUpComponent } from '@/frontend/type-it-up-landing';
-import { TypeItUpProfileComponent } from '@/frontend/type-it-up-profile';
 import { Route } from '@angular/router';
 import {} from '@nestjs/passport';
 
