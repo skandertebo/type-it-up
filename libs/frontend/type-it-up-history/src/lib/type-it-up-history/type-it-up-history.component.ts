@@ -4,39 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Apollo } from 'apollo-angular';
-import { GET_GAME_HISTORY, SortOrder } from '@/frontend/type-it-up-graphql';
+import {
+  Game,
+  GameSortField,
+  GET_GAME_HISTORY,
+  SortOrder,
+} from '@/frontend/type-it-up-graphql';
 
 type Filter = {
-  sortBy: string;
+  sortBy: GameSortField;
   sortOrder: SortOrder;
   since: Date | undefined;
   until: Date | undefined;
-};
-
-type Game = {
-  __typename?: 'Game';
-  id: string;
-  gameContent: string;
-  userContent: string;
-  duration: number;
-  wpm: number;
-  accuracy: number;
-  score: number;
-  createdAt: Date;
-  options: {
-    __typename?: 'GameOptions';
-    difficulty: string;
-    punctuation: boolean;
-    numbers: boolean;
-  };
-  users: Array<{
-    __typename?: 'User';
-    id: string;
-    username: string;
-    firstName?: string | null;
-    lastName?: string | null;
-    workosId: string;
-  }>;
+  skip: number;
 };
 
 @Component({
@@ -48,18 +28,17 @@ type Game = {
 })
 export class TypeItUpHistoryComponent implements OnInit {
   gameHistory: Game[] = [];
-
   filters: Filter = {
-    sortBy: 'score',
+    sortBy: GameSortField.Date,
     sortOrder: SortOrder.Desc,
     since: undefined,
     until: undefined,
+    skip: 0,
   };
-
   appliedFilters = { ...this.filters };
-
   currentPage = 1;
-  itemsPerPage = 10;
+  itemsPerPage = 7;
+  hasNextPage = true;
 
   constructor(
     private router: Router,
@@ -69,50 +48,37 @@ export class TypeItUpHistoryComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
-      this.appliedFilters.sortBy = params['sortBy'] || 'score';
+      this.appliedFilters.sortBy = params['sortBy'] || GameSortField.Date;
       this.appliedFilters.sortOrder = params['order'] || SortOrder.Desc;
       this.appliedFilters.since = params['since'] || undefined;
       this.appliedFilters.until = params['until'] || undefined;
       this.currentPage = params['page'] ? +params['page'] : 1;
     });
-
     this.applyFilters();
   }
 
   getGameData(appliedFilters: Filter) {
-    this.apollo.query({
-      query: GET_GAME_HISTORY,
-      variables: {
-        since: appliedFilters.since,
-        until: appliedFilters.until,
-        sortOrder: appliedFilters.sortOrder,
-      },
-    }).subscribe(({ data }) => {
-      this.gameHistory = data.getGameHistory;
-    });
-    
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.gameHistory.length / this.itemsPerPage);
-  }
-
-  get paginatedData() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.gameHistory.slice(startIndex, startIndex + this.itemsPerPage);
+    this.apollo
+      .query({
+        query: GET_GAME_HISTORY,
+        variables: {
+          since: appliedFilters.since,
+          until: appliedFilters.until,
+          sortOrder: appliedFilters.sortOrder,
+          skip: appliedFilters.skip,
+          sortBy: appliedFilters.sortBy,
+          take: this.itemsPerPage,
+        },
+      })
+      .subscribe(({ data }) => {
+        this.gameHistory = data.getGameHistory as Game[];
+        this.hasNextPage = this.gameHistory.length === this.itemsPerPage;
+      });
   }
 
   applyFilters() {
-    const sinceDate = this.filters.since ? new Date(this.filters.since) : undefined;
-    const untilDate = this.filters.until ? new Date(this.filters.until) : undefined;
-    const order = this.filters.sortOrder==="ASC" ? SortOrder.Asc : SortOrder.Desc;
-    this.appliedFilters = {
-      ...this.filters,
-      sortOrder: order,
-      since: sinceDate,
-      until: untilDate,
-    };
-    this.currentPage = 1; 
+    const skip = (this.currentPage - 1) * this.itemsPerPage;
+    this.appliedFilters = { ...this.filters, skip };
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
@@ -129,33 +95,27 @@ export class TypeItUpHistoryComponent implements OnInit {
 
   clearFilters() {
     this.filters = {
-      sortBy: 'score',
+      sortBy: GameSortField.Date,
       sortOrder: SortOrder.Desc,
       since: undefined,
       until: undefined,
+      skip: 0,
     };
+    this.currentPage = 1;
     this.applyFilters();
   }
 
   nextPage() {
-    if (this.currentPage < this.totalPages) {
+    if (this.hasNextPage) {
       this.currentPage++;
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { page: this.currentPage },
-        queryParamsHandling: 'merge',
-      });
+      this.applyFilters();
     }
   }
 
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { page: this.currentPage },
-        queryParamsHandling: 'merge',
-      });
+      this.applyFilters();
     }
   }
 }
