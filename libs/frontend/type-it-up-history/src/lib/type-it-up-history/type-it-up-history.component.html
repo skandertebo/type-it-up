@@ -1,0 +1,105 @@
+<div
+  class="text-primaryText rounded-lg p-4 justify-center items-center flex flex-col text-center w-full font-iceland"
+>
+  <div class="flex justify-between items-center mb-4">
+    <div class="flex space-x-4 items-center">
+      <div>
+        <label for="sortBy" class="text-xl text-gray-400 block">Sort By</label>
+        <select
+          id="sortBy"
+          [(ngModel)]="filters.sortBy"
+          class="px-8 py-2 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
+        >
+          <option value="score">Score</option>
+          <option value="date">Date</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="sortOrder" class="text-xl text-gray-400 block">Order</label>
+        <select
+          id="sortOrder"
+          [(ngModel)]="filters.sortOrder"
+          class="px-4 py-2 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
+        >
+          <option value="ASC">Ascending</option>
+          <option value="DESC">Descending</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="since" class="text-xl text-gray-400 block">From</label>
+        <input
+          id="since"
+          type="date"
+          [(ngModel)]="filters.since"
+          class="px-2 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
+        />
+      </div>
+      <div>
+        <label for="until" class="text-xl text-gray-400 block">Until</label>
+        <input
+          id="until"
+          type="date"
+          [(ngModel)]="filters.until"
+          class="px-2 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
+        />
+      </div>
+
+      <button
+        class="px-4 py-2 mt-7 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white hover:bg-[#45122a]"
+        (click)="applyFilters()"
+      >
+        Apply
+    </button>
+    <button
+      class="px-4 py-2 mt-7 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white hover:bg-[#45122a]"
+      (click)="clearFilters()"
+    >
+      Clear
+    </button>
+    </div>
+  </div>
+
+  <table class="text-xl w-3/4">
+    <thead>
+      <tr class="uppercase">
+        <th class="py-2 px-4 text-center">Score</th>
+        <th class="py-2 px-4 text-center">Accuracy</th>
+        <th class="py-2 px-4 text-center">Test Time</th>
+        <th class="py-2 px-4 text-center">Date</th>
+      </tr>
+    </thead>
+    <tbody class="bg-primaryForeground/20">
+      <tr
+        *ngFor="let data of gameHistory"
+        class="transition-colors hover:bg-[#45122a] border-b border-b-primaryText odd:bg-primaryForeground/10 even:bg-primaryForeground/20"
+      >
+        <td class="py-2 px-4">{{ data.score }}</td>
+        <td class="py-2 px-4">{{ data.accuracy }}</td>
+        <td class="py-2 px-4">{{ data.wpm }}</td>
+        <td class="py-2 px-4">{{ data.createdAt }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="flex justify-center items-center mt-4 space-x-2">
+    <button
+      class="px-3 py-1 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white disabled:opacity-50"
+      [disabled]="currentPage === 1"
+      (click)="previousPage()"
+    >
+      Previous
+    </button>
+    <span class="text-xl text-gray-400">
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <button
+      class="px-3 py-1 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white disabled:opacity-50"
+      [disabled]="currentPage === totalPages"
+      (click)="nextPage()"
+    >
+      Next
+    </button>
+  </div>
+</div>

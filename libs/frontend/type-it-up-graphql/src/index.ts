@@ -12,3 +12,4 @@ export * from './lib/login.gql';
 export * from './lib/signup.gql';
 export * from './lib/validate-unique-username.gql';
 export * from './lib/get-leaderboard.gql';
+export * from './lib/get-game-history.gql';
