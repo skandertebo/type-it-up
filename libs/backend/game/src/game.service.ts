@@ -10,7 +10,11 @@ import {
   Repository,
 } from 'typeorm';
 import { CreateGameInput } from './dto/create-game.input';
-import { GetGameHistoryArgs, SortOrder } from './dto/get-game-history.args';
+import {
+  GameSortField,
+  GetGameHistoryArgs,
+  SortOrder,
+} from './dto/get-game-history.args';
 import {
   GetLeaderboardArgs,
   LeaderboardSortType,
@@ -121,7 +125,15 @@ export class GameService {
   }
 
   async getGameHistory(user: User, args: GetGameHistoryArgs): Promise<Game[]> {
-    const { since, until, difficulty, sortOrder = SortOrder.DESC } = args;
+    const {
+      since,
+      until,
+      difficulty,
+      sortBy = GameSortField.DATE,
+      sortOrder = SortOrder.DESC,
+      skip = 0,
+      take = 10,
+    } = args;
 
     // Build the where clause with proper typing
     const where: FindOptionsWhere<Game> = {
@@ -146,66 +158,62 @@ export class GameService {
       };
     }
 
+    // Build the order object based on sortBy field
+    const order: Record<string, SortOrder> = {
+      [sortBy]: sortOrder,
+    };
+
+    // Add secondary sort by date if not already sorting by date
+    if (sortBy !== GameSortField.DATE) {
+      order['createdAt'] = SortOrder.DESC;
+    }
+
     return this.gameRepository.find({
       where,
       relations: ['users'],
-      order: {
-        score: sortOrder,
-        createdAt: 'DESC', // Secondary sort by date
-      },
+      order,
+      skip,
+      take,
     });
   }
 
   async getLeaderboard(args: GetLeaderboardArgs) {
-    const { sortType } = args;
+    const { sortType, sortOrder, limit, offset } = args;
 
-    if (sortType === LeaderboardSortType.BEST_SCORE) {
-      // Get users with their best scores
-      const result = await this.gameRepository
-        .createQueryBuilder('game')
-        .leftJoin('game.users', 'user')
-        .select('user.id', 'userId')
-        .addSelect('user.username', 'username')
-        .addSelect('user.firstName', 'firstName')
-        .addSelect('user.lastName', 'lastName')
-        .addSelect('MAX(game.score)', 'score')
-        .groupBy('user.id')
-        .orderBy('MAX(game.score)', 'DESC')
-        .getRawMany();
+    const orderBy =
+      sortType === LeaderboardSortType.BEST_SCORE
+        ? 'MAX(game.score)'
+        : 'AVG(game.score)';
 
-      return result.map((row) => ({
-        user: {
-          id: row.userId,
-          username: row.username,
-          firstName: row.firstName,
-          lastName: row.lastName,
-        },
-        score: parseFloat(row.score),
-      }));
-    } else {
-      // Get users with their average scores
-      const result = await this.gameRepository
-        .createQueryBuilder('game')
-        .leftJoin('game.users', 'user')
-        .select('user.id', 'userId')
-        .addSelect('user.username', 'username')
-        .addSelect('user.firstName', 'firstName')
-        .addSelect('user.lastName', 'lastName')
-        .addSelect('AVG(game.score)', 'score')
-        .groupBy('user.id')
-        .orderBy('AVG(game.score)', 'DESC')
-        .getRawMany();
+    const result = await this.gameRepository
+      .createQueryBuilder('game')
+      .leftJoin('game.users', 'user')
+      .select('user.id', 'userId')
+      .addSelect('user.username', 'username')
+      .addSelect('user.firstName', 'firstName')
+      .addSelect('user.lastName', 'lastName')
+      .addSelect('MAX(game.score)', 'best_score')
+      .addSelect('AVG(game.score)', 'average_score')
+      .addSelect('AVG(game.wpm)', 'average_wpm')
+      .addSelect('AVG(game.accuracy)', 'average_accuracy')
+      .groupBy('user.id')
+      .orderBy(orderBy, sortOrder)
+      .skip(offset)
+      .take(limit)
+      .getRawMany();
 
-      return result.map((row) => ({
-        user: {
-          id: row.userId,
-          username: row.username,
-          firstName: row.firstName,
-          lastName: row.lastName,
-        },
-        score: parseFloat(row.score),
-      }));
-    }
+    return result.map((row) => ({
+      user: {
+        id: row.userId,
+        username: row.username,
+        firstName: row.firstName,
+        lastName: row.lastName,
+      },
+      bestScore: Number(row.best_score || 0),
+      averageScore: Number(row.average_score || 0),
+      averageWpm: Number(row.average_wpm || 0),
+      averageAccuracy: Number(row.average_accuracy || 0),
+    }));
   }
 
   async getUserStats(user: User): Promise<UserGameStats> {

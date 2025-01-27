@@ -1,10 +1,31 @@
-<div
-  class="w-screen h-screen relative"
->
+<div class="w-screen h-screen relative">
+  <div class="fixed top-0 left-0 w-full h-16 text-white flex justify-end items-center px-4 font-iceland">
+    @if (authState$ | async; as authState) {
+      @if (!authState.loading) {
+        @if (authState.user) {
+          <div class="flex items-center gap-4 mt-7 mr-6">
+            <span>Welcome, {{ authState.user }}</span>
+            <button (click)="onLogout()" class="bg-pink-600 hover:bg-pink-700 text-white py-2  px-4 rounded-lg">
+              Logout
+            </button>
+          </div>
+        } @else {
+          <button (click)="navigateToLogin()" class="bg-pink-600 mt-7 mr-6 hover:bg-pink-700 text-white py-2 px-4  rounded-lg">
+            Login
+          </button>
+        }
+      } @else {
+        <span class="mt-7 mr-6">Loading...</span>
+      }
+    }
+  </div>
+
+  <!-- Main Content -->
   <div class="no-scrollbar w-full h-[82%] pt-20 overflow-y-scroll">
     <router-outlet></router-outlet>
   </div>
 
+  <!-- Navbar -->
   <div class="w-full h-[18%] fixed bottom-0 left-0">
     <lib-navbar></lib-navbar>
   </div>
