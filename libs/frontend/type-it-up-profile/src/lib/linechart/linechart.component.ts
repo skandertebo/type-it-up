@@ -1,28 +1,16 @@
-import { DailyStats } from '@/frontend/type-it-up-graphql';
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  AfterViewInit,
-  ViewChild,
-  ElementRef,
-  NgZone,
-  Input,
-  SimpleChanges,
-  OnChanges,
-} from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 
 @Component({
   selector: 'lib-linechart',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './linechart.component.html',
   styleUrls: ['./linechart.component.css'],
 })
-export class LineChartComponent implements AfterViewInit, OnChanges {
+export class LineChartComponent implements AfterViewInit {
   @ViewChild('lineChart') lineChart!: ElementRef<HTMLCanvasElement>;
   chart!: Chart;
-  @Input() dailyStats: DailyStats[] = [];
 
   constructor(private ngZone: NgZone) {}
 
@@ -31,29 +19,23 @@ export class LineChartComponent implements AfterViewInit, OnChanges {
       this.createChart();
     });
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['dailyStats'] && changes['dailyStats'].currentValue) {
-      this.ngZone.runOutsideAngular(() => {
-        if (this.chart) {
-          this.chart.destroy(); 
-        }
-        this.createChart();
-      });
-    }
-  }
-
+  
   createChart(): void {
-    const processedData = this.processDailyStats();
-
     this.chart = new Chart(this.lineChart.nativeElement, {
       type: 'line',
       data: {
-        labels: processedData.dates,
+        labels: [
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+        ],
         datasets: [
           {
             label: 'Accuracy',
-            data: processedData.accuracy,
+            data: [10, 20, 15, 25, 30, 35],
             borderColor: '#35547B',
             borderWidth: 2,
             pointBackgroundColor: 'rgb(102, 139, 252)',
@@ -61,7 +43,7 @@ export class LineChartComponent implements AfterViewInit, OnChanges {
           },
           {
             label: 'WPM',
-            data: processedData.wpm,
+            data: [50, 25, 20, 30, 25, 40],
             borderColor: '#96104B',
             borderWidth: 2,
             pointBackgroundColor: 'rgba(255, 99, 132, 1)',
@@ -129,7 +111,6 @@ export class LineChartComponent implements AfterViewInit, OnChanges {
                 family: 'Iceland',
               },
             },
-            min: 0,
             grid: {
               color: '#ffffff',
             },
@@ -153,7 +134,6 @@ export class LineChartComponent implements AfterViewInit, OnChanges {
                 family: 'Iceland',
               },
             },
-            min: 0,
             grid: {
               drawOnChartArea: false,
             },
@@ -171,34 +151,5 @@ export class LineChartComponent implements AfterViewInit, OnChanges {
         devicePixelRatio: 2,
       },
     });
-  }
-
-  processDailyStats() {
-    const today = new Date();
-    const lastSevenDays = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(today);
-      date.setDate(today.getDate() - i);
-      return date.toISOString().split('T')[0];
-    }).reverse();
-
-    const statsMap = new Map(
-      this.dailyStats.map((stat) => [
-        new Date(stat.date).toISOString().split('T')[0],
-        stat,
-      ])
-    );
-
-    const accuracy = lastSevenDays.map(
-      (date) => statsMap.get(date)?.averageAccuracy || 0
-    );
-    const wpm = lastSevenDays.map(
-      (date) => statsMap.get(date)?.averageWpm || 0
-    );
-
-    return {
-      dates: lastSevenDays,
-      accuracy,
-      wpm,
-    };
   }
 }
