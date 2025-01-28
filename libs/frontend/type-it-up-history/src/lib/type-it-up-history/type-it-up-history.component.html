@@ -51,13 +51,13 @@
         (click)="applyFilters()"
       >
         Apply
-    </button>
-    <button
-      class="px-4 py-2 mt-7 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white hover:bg-[#45122a]"
-      (click)="clearFilters()"
-    >
-      Clear
-    </button>
+      </button>
+      <button
+        class="px-4 py-2 mt-7 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white hover:bg-[#45122a]"
+        (click)="clearFilters()"
+      >
+        Clear
+      </button>
     </div>
   </div>
 
@@ -66,7 +66,7 @@
       <tr class="uppercase">
         <th class="py-2 px-4 text-center">Score</th>
         <th class="py-2 px-4 text-center">Accuracy</th>
-        <th class="py-2 px-4 text-center">Test Time</th>
+        <th class="py-2 px-4 text-center">WPM</th>
         <th class="py-2 px-4 text-center">Date</th>
       </tr>
     </thead>
@@ -75,10 +75,10 @@
         *ngFor="let data of gameHistory"
         class="transition-colors hover:bg-[#45122a] border-b border-b-primaryText odd:bg-primaryForeground/10 even:bg-primaryForeground/20"
       >
-        <td class="py-2 px-4">{{ data.score }}</td>
-        <td class="py-2 px-4">{{ data.accuracy }}</td>
+        <td class="py-2 px-4">{{ data.score.toFixed(2) }}</td>
+        <td class="py-2 px-4">{{ (data.accuracy * 100).toFixed(2) }}</td>
         <td class="py-2 px-4">{{ data.wpm }}</td>
-        <td class="py-2 px-4">{{ data.createdAt | date: 'dd MMM yyyy' }}</td>
+        <td class="py-2 px-4">{{ data.createdAt | date : 'dd MMM yyyy' }}</td>
       </tr>
     </tbody>
   </table>
