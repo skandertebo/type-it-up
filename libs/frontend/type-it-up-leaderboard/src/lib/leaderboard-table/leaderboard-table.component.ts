@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { Filter } from '../../types';
-import { LeaderboardSortType, SortOrder } from '@/frontend/type-it-up-graphql';
+import {
+  LeaderboardEntry,
+  LeaderboardSortType,
+  SortOrder,
+} from '@/frontend/type-it-up-graphql';
 import { itemsPerPage } from '../../constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LeaderboardService } from '../leaderboard.service';
@@ -13,95 +17,16 @@ import { LeaderboardService } from '../leaderboard.service';
   styleUrl: './leaderboard-table.component.css',
 })
 export class LeaderboardTableComponent {
-  players = [
-    {
-      rank: 1,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-    {
-      rank: 2,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-    {
-      rank: 3,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-    {
-      rank: 4,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-    {
-      rank: 4,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-    {
-      rank: 4,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-    {
-      rank: 4,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-    {
-      rank: 4,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-    {
-      rank: 4,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-    {
-      rank: 4,
-      name: 'troupi',
-      bestScore: 150,
-      avgScore: 135,
-      wpm: 50,
-      accuracy: 90,
-    },
-  ];
+  entries: LeaderboardEntry[] = [];
 
   totalPages = 10;
+  hasNextPage = true;
 
   filters: Filter = {
     sortBy: LeaderboardSortType.BestScore,
     sortOrder: SortOrder.Desc,
-    page: 1,
+    limit: itemsPerPage,
+    offset: 0,
   };
 
   bestScoreSortOrder: SortOrder | null = SortOrder.Desc;
@@ -143,14 +68,14 @@ export class LeaderboardTableComponent {
         : SortOrder.Desc;
     this.filters.sortBy = LeaderboardSortType.BestScore;
     this.filters.sortOrder = this.bestScoreSortOrder;
-    this.filters.page = 1;
+    this.filters.offset = 0;
     this.avgScoreSortOrder = null;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         sortBy: this.filters.sortBy,
         sortOrder: this.filters.sortOrder,
-        page: this.filters.page,
+        page: this.filters.offset,
       },
       queryParamsHandling: 'merge',
     });
@@ -163,28 +88,28 @@ export class LeaderboardTableComponent {
         : SortOrder.Desc;
     this.filters.sortBy = LeaderboardSortType.AverageScore;
     this.filters.sortOrder = this.avgScoreSortOrder;
-    this.filters.page = 1;
+    this.filters.offset = 1;
     this.bestScoreSortOrder = null;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         sortBy: this.filters.sortBy,
         sortOrder: this.filters.sortOrder,
-        page: this.filters.page,
+        page: this.filters.offset,
       },
       queryParamsHandling: 'merge',
     });
   }
 
   nextPage() {
-    if (this.filters.page < this.totalPages) {
-      this.filters.page++;
+    if (this.filters.offset < this.totalPages) {
+      this.filters.offset++;
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {
           sortBy: this.filters.sortBy,
           sortOrder: this.filters.sortOrder,
-          page: this.filters.page,
+          page: this.filters.offset,
         },
         queryParamsHandling: 'merge',
       });
@@ -192,14 +117,14 @@ export class LeaderboardTableComponent {
   }
 
   previousPage() {
-    if (this.filters.page > 1) {
-      this.filters.page--;
+    if (this.filters.offset > 1) {
+      this.filters.offset--;
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {
           sortBy: this.filters.sortBy,
           sortOrder: this.filters.sortOrder,
-          page: this.filters.page,
+          page: this.filters.offset,
         },
         queryParamsHandling: 'merge',
       });
