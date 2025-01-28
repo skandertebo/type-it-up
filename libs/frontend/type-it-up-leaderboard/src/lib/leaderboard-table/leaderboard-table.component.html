@@ -69,14 +69,14 @@
   <div class="overflow-y-scroll h-52 scroll-bar-custom">
     <table class="table-auto w-full text-center text-primaryText font-iceland">
       <tbody class="bg-secondaryBackground text-md w-full">
-        @for(player of players; track player.rank ) {
+        @for(entry of entries; track entry.user.id ) {
         <tr class="border-b-[1px] border-b-primaryText text-2xl w-full">
-          <td class="px-4 py-2 font-medium w-auto">{{ player.rank }}</td>
-          <td class="px-4 py-2 w-auto">{{ player.name }}</td>
-          <td class="px-4 py-2 w-auto">{{ player.bestScore }}</td>
-          <td class="px-4 py-2 w-auto">{{ player.avgScore }}</td>
-          <td class="px-4 py-2 w-auto">{{ player.wpm }}</td>
-          <td class="px-4 py-2 w-auto">{{ player.accuracy }}</td>
+          <td class="px-4 py-2 font-medium w-auto">{{ entry.user.id }}</td>
+          <td class="px-4 py-2 w-auto">{{ entry.user.username }}</td>
+          <td class="px-4 py-2 w-auto">{{ entry.bestScore }}</td>
+          <td class="px-4 py-2 w-auto">{{ entry.averageScore }}</td>
+          <td class="px-4 py-2 w-auto">{{ entry.averageWpm }}</td>
+          <td class="px-4 py-2 w-auto">{{ entry.averageWpm }}</td>
         </tr>
         }
       </tbody>

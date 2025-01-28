@@ -7,7 +7,6 @@ import {
   TypeItUpHomeComponent,
   TypeItUpHomeLayoutComponent,
 } from '@/frontend/type-it-up-home';
-import { TypeItUpLandingComponent } from '@/frontend/type-it-up-landing';
 import { TypeItUpLeaderboardComponent } from '@/frontend/type-it-up-leaderboard';
 import { LoginComponent, SignUpComponent } from '@/frontend/type-it-up-landing';
 import { Route } from '@angular/router';
@@ -24,15 +23,13 @@ export const appRoutes: Route[] = [
       { path: 'home', component: TypeItUpHomeComponent },
       {
         path: 'profile',
-        component: TypeItUpProfileComponent,
+        loadComponent: () => Profile.then((m) => m.TypeItUpProfileComponent),
+        data: { preload: true },
         canActivate: [ProtectedGuard],
       },
       {
         path: 'leaderboard',
         component: TypeItUpLeaderboardComponent,
-        loadComponent: () => Profile.then((m) => m.TypeItUpProfileComponent),
-        data: { preload: true },
-        canActivate: [ProtectedGuard],
       },
       {
         path: 'history',
