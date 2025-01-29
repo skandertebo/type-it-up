@@ -18,7 +18,6 @@ export const GET_LEADERBOARD = gql(/* GraphQL */ `
         username
         firstName
         lastName
-        workosId
       }
       averageWpm
       averageAccuracy

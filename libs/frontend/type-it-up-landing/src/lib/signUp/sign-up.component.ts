@@ -1,3 +1,4 @@
+import { ButtonComponent } from '@/frontend/shared';
 import { AuthService } from '@/frontend/type-it-up-auth';
 import { CHECK_USERNAME_EXISTS } from '@/frontend/type-it-up-graphql';
 import { CommonModule } from '@angular/common';
@@ -19,7 +20,7 @@ import { catchError, debounceTime, map, of, Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'lib-sign-up',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
   templateUrl: './sign-up.component.html',
 })
 export class SignUpComponent implements OnDestroy {

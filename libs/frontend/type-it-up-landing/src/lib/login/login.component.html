@@ -1,4 +1,4 @@
-<div class=" max-h-full h-screen overflow-hidden">
+<div class="max-h-full h-screen overflow-hidden">
   <div class="absolute bottom-[2px] left-[-33px] h-screen overflow-hidden">
     <lib-svg [height]="'960px'" [width]="'1114px'"></lib-svg>
   </div>
@@ -8,36 +8,57 @@
         Welcome Back
       </div>
       @if (errorMessage){
-      <div class="font-iceland mr-[26px] text-red-500 text-sm sm:text-base mb-4">
-        {{errorMessage}}
+      <div
+        class="font-iceland mr-[26px] text-red-500 text-sm sm:text-base mb-4"
+      >
+        {{ errorMessage }}
       </div>
       }
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 w-full sm:w-80 md:w-96">
-        <input formControlName="email" type="email" placeholder="EMAIL"
-          class="p-3 border-none rounded-2xl bg-[#96104B4F]  text-white text-xl sm:text-2xl font-iceland" />
-        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched&& loginForm.get('email')?.dirty) {
-        <div class="text-red-500 text-sm sm:text-base">Please enter a valid email.</div>
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        class="flex flex-col gap-4 w-full sm:w-80 md:w-96"
+      >
+        <input
+          formControlName="email"
+          type="email"
+          placeholder="EMAIL"
+          class="p-3 border-none rounded-2xl bg-[#96104B4F] text-white text-xl sm:text-2xl font-iceland"
+        />
+        @if (loginForm.get('email')?.invalid &&
+        loginForm.get('email')?.touched&& loginForm.get('email')?.dirty) {
+        <div class="text-red-500 text-sm sm:text-base">
+          Please enter a valid email.
+        </div>
         }
 
-        <input formControlName="password" type="password" placeholder="PASSWORD"
-          class="p-3 border-none rounded-2xl bg-[#96104B4F]  text-white text-xl sm:text-2xl font-iceland" />
-        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched && loginForm.get('password')?.dirty) {
-        <div class="text-red-500 text-sm sm:text-base">Password is required (min 6 characters).</div>
+        <input
+          formControlName="password"
+          type="password"
+          placeholder="PASSWORD"
+          class="p-3 border-none rounded-2xl bg-[#96104B4F] text-white text-xl sm:text-2xl font-iceland"
+        />
+        @if (loginForm.get('password')?.invalid &&
+        loginForm.get('password')?.touched && loginForm.get('password')?.dirty)
+        {
+        <div class="text-red-500 text-sm sm:text-base">
+          Password is required (min 6 characters).
+        </div>
         }
 
-        <button type="submit"
-          class="font-iceland p-3 border-none rounded-2xl bg-pink-600 text-white text-xl sm:text-2xl font-bold cursor-pointer transition-transform transform hover:scale-105 disabled:opacity-80"
-          [disabled]="loginForm.pending">
-          LOGIN
-        </button>
+        <div class="flex justify-center items-center my-3">
+          <lib-button
+            content="LOGIN"
+            [disabled]="loginForm.pending"
+            (clickEvent)="onSubmit()"
+          ></lib-button>
+        </div>
       </form>
 
       <div class="font-iceland text-sm sm:text-base md:text-lg mt-4 mr-[122px]">
         <span class="text-pink-600">NEW HERE? &nbsp;</span>
-        <button class="text-white" (click)="navigateToSignUp()">
-          JOIN US
-        </button>
+        <button class="text-white" (click)="navigateToSignUp()">JOIN US</button>
       </div>
     </div>
   </div>

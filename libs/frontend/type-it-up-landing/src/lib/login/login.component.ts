@@ -1,4 +1,4 @@
-import { SVGDisplayComponent } from '@/frontend/shared';
+import { ButtonComponent, SVGDisplayComponent } from '@/frontend/shared';
 import { AuthService } from '@/frontend/type-it-up-auth';
 import { Component, OnDestroy } from '@angular/core';
 import {
@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
   selector: 'lib-login',
   standalone: true,
   templateUrl: './login.component.html',
-  imports: [SVGDisplayComponent, ReactiveFormsModule],
+  imports: [SVGDisplayComponent, ReactiveFormsModule, ButtonComponent],
 })
 export class LoginComponent implements OnDestroy {
   loginForm: FormGroup;
@@ -50,7 +50,6 @@ export class LoginComponent implements OnDestroy {
       });
     } else {
       this.errorMessage = 'Please fill in all required fields correctly.';
-      console.log('Form is invalid');
     }
   }
 

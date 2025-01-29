@@ -5,7 +5,7 @@
     class="w-40 bg-secondaryBackground flex items-center justify-center rounded-lg"
   >
     <span class="text-white font-bold text-lg cursor-default">{{
-      player.name
+      entry.user.username
     }}</span>
   </div>
   <div
@@ -13,12 +13,16 @@
   >
     <div>
       <img [src]="icon" alt="Place Icon" class="w-8 h-8 inline-block mr-2" />
-      <span class="font-iceland text-xl font-semibold">{{ player.name }} </span>
+      <span class="font-iceland text-xl font-semibold"
+        >{{ entry.user.username }}
+      </span>
       <div>
-        <div>Best Score : {{ player.bestScore }}</div>
-        <div>Avg Score : {{ player.avgScore }}</div>
-        <div>Avg Speed : {{ player.speed }} wpm</div>
-        <div>Avg Accuarcy : {{ player.accuracy }} %</div>
+        <div>Best Score : {{ entry.bestScore | number : '1.2-2' }}</div>
+        <div>Avg Score : {{ entry.averageScore | number : '1.2-2' }}</div>
+        <div>Avg Speed : {{ entry.averageWpm }} wpm wpm</div>
+        <div>
+          Avg Accuarcy : {{ entry.averageAccuracy | percent : '1.2-2' }}
+        </div>
       </div>
     </div>
   </div>
