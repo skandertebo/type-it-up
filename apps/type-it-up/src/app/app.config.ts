@@ -1,7 +1,11 @@
 import { ORG_ID_TOKEN } from '@/frontend/shared';
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
+import {
+  PreloadAllModules,
+  provideRouter,
+  withPreloading,
+} from '@angular/router';
 import { from, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
 import { HttpLink } from '@apollo/client/link/http';
@@ -13,8 +17,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(), provideToastr(),
-    provideHttpClient(),
+    provideAnimations(),
+    provideToastr(),
     provideApollo(() => {
       const authLink = setContext(() => {
         const accessToken = localStorage.getItem('accessToken');
@@ -25,10 +29,17 @@ export const appConfig: ApplicationConfig = {
         };
       });
       return {
-        cache: new InMemoryCache(),
+        cache: new InMemoryCache({
+          resultCaching: false,
+        }),
+        defaultOptions: {
+          query: {
+            fetchPolicy: 'no-cache',
+          },
+        },
         link: from([
           authLink,
-          new HttpLink({ uri: 'http://localhost:3000/graphql' }),
+          new HttpLink({ uri: environment.GRAPHGL_API_URL }),
         ]),
       };
     }),

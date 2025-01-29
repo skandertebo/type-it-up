@@ -83,7 +83,7 @@
           <td class="pl-12 py-2 w-auto">
             {{ entry.averageScore | number : '1.2-2' }}
           </td>
-          <td class="px-0 py-2 w-auto">{{ entry.averageWpm }} wpm</td>
+          <td class="px-0 py-2 w-auto">{{ entry.averageWpm | number : '1.2-2' }} wpm</td>
           <td class="px-0 py-2 w-auto">
             {{ entry.averageAccuracy | percent : '1.2-2' }}
           </td>
