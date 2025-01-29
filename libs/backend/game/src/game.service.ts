@@ -199,16 +199,12 @@ export class GameService {
       INNER JOIN game_users gu ON u.id = gu."userId"
       INNER JOIN game g ON gu."gameId" = g.id
       GROUP BY u.id, u.username, u."firstName", u."lastName"
-      ORDER BY $1 ${sortOrder}
-      LIMIT $2
-      OFFSET $3
+      ORDER BY ${orderByField} ${sortOrder}
+      LIMIT $1
+      OFFSET $2
     `;
 
-    const result = await this.gameRepository.query(query, [
-      orderByField,
-      limit,
-      offset
-    ]);
+    const result = await this.gameRepository.query(query, [limit, offset]);
 
     return result.map((row: any) => ({
       user: {

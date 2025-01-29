@@ -11,7 +11,8 @@
     "lint": "nx run-many -t lint",
     "lint:frontend": "nx run type-it-up:lint",
     "lint:backend": "nx run type-it-up-backend:lint",
-    "codegen:frontend": "nx run type-it-up-graphql:codegen"
+    "codegen:frontend": "nx run type-it-up-graphql:codegen",
+    "reset": "nx reset"
   },
   "private": true,
   "dependencies": {
