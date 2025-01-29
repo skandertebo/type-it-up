@@ -180,29 +180,37 @@ export class GameService {
   async getLeaderboard(args: GetLeaderboardArgs) {
     const { sortType, sortOrder, limit, offset } = args;
 
-    const orderBy =
+    const orderByField =
       sortType === LeaderboardSortType.BEST_SCORE
-        ? 'MAX(game.score)'
-        : 'AVG(game.score)';
+        ? 'best_score'
+        : 'average_score';
 
-    const result = await this.gameRepository
-      .createQueryBuilder('game')
-      .leftJoin('game.users', 'user')
-      .select('user.id', 'userId')
-      .addSelect('user.username', 'username')
-      .addSelect('user.firstName', 'firstName')
-      .addSelect('user.lastName', 'lastName')
-      .addSelect('MAX(game.score)', 'best_score')
-      .addSelect('AVG(game.score)', 'average_score')
-      .addSelect('AVG(game.wpm)', 'average_wpm')
-      .addSelect('AVG(game.accuracy)', 'average_accuracy')
-      .groupBy('user.id')
-      .orderBy(orderBy, sortOrder)
-      .skip(offset)
-      .take(limit)
-      .getRawMany();
+    const query = `
+      SELECT 
+        u.id as "userId",
+        u.username as "username",
+        u."firstName" as "firstName",
+        u."lastName" as "lastName",
+        MAX(g.score) as "best_score",
+        AVG(g.score) as "average_score",
+        AVG(g.wpm) as "average_wpm",
+        AVG(g.accuracy) as "average_accuracy"
+      FROM "user" u
+      INNER JOIN game_users gu ON u.id = gu."userId"
+      INNER JOIN game g ON gu."gameId" = g.id
+      GROUP BY u.id, u.username, u."firstName", u."lastName"
+      ORDER BY $1 ${sortOrder}
+      LIMIT $2
+      OFFSET $3
+    `;
 
-    return result.map((row) => ({
+    const result = await this.gameRepository.query(query, [
+      orderByField,
+      limit,
+      offset
+    ]);
+
+    return result.map((row: any) => ({
       user: {
         id: row.userId,
         username: row.username,
