@@ -6,12 +6,18 @@ export const GET_GAME_HISTORY = gql(/* GraphQL */ `
     $until: DateTime
     $difficulty: String
     $sortOrder: SortOrder
+    $sortBy: GameSortField
+    $skip: Int
+    $take: Int
   ) {
     getGameHistory(
       since: $since
       until: $until
       difficulty: $difficulty
       sortOrder: $sortOrder
+      sortBy: $sortBy
+      skip: $skip
+      take: $take
     ) {
       id
       options {
