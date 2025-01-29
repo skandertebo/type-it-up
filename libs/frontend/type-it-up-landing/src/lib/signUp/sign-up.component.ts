@@ -29,6 +29,7 @@ export class SignUpComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
   showPassword = false;
   showConfirmPassword = false;
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -192,6 +193,7 @@ export class SignUpComponent implements OnDestroy {
 
   onSubmit(): void {
     if (this.signupForm.valid) {
+      this.loading = true;
       const formData = this.signupForm.value;
       const { email, password, firstName, lastName, username } = formData;
 
@@ -200,10 +202,12 @@ export class SignUpComponent implements OnDestroy {
         .subscribe({
           next: () => {
             this.errorMessage = null;
+            this.loading = false;
             this.router.navigate(['/home']);
           },
           error: (error) => {
             this.errorMessage = error.message;
+            this.loading = false;
           },
         });
     } else {
@@ -224,5 +228,9 @@ export class SignUpComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 }

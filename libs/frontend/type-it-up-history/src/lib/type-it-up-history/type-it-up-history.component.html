@@ -1,6 +1,7 @@
 <div
   class="text-primaryText rounded-lg p-4 pt-1 justify-center items-center flex flex-col text-center w-full font-iceland"
 >
+  @if(gameHistory.length>0){
   <div class="flex justify-between items-center mb-4">
     <div class="flex space-x-4 items-center">
       <div>
@@ -8,7 +9,7 @@
         <select
           id="sortBy"
           [(ngModel)]="filters.sortBy"
-          class="px-8 py-2 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
+          class="px-8 py-2 rounded bg-primaryForeground/40 text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         >
           <option value="SCORE">Score</option>
           <option value="DATE">Date</option>
@@ -20,7 +21,7 @@
         <select
           id="sortOrder"
           [(ngModel)]="filters.sortOrder"
-          class="px-4 py-2 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
+          class="px-4 py-2 rounded bg-primaryForeground/40 text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         >
           <option value="ASC">Ascending</option>
           <option value="DESC">Descending</option>
@@ -33,7 +34,7 @@
           id="since"
           type="date"
           [(ngModel)]="filters.since"
-          class="px-2 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
+          class="px-2 py-1 rounded bg-primaryForeground/40 text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         />
       </div>
       <div>
@@ -42,18 +43,18 @@
           id="until"
           type="date"
           [(ngModel)]="filters.until"
-          class="px-2 py-1 rounded bg-[#3a0d23] text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
+          class="px-2 py-1 rounded bg-primaryForeground/40 text-white border-none focus:ring-2 focus:ring-[#45122a] hover:bg-[#45122a]"
         />
       </div>
 
       <button
-        class="px-4 py-2 mt-7 rounded bg-[#3a0d23] text-white hover:bg-[#45122a]"
+        class="px-4 py-2 mt-7 rounded bg-primaryForeground/40 text-white hover:bg-[#45122a]"
         (click)="applyFilters()"
       >
         Apply
       </button>
       <button
-        class="px-4 py-2 mt-7 rounded bg-[#3a0d23] text-white hover:bg-[#45122a]"
+        class="px-4 py-2 mt-7 rounded bg-primaryForeground/40 text-white hover:bg-[#45122a]"
         (click)="clearFilters()"
       >
         Clear
@@ -85,7 +86,7 @@
 
   <div class="flex justify-center items-center mt-4 space-x-2">
     <button
-      class="px-3 py-1 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white disabled:opacity-50"
+      class="px-3 py-1 rounded bg-primaryForeground/40 hover:bg-[#45122a] text-white disabled:opacity-50"
       [disabled]="currentPage === 1"
       (click)="previousPage()"
     >
@@ -93,11 +94,19 @@
     </button>
     <span class="text-xl text-gray-400">Page {{ currentPage }}</span>
     <button
-      class="px-3 py-1 rounded bg-[#3a0d23] hover:bg-[#45122a] text-white disabled:opacity-50"
+      class="px-3 py-1 rounded bg-primaryForeground/40 hover:bg-[#45122a] text-white disabled:opacity-50"
       [disabled]="!hasNextPage"
       (click)="nextPage()"
     >
       Next
     </button>
   </div>
+  } @else {
+  <div class="text-4xl p-20 pb-5 text-primaryText">No game history yet</div>
+    <lib-button
+      (clickEvent)="navigateToHome()"
+    >
+      Play Now
+  </lib-button>
+  }
 </div>

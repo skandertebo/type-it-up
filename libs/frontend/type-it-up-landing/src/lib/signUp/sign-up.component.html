@@ -209,11 +209,16 @@
         <div class="flex justify-center items-center my-3">
           <lib-button
             content="SIGN UP"
+            [loading]="loading"
             [disabled]="signupForm.pending"
             (clickEvent)="onSubmit()"
           ></lib-button>
         </div>
       </form>
+      <div class="font-iceland text-sm sm:text-base md:text-lg mt-4">
+        <span class="text-white">ALREADY HAVE AN ACCOUNT? &nbsp;</span>
+        <button class="text-pink-600" (click)="navigateToLogin()">LOGIN</button>
+      </div>
     </div>
   </div>
 </div>
