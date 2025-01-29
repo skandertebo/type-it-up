@@ -50,6 +50,7 @@
         <div class="flex justify-center items-center my-3">
           <lib-button
             content="LOGIN"
+            [loading]="loading"
             [disabled]="loginForm.pending"
             (clickEvent)="onSubmit()"
           ></lib-button>

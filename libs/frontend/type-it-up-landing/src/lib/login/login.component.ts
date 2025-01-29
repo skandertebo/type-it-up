@@ -20,6 +20,7 @@ export class LoginComponent implements OnDestroy {
   loginForm: FormGroup;
   errorMessage: string | null = null;
   destroy$ = new Subject<void>();
+  loading = false;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -36,15 +37,18 @@ export class LoginComponent implements OnDestroy {
   }
   onSubmit(): void {
     if (this.loginForm.valid) {
+      this.loading = true;
       const { email, password } = this.loginForm.value;
 
       this.authService.handleLogin(email, password).subscribe({
         next: () => {
           this.errorMessage = null;
+          this.loading = false;
           this.router.navigate(['/home']);
         },
         error: (error) => {
           console.error('Error logging in:', error);
+          this.loading = false;
           this.errorMessage = 'Invalid email or password. Please try again.';
         },
       });

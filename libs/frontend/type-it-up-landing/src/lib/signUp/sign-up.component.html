@@ -209,6 +209,7 @@
         <div class="flex justify-center items-center my-3">
           <lib-button
             content="SIGN UP"
+            [loading]="loading"
             [disabled]="signupForm.pending"
             (clickEvent)="onSubmit()"
           ></lib-button>
