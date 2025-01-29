@@ -10,6 +10,6 @@ To start the frontend server:
 To start the backend server:
 * Populate the .env as instructed in the .env.test
 * Run the command:
-  ```
-  npm run start:backend
-  ```
+```
+npm run start:backend
+```
