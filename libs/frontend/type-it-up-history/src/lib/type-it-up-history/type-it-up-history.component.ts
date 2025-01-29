@@ -10,6 +10,7 @@ import {
   GET_GAME_HISTORY,
   SortOrder,
 } from '@/frontend/type-it-up-graphql';
+import { ButtonComponent } from '@/frontend/shared';
 
 type Filter = {
   sortBy: GameSortField;
@@ -21,7 +22,7 @@ type Filter = {
 
 @Component({
   selector: 'lib-type-it-up-history',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ButtonComponent],
   standalone: true,
   templateUrl: './type-it-up-history.component.html',
   styleUrl: './type-it-up-history.component.css',
@@ -117,5 +118,9 @@ export class TypeItUpHistoryComponent implements OnInit {
       this.currentPage--;
       this.applyFilters();
     }
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/home']);
   }
 }
