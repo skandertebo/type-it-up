@@ -229,4 +229,8 @@ export class SignUpComponent implements OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
 }
