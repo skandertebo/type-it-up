@@ -39,6 +39,9 @@
       "@/frontend/type-it-up-landing": [
         "libs/frontend/type-it-up-landing/src/index.ts"
       ],
+      "@/frontend/type-it-up-leaderboard": [
+        "libs/frontend/type-it-up-leaderboard/src/index.ts"
+      ],
       "@/frontend/type-it-up-profile": [
         "libs/frontend/type-it-up-profile/src/index.ts"
       ],

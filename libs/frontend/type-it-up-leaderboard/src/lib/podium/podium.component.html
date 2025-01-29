@@ -1,0 +1,18 @@
+<div class="flex items-end justify-center space-x-1">
+  @if (entries.length > 2) {
+  <lib-leaderboard-podium-item
+    [entry]="entries[1]"
+    [rank]="2"
+  ></lib-leaderboard-podium-item>
+  <lib-leaderboard-podium-item
+    [entry]="entries[0]"
+    [rank]="1"
+  ></lib-leaderboard-podium-item>
+  <lib-leaderboard-podium-item
+    [entry]="entries[2]"
+    [rank]="3"
+  ></lib-leaderboard-podium-item>
+  } @else {
+  <h1>Podium</h1>
+  }
+</div>

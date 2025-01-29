@@ -7,6 +7,7 @@ import {
   TypeItUpHomeComponent,
   TypeItUpHomeLayoutComponent,
 } from '@/frontend/type-it-up-home';
+import { TypeItUpLeaderboardComponent } from '@/frontend/type-it-up-leaderboard';
 import { LoginComponent, SignUpComponent } from '@/frontend/type-it-up-landing';
 import { Route } from '@angular/router';
 import {} from '@nestjs/passport';
@@ -25,6 +26,10 @@ export const appRoutes: Route[] = [
         loadComponent: () => Profile.then((m) => m.TypeItUpProfileComponent),
         data: { preload: true },
         canActivate: [ProtectedGuard],
+      },
+      {
+        path: 'leaderboard',
+        component: TypeItUpLeaderboardComponent,
       },
       {
         path: 'history',
