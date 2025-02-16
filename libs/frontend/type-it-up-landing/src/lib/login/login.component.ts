@@ -1,6 +1,6 @@
 import { ButtonComponent, SVGDisplayComponent } from '@/frontend/shared';
 import { AuthService } from '@/frontend/type-it-up-auth';
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'lib-login',
@@ -16,10 +15,9 @@ import { Subject } from 'rxjs';
   templateUrl: './login.component.html',
   imports: [SVGDisplayComponent, ReactiveFormsModule, ButtonComponent],
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string | null = null;
-  destroy$ = new Subject<void>();
   loading = false;
   constructor(
     private fb: FormBuilder,
@@ -39,7 +37,6 @@ export class LoginComponent implements OnDestroy {
     if (this.loginForm.valid) {
       this.loading = true;
       const { email, password } = this.loginForm.value;
-
       this.authService.handleLogin(email, password).subscribe({
         next: () => {
           this.errorMessage = null;
@@ -57,8 +54,4 @@ export class LoginComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }
